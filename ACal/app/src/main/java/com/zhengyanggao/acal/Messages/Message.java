@@ -5,6 +5,8 @@ import java.util.IllegalFormatCodePointException;
 
 /**
  * Created by ZhengyangGao on 10/26/16.
+ *
+ * Message class used by ACalendar.
  */
 public class Message {
 
