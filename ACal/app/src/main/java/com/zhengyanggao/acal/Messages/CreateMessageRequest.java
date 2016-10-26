@@ -2,6 +2,8 @@ package com.zhengyanggao.acal.Messages;
 
 /**
  * Created by ZhengyangGao on 10/26/16.
+ *
+ * CreateMessageRequest is an object used when calling createMessage()
  */
 public class CreateMessageRequest {
 

@@ -2,6 +2,8 @@ package com.zhengyanggao.acal.Messages;
 
 /**
  * Created by ZhengyangGao on 10/26/16.
+ *
+ * CreateMessageResponse is an object returned by createMessage()
  */
 public class CreateMessageResponse {
 
