@@ -23,5 +23,5 @@ public class CreateMessageRequest {
     public void setEventId(int eventId) {
         this.eventId = eventId;
     }
-    
+
 }
