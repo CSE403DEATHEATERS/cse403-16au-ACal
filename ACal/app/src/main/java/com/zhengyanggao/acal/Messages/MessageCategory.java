@@ -1,6 +1,9 @@
 package com.zhengyanggao.acal.Messages;
 
 /**
+ * A Enum class denoting different message categories.
+ * Used to facilitate categorizing messages.
+ *
  * Created by ZhengyangGao on 10/26/16.
  */
 public enum MessageCategory {
