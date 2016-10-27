@@ -1,0 +1,10 @@
+/.idea
+/ACal/*.iml
+/ACal/.gradle
+/ACal/local.properties
+/ACal/.idea/workspace.xml
+/ACal/.idea/libraries
+.DS_Store
+/ACal.DS_Store
+/ACal/build
+/ACal/captures
