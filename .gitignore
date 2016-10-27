@@ -8,3 +8,5 @@
 /ACal.DS_Store
 /ACal/build
 /ACal/captures
+/server/target
+/server/*.iml
