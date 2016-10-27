@@ -10,3 +10,4 @@
 /ACal/captures
 /server/target
 /server/*.iml
+/server/dependency-reduced-pom.xml
