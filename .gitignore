@@ -1,0 +1,17 @@
+/.idea
+/*.iml
+.DS_Store
+.project
+/app/*.iml
+/.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+/.idea
+/app/build
+/build
+/captures
+
+/server/target
+/server/*.iml
+/server/dependency-reduced-pom.xml
