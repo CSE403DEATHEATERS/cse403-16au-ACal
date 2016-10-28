@@ -34,12 +34,16 @@ Add `.travis.yml` file to root directory of the repository. Travis CI will build
 
 1. Configure email sending on mac: follow [this guide](http://www.developerfiles.com/how-to-send-emails-from-localhost-mac-os-x-el-capitan/)
 2. Add a cronjob though the terminal:
+
 	```
 	crontab -e
     ```
+    
 3. This should open the editor, so add:
+
 	```
 	MAILTO=”your_email”
 	*/10 23 * * * <path to ci.sh> <base_directory> <name_of_tmp_directory> <path_to_android_sdk>
     ```
+    
 with one empty line at the end of the file.
