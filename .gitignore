@@ -2,7 +2,7 @@
 /*.iml
 .DS_Store
 .project
-/*.iml
+/app/*.iml
 /.gradle
 /local.properties
 /.idea/workspace.xml
