@@ -29,5 +29,5 @@ before_install:
   - export PATH=$GRADLE_HOME/bin:$PATH
 
 script:
-  - gradlew --refresh-dependencies 
+  - gradle --refresh-dependencies 
   - gradle clean build
