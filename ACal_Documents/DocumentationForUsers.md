@@ -17,11 +17,11 @@ Looking for a more detailed description of how ACalendar™ works? Please chekou
 
 ##How To Report A Bug
 If Acalendar doesn’t work well on your phone, the following is workaround.
-1.      Try to find whether it is a known bug in our “known bug list”
-2.      Try to find an answer by searching the Web.
-3.      Try to find an answer by asking a skilled friend.
-4.      If you're a programmer, try to find an answer by reading the source code.
-5.      Can’t solve it by yourself, report to us.
+1.   Try to find whether it is a known bug in our “known bug list”
+2.   Try to find an answer by searching the Web.
+3.   Try to find an answer by asking a skilled friend.
+4.   If you're a programmer, try to find an answer by reading the source code.
+5.   Can’t solve it by yourself, report to us.
 When you report problems or bugs to us, you must be precise and informative about your problem. If you just give us an action you have trouble with in our app, we would fire up our own copy of the program but maybe nothing goes wrong because you do not give us enough information. So, steps to reproduce are the most important part of in you bug report. If we can able to reproduce the bug, the bug is very likely to be fixed. Thus, we need a meaningful and specific post. Here is some example:
 Stupid: Help! My Acalendar doesn’t work!
 Smart: Acal.dea 1.2.3, the program crash when alternately use “Create Event” and “Add Friend”
