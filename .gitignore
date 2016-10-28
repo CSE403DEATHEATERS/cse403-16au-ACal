@@ -1,5 +1,6 @@
 /.idea
 /*.iml
+.DS_Store
 /ACal/*.iml
 /ACal/.gradle
 /ACal/local.properties
@@ -7,10 +8,10 @@
 /ACal/.idea/libraries
 /ACal/.idea
 /ACal/app/build
-.DS_Store
 /ACal/.DS_Store
 /ACal/build
 /ACal/captures
+
 /server/target
 /server/*.iml
 /server/dependency-reduced-pom.xml
