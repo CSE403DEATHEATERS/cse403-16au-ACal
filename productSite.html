@@ -113,7 +113,24 @@
       <h4>How To Release A New Version</h4>
 
       <p></p>
+<h4>How To Build ACalendar&trade;</h4>
+        <p>The application is built using the integrated build system <a href="http://developer.android.com/sdk/installing/studio-build.html">Gradle</a> of Android Studio. 
+        Normally, Gradle will automatically build the project after it is opened in Android Studio. To manually do this, click on the “Build” option in the menu bar, and then choose “Rebuild project”.</p>
 
+        <p>Other options, such as making the project and generating the APK package, could also be accessed under this menu.</p>
+
+        <p>You can also use the command line. On the root of the project you can run</p>
+
+        <pre><code>./gradlew assembleDebug
+        </code></pre>
+
+        <p>Which will build the project in debug mode. You can also run</p>
+
+        <pre><code>./gradlew clean
+        </code></pre>
+
+        <p>To remove any files created from the build. 
+        See <a href="http://developer.android.com/tools/building/building-cmdline.html">this link</a> for more information on building on the command line.</p>
       <h4>Known Bugs List</h4>
       <p>Developers need to post discover bugs that they have been found on GitHub. They can create an issue by:</p>
       <ol>
