@@ -15,7 +15,6 @@ Since ACalendar database are stored in Amazon Web Services (AWS), developers nee
 5. Change the value of Output Type to `String`, as well.
 6. Verify that your entries look like the following screenshot (modify them if they are not), and then click Finish.
 
-###Test
 Finally, you can implement you handler function and start testing you program.
 
 
