@@ -1,6 +1,9 @@
 language: android
 android:
   components:
+    - platform-tools
+    - tools
+    - tools
     - build-tools-23.0.3
     - android-23
     - extra-google-m2repository
