@@ -8,8 +8,8 @@ android:
     - extra-google-google_play_services
     - extra
 
-  licenses:
-    - 'android-sdk-license.*'
+#  licenses:
+#    - 'android-sdk-license.*'
 
 jdk: oraclejdk8
 
