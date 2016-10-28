@@ -2,16 +2,15 @@
 /*.iml
 .DS_Store
 .project
-/ACal/*.iml
-/ACal/.gradle
-/ACal/local.properties
-/ACal/.idea/workspace.xml
-/ACal/.idea/libraries
-/ACal/.idea
-/ACal/app/build
-/ACal/.DS_Store
-/ACal/build
-/ACal/captures
+/*.iml
+/.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+/.idea
+/app/build
+/build
+/captures
 
 /server/target
 /server/*.iml
