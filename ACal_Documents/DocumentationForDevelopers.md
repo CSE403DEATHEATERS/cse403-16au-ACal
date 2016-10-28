@@ -45,5 +45,6 @@ Add `.travis.yml` file to root directory of the repository. Travis CI will build
 	MAILTO=”your_email”
 	*/10 23 * * * <path to ci.sh> <base_directory> <name_of_tmp_directory> <path_to_android_sdk>
     ```
-    
 with one empty line at the end of the file.
+
+4. Format of cronjob configuration file follow [this guide](http://www.nncron.ru/help/EN/working/cron-format.htm)
