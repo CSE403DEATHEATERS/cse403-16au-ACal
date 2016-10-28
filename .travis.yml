@@ -1,16 +1,9 @@
 language: android
 android:
   components:
-    # Uncomment the lines below if you want to
-    # use the latest revision of Android SDK Tools
-    # - platform-tools
-    # - tools
-
-    # The BuildTools version used by your project
-    - build-tools-24.0.0
-
-    # The SDK version used to compile your project
-    - android-24
+    - build-tools-$ANDROID_BUILD_TOOLS_VERSION
+    - android-$ANDROID_API_LEVEL
+    - android-$EMULATOR_API_LEVEL
     
     
     - extra-google-m2repository
