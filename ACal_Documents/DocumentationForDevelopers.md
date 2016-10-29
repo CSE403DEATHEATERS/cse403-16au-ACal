@@ -23,8 +23,10 @@ All client side java source code and resource files: `\cse403-16au-ACal\app\src`
 `\cse403-16au-ACal\app\src\androidTest`
 2. all main sourceset files:
 `\cse403-16au-ACal\app\src\main`
+
     *  all client side modules. Each module will contain its own model, controller(Activity in android), and services
 `\cse403-16au-ACal\app\src\main\java`
+
         i. Event module
 `\cse403-16au-ACal\app\src\main\java\Events`
 
@@ -39,6 +41,7 @@ All client side java source code and resource files: `\cse403-16au-ACal\app\src`
 
     * all client side non-code resource
 `\cse403-16au-ACal\app\src\main\res`
+
         i. definition of the entire user interface
 `\cse403-16au-ACal\app\src\main\res\layout`
 
