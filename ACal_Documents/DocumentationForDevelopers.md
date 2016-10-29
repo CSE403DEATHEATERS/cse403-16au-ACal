@@ -6,7 +6,7 @@
 * [Known Bugs List](#known-bugs-list)
 * [Build Automation with Travis CI](#build-automation-with-travis-ci)
 * [Daily Automation Builds with Cron](#daily-automation-builds-with-cron)
-* [Run Unit Tests](#run-unit-tests)
+* [Run Unit Tests with Gradle](#run-unit-tests-with-gradle)
 * [How To Run Unit Test On Server](#how-to-run-unit-test-on-server)
 * [Releasing A New Version](#releasing-a-new-version)
 * [How To Build ACalendar](#how-to-build-acalendar)
@@ -102,7 +102,7 @@ with one empty line at the end of the file.
 
 4. Format of cronjob configuration file follow [this guide](http://www.nncron.ru/help/EN/working/cron-format.htm)
 
-##Run Unit Tests
+##Run Unit Tests with Gradle
 Unit tests can be found under `.../cse403-16au-ACal/app/src/test/java/com/acalendar/acal/`. You should be able to run it directly from Android Studio: 
 
 The Android Plugin for Gradle compiles the local unit test code located in the default directory (src/test/java), builds a test app, and executes it locally using the default test runner class.
