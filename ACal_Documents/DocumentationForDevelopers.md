@@ -18,44 +18,32 @@ For more information on how to use Github, visit [this link](https://help.github
 ##Directory Structure
 
 All client side java source code and resource files: `\cse403-16au-ACal\app\src`
-
-1. instrumentation tests that run on an Android device:
+1.	instrumentation tests that run on an Android device:
 `\cse403-16au-ACal\app\src\androidTest`
-2. all main sourceset files:
-`\cse403-16au-ACal\app\src\main`
-
-    *  all client side modules. Each module will contain its own model, controller(Activity in android), and services
+2.	all main sourceset files: `\cse403-16au-ACal\app\src\main`
+    * all client side modules. Each module will contain its own model, controller(Activity in android), and services
 `\cse403-16au-ACal\app\src\main\java`
-
-        i. Event module
+        * Event module
 `\cse403-16au-ACal\app\src\main\java\Events`
-
-        ii. Message module
+        * Message module
 `\cse403-16au-ACal\app\src\main\java\Messages`
-
-        iii. Login module
+        * Login module
 `\cse403-16au-ACal\app\src\main\java\Login`
-
-        iv. Email module
+        * Email module
 `\cse403-16au-ACal\app\src\main\java\Email`
-
     * all client side non-code resource
 `\cse403-16au-ACal\app\src\main\res`
-
-        i. definition of the entire user interface
+        * definition of the entire user interface
 `\cse403-16au-ACal\app\src\main\res\layout`
-
-        ii.other resources, such as strings and color definitions
+        * other resources, such as strings and color definitions
 `\cse403-16au-ACal\app\src\main\res\values`
-
     * manifest
 `\cse403-16au-ACal\app\src\main\AndroidManifest.xml`
-
-3.   local tests that run on your host JVM
+3. local tests that run on your host JVM
 `\cse403-16au-ACal\app\src\test`
- 
 
-All server side source code including data models and functionality to be provided to AWS lambda: \cse403-16au-ACal\server
+All server side source code including data models and functionality to be provided to AWS lambda: ```\cse403-16au-ACal\server```
+
 
 
 
