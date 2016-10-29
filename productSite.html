@@ -139,7 +139,22 @@
 
         <p>To setup Travis, please follow the steps below:</p>
         <p style="margin-left: 20px">Add <code>.travis.yml</code> file to root directory of the repository. Travis CI will build the project at every push and pull request. If build fails, the develop team will be notified by email.</p>
-
+	
+	<h4>Run Unit Tests</h4>
+	    <p>Unit tests can be found under <code>.../cse403-16au-ACal/app/src/test/java/com/acalendar/acal/ExampleUnitTest.java</code>. You should be able to run it directly from Android Studio: </p>
+		<p>The Android Plugin for Gradle compiles the local unit test code located in the default directory (src/test/java), builds a test app, and executes it locally using the default test runner class.</p>
+		<p>To run local unit tests in your Gradle project from Android Studio:</p>
+		<ol>
+		<li>In the Project window, right click on the project and synchronize your project.</li>
+		<li>Open the Build Variants window by clicking the left-hand tab, then change the test artifact to Unit Tests.</li>
+		<li>In the Project window, drill down to your unit test class or method, then right-click and run it. To run all tests in the unit test directory, select the directory then right-click and press Run tests.</li>
+		<li>Android Studio displays the results of the unit test execution in the Run window.</li>
+		</ol>
+	<p>To run local unit tests in your Gradle project from the command-line, call the test task command.</p>
+		<p><code>./gradlew test</code></p>
+	<p>If there are failing tests, the command will display links to HTML reports (one per build variant). You can find the generated HTML test result reports in the <path_to_your_project>/app/build/reports/tests/ directory, and the corresponding XML files in the <path_to_your_project>/app/build/test-results/ directory.</p>
+	<p>For more information on creating and conducting unit tests in Android Studio, follow <a href="http://developer.android.com/training/testing/start/index.html#run-local-tests">this link</a>.</p>
+	    
       <h4>How To Release A New Version</h4>
 
       <ul>
