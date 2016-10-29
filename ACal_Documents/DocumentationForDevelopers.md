@@ -10,7 +10,7 @@
 * [How To Build ACalendar](#how-to-build-acalendar)
 
 ##How To Obtain The Source Code
-To get the source code for ACalendar, visit [this link to our github page](https://github.com/CSE403DEATHEATERS/cse403-16au-ACal.git). For direct access to our repository, visit [this link](https://github.com/MatchOnTheStreet/MatchOnTheStreet). 
+To get the source code for ACalendar, visit [this link to our github page](https://cse403deatheaters.github.io/cse403-16au-ACal/productSite.html). For direct access to our repository, visit [this link](https://github.com/CSE403DEATHEATERS/cse403-16au-ACal.git). 
 
 For more information on how to use Github, visit [this link](https://help.github.com/).
 
