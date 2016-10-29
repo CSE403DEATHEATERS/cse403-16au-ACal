@@ -128,7 +128,7 @@ right click build.xml and choose run as "Ant Build"
 
 before you do this, make sure the followings is correct in you build.xml
 
-1. The <test name="tn"> "tn" is the testing class you want to run
+1. The `test name="tn"`, "tn" is the testing class you want to run
 2. "pathelement location=" and "classpath= " point to the location on you local computer which contain a file called junit3.8.2.jar
 
 ##Releasing A New Version
