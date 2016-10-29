@@ -1,4 +1,7 @@
 package com.acalendar.acal.Events;
 
-public class EventManager {
+public class Event {
+
+
+
 }
