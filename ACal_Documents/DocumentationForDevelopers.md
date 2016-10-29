@@ -27,20 +27,27 @@ All client side java source code and resource files: `\cse403-16au-ACal\app\src`
 `\cse403-16au-ACal\app\src\main\java`
         i. Event module
 `\cse403-16au-ACal\app\src\main\java\Events`
+
         ii. Message module
 `\cse403-16au-ACal\app\src\main\java\Messages`
+
         iii. Login module
 `\cse403-16au-ACal\app\src\main\java\Login`
+
         iv. Email module
 `\cse403-16au-ACal\app\src\main\java\Email`
+
     * all client side non-code resource
 `\cse403-16au-ACal\app\src\main\res`
         i. definition of the entire user interface
 `\cse403-16au-ACal\app\src\main\res\layout`
+
         ii.other resources, such as strings and color definitions
 `\cse403-16au-ACal\app\src\main\res\values`
+
     * manifest
 `\cse403-16au-ACal\app\src\main\AndroidManifest.xml`
+
 3.   local tests that run on your host JVM
 `\cse403-16au-ACal\app\src\test`
  
