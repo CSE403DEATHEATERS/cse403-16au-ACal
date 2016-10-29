@@ -16,7 +16,9 @@ To get the source code for ACalendar, visit [this link to our github page](https
 For more information on how to use Github, visit [this link](https://help.github.com/).
 
 ##Directory Structure
+
 All client side java source code and resource files: ```\cse403-16au-ACal\app\src```
+
 1. instrumentation tests that run on an Android device:
 ```\cse403-16au-ACal\app\src\androidTest```
 2. all main sourceset files:
