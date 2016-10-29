@@ -7,7 +7,7 @@
 * [Build Automation with Travis CI](#build-automation-with-travis-ci)
 * [Daily Automation Builds with Cron](#daily-automation-builds-with-cron)
 * [Run Unit Tests](#run-unit-tests)
-* [How To Run Unit Test On Server](how-to-run-unit-test-on-server)
+* [How To Run Unit Test On Server](#how-to-run-unit-test-on-server)
 * [Releasing A New Version](#releasing-a-new-version)
 * [How To Build ACalendar](#how-to-build-acalendar)
 
