@@ -1,12 +1,19 @@
 package com.acalendar.acal.Email;
 
-/**
- * Created by tongshen on 10/28/16.
- */
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
+import android.support.annotation.Nullable;
 
-public class EmailManager {
+public class EmailManager extends Service {
 
     public static boolean sendEmail() {
         return false;
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 }
