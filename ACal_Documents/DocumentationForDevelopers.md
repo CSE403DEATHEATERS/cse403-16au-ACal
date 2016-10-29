@@ -6,6 +6,7 @@
 * [Known Bugs List](#known-bugs-list)
 * [Build Automation with Travis CI](#build-automation-with-travis-ci)
 * [Daily Automation Builds with Cron](#daily-automation-builds-with-cron)
+* [Run Unit Tests](#run-unit-tests)
 * [Releasing A New Version](#releasing-a-new-version)
 * [How To Build ACalendar](#how-to-build-acalendar)
 
@@ -59,6 +60,26 @@ Add `.travis.yml` file to root directory of the repository. Travis CI will build
 with one empty line at the end of the file.
 
 4. Format of cronjob configuration file follow [this guide](http://www.nncron.ru/help/EN/working/cron-format.htm)
+
+##Run Unit Tests
+Unit tests can be found under `.../cse403-16au-ACal/app/src/test/java/com/acalendar/acal/ExampleUnitTest.java`. You should be able to run it directly from Android Studio: 
+
+The Android Plugin for Gradle compiles the local unit test code located in the default directory (src/test/java), builds a test app, and executes it locally using the default test runner class.
+
+To run local unit tests in your Gradle project from Android Studio:
+
+1. In the Project window, right click on the project and synchronize your project.
+2. Open the Build Variants window by clicking the left-hand tab, then change the test artifact to Unit Tests.
+3. In the Project window, drill down to your unit test class or method, then right-click and run it. To run all tests in the unit test directory, select the directory then right-click and press Run tests.
+4. Android Studio displays the results of the unit test execution in the Run window.
+
+To run local unit tests in your Gradle project from the command-line, call the test task command.
+
+`./gradlew test`
+
+If there are failing tests, the command will display links to HTML reports (one per build variant). You can find the generated HTML test result reports in the <path_to_your_project>/app/build/reports/tests/ directory, and the corresponding XML files in the <path_to_your_project>/app/build/test-results/ directory.
+
+For more information on creating and conducting unit tests in Android Studio, follow [this link](http://developer.android.com/training/testing/start/index.html#run-local-tests).
 
 ##Releasing A New Version
 
