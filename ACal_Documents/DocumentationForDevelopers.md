@@ -63,11 +63,11 @@ with one empty line at the end of the file.
 After an updated version of the client is built and tested, it is recommended to use Gradle to generate the compiled APK file. Then the project should be pushed from local repository to the `master` branch on our repository([https://github.com/CSE403DEATHEATERS/cse403-16au-ACal](https://github.com/CSE403DEATHEATERS/cse403-16au-ACal)).
 
 * ###Server Side
-After server side codes are updated and tested, you could upload your updated codes to Amazon AWS Lambda through this link.
+After server side codes are updated and tested, you should push it to our repository and contact us through `Acal_techteam@u.washington.edu`, and we will deploy the updated version for you.
 
 ###Download links for .apk, .tar.gz, .zip files:
 
-* _.apk file:_
+* _.apk file:_ [https://github.com/CSE403DEATHEATERS/cse403-16au-ACal/tree/master/app/build/outputs/apk/app-release-unsigned.apk?raw=true](https://github.com/CSE403DEATHEATERS/cse403-16au-ACal/tree/master/app/build/outputs/apk/app-release-unsigned.apk?raw=true)
 * _.zip file:_ [https://github.com/CSE403DEATHEATERS/cse403-16au-ACal/zipball/master](https://github.com/CSE403DEATHEATERS/cse403-16au-ACal/zipball/master)
 * _.tar.gz file:_ [https://github.com/CSE403DEATHEATERS/cse403-16au-ACal/tarball/master](https://github.com/CSE403DEATHEATERS/cse403-16au-ACal/tarball/master)
 
