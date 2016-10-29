@@ -21,3 +21,4 @@
 /server/target
 /server/*.iml
 /server/dependency-reduced-pom.xml
+/server/.idea/

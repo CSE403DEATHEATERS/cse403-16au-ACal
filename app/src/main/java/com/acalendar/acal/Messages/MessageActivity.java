@@ -1,9 +1,8 @@
 package com.acalendar.acal.Messages;
 
-/**
- * Created by ZhengyangGao on 10/26/16.
- */
-public class MessageActivity {
+import android.app.Activity;
+
+public class MessageActivity extends Activity{
 
     public void createMessage() {
         
