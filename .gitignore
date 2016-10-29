@@ -8,7 +8,13 @@
 /.idea/workspace.xml
 /.idea/libraries
 /.idea
-/app/build
+
+/app/build/*
+!/app/build/outputs
+/app/build/outputs/*
+!/app/build/outputs/apk
+
+/projectFilesBackup*
 /build
 /captures
 
