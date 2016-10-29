@@ -10,6 +10,9 @@
 * [How To Build ACalendar](#how-to-build-acalendar)
 
 ##How To Obtain The Source Code
+To get the source code for Match on the Street, visit [this link to our github page](http://matchonthestreet.github.io/MatchOnTheStreet/). For direct access to our repository, visit [this link](https://github.com/MatchOnTheStreet/MatchOnTheStreet). 
+
+For more information on how to use Github, visit [this link](https://help.github.com/).
 
 ##Directory Structure
 
