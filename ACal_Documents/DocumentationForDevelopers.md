@@ -103,7 +103,7 @@ with one empty line at the end of the file.
 4. Format of cronjob configuration file follow [this guide](http://www.nncron.ru/help/EN/working/cron-format.htm)
 
 ##Run Unit Tests
-Unit tests can be found under `.../cse403-16au-ACal/app/src/test/java/com/acalendar/acal/ExampleUnitTest.java`. You should be able to run it directly from Android Studio: 
+Unit tests can be found under `.../cse403-16au-ACal/app/src/test/java/com/acalendar/acal/`. You should be able to run it directly from Android Studio: 
 
 The Android Plugin for Gradle compiles the local unit test code located in the default directory (src/test/java), builds a test app, and executes it locally using the default test runner class.
 
