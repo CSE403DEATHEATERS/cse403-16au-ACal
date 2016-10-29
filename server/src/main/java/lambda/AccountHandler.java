@@ -1,18 +1,19 @@
 package lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import model.AccountRequestClass;
-import model.AccountResponseClass;
+import model.Account;
+
+import java.util.*;
 
 public class AccountHandler {
 	
-	public AccountResponseClass login(AccountRequestClass input, Context context) {
-		System.out.println("(login) " + input.getUsername() + ": " + input.getPassword());
-		return input.isLogin() ? new AccountResponseClass(input) : null;
+	public Map<String, String> login(Map<String, String> input, Context context) {
+		System.out.println("(login) " + input.get("username") + ": " + input.get("password"));
+        return new Account(input.get("username"), input.get("password")).isLogin();
 	}
 	
-	public AccountResponseClass signup(AccountRequestClass input, Context context) {
-		System.out.println("(signup) " + input.getUsername() + ": " + input.getPassword());
-		return input.signup() ? new AccountResponseClass(input) : null;
+	public Map<String, String> signup(Map<String, String> input, Context context) {
+		System.out.println("(signup) " + input.get("username") + ": " + input.get("password"));
+		return new HashMap<String, String>();
 	}
 }
