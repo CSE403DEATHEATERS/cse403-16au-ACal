@@ -156,6 +156,14 @@
 	<p>For more information on creating and conducting unit tests in Android Studio, follow <a href="http://developer.android.com/training/testing/start/index.html#run-local-tests">this link</a>.</p>
 	    
 	<h4>How To Run Unit Test On Server</h4>
+  <p>Right click build.xml and choose run as "Ant Build".</p>
+  <p>
+      before you do this, make sure the followings is correct in you build.xml
+      <ol>
+      <li>the <test name="tn"> "tn"</test> is the testing class you want to run</li>
+      <li>"pathelement location=" and "classpath= " point to the location on you local computer which contain a file called junit3.8.2.jar</li>
+      </ol>
+  </p>
 		
       <h4>How To Release A New Version</h4>
 
