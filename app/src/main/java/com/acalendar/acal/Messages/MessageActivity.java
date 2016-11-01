@@ -6,7 +6,7 @@ import android.app.Activity;
  *
  * Class that manages event messages.
  *
- * @author ZhengyangGao 
+ * @author ZhengyangGao
  * 11/1/16
  *
  * */
