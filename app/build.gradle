@@ -31,3 +31,13 @@ dependencies {
     compile 'com.android.support:design:25.0.0'
     testCompile 'junit:junit:4.12'
 }
+
+sourceSets {
+
+    test {
+        java {
+            srcDirs = ["app/src/test/java/com/acalendar/acal"]
+        }
+    }
+}
+
