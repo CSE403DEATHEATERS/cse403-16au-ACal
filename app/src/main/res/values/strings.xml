@@ -5,4 +5,16 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+
+    <!-- Strings related to login -->
+    <string name="login_login_button"> LOGIN </string>
+
+    <!-- String related to frontPage -->
+    <string name="login_open_button"> LOGIN </string>
+    <string name="signup_open_button"> SIGN UP </string>
+
+
+    <!-- String related to signup -->
+    <string name="signup_signup_button">SIGN UP</string>
 </resources>
