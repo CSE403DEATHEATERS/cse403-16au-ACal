@@ -13,6 +13,8 @@ public class MessageActivity extends Activity{
         
     }
 
+    public String methodForTestingMockitoSetup() {
+        return "This is a string.";
+    }
 
-    
 }
