@@ -50,6 +50,10 @@ public class Message {
     }
 
     public void setMessageCategory(String messageCategory) {
+        if (messageCategory == null) {
+            throw new IllegalArgumentException("messageCategory passed in should not be null.");
+        }
+
         this.messageCategory = messageCategory;
     }
 
@@ -66,6 +70,10 @@ public class Message {
     }
 
     public void setCreatedAt(Date createdAt) {
+        if (createdAt == null) {
+            throw new IllegalArgumentException("createdAt passed in should not be null.");
+        }
+        
         this.createdAt = createdAt;
     }
 
@@ -76,5 +84,5 @@ public class Message {
     public void setEventId(int eventId) {
         this.eventId = eventId;
     }
-    
+
 }
