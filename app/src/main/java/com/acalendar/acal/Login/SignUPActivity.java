@@ -11,15 +11,15 @@ import com.acalendar.acal.R;
 
 
 
-public class LoginActivity extends Activity {
+public class SignUPActivity extends Activity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
+        setContentView(R.layout.sign_up_page);
 
 
-        Button login = (Button) findViewById(R.id.login_login_button);
-        login.setOnClickListener(new View.OnClickListener() {
+        Button signup = (Button) findViewById(R.id.signup_signup_button);
+        signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
