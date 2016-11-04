@@ -14,7 +14,7 @@ public class TestDBManager {
 
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
-		BasicAWSCredentials b = new BasicAWSCredentials("AKIAIAR43PGC5IJIJK6Q", "PfvvhHBDRfI7AdTMw1wJzVL8ocinXf+tUjOla/TQ");
+		BasicAWSCredentials b = new BasicAWSCredentials("AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY");
 
 		AmazonDynamoDBClient client = new AmazonDynamoDBClient(b).withEndpoint("https://dynamodb.us-west-2.amazonaws.com");
 

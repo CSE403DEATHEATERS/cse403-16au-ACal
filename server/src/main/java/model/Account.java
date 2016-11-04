@@ -1,5 +1,15 @@
 package model;
 
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.dynamodbv2.document.PrimaryKey;
+import com.amazonaws.services.dynamodbv2.document.Table;
+import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
+import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
+import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,24 +37,33 @@ public class Account {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	public Account(String username, String password) {
-		this.username = username;
-		this.password = password;
-		// TODO: verify account password from database and assign following fields
-		this.userId = null;
-		this.email = null;
-		this.lastname = null;
-		this.firstname = null;
-		if (this.lastname == null && this.firstname == null) {
-			this.login = false;
-		} else {
-			this.login = true;
-		}
+
+	public Account() {
+        BasicAWSCredentials b = new BasicAWSCredentials("AKIAIAR43PGC5IJIJK6Q","PfvvhHBDRfI7AdTMw1wJzVL8ocinXf+tUjOla/TQ");
+        AmazonDynamoDBClient client = new AmazonDynamoDBClient(b);
+        DynamoDB dynamoDB = new DynamoDB(client);
+        Table table = dynamoDB.getTable("acalendar-mobilehub-1275254137-Account");
 	}
 
+	public Account(String username, String password) {
+        this();
+        this.username = username;
+        this.password = password;
+        // TODO: verify account password from database and assign following fields
+        this.userId = null;
+        this.email = null;
+        this.lastname = null;
+        this.firstname = null;
+        if (this.lastname == null && this.firstname == null) {
+            this.login = false;
+        } else {
+            this.login = true;
+        }
+    }
+
 	private Account(String username, String password, String email, String lastname, String firstname) {
-		this.userId = "000";
+		this();
+        this.userId = "000";
 		this.username = username;
 		this.password = password;
 		this.email = email;
