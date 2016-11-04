@@ -10,8 +10,9 @@ public class Message {
 
     /**
      * Id of the message
+     * (a UUID string)
      */
-    private int messageId;
+    private String messageId;
 
     /**
      * Category of the message
@@ -20,28 +21,31 @@ public class Message {
 
     /**
      * With which user is this message associated
+     * (a UUID string)
      */
-    private int createBy;
+    private String createdBy;
 
     /**
      * Time of creation of message
+     * Stored as a Long
      */
-    private Date createdAt;
+    private Long createdAt;
 
     /**
      * With which event is this message associated
+     * (a UUID string)
      */
-    private int eventId;
+    private String eventId;
 
     /////////////////////////////////////////////////////////////////////
     //////                  Getters and setters                     /////
     /////////////////////////////////////////////////////////////////////
 
-    public int getMessageId() {
+    public String getMessageId() {
         return this.messageId;
     }
 
-    public void setMessageId(int messageId) {
+    public void setMessageId(String messageId) {
         this.messageId = messageId;
     }
 
@@ -57,31 +61,31 @@ public class Message {
         this.messageCategory = messageCategory;
     }
 
-    public int getCreateBy() {
-        return this.createBy;
+    public String getCreatedBy() {
+        return this.createdBy;
     }
 
-    public void setCreateBy(int createBy) {
-        this.createBy = createBy;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
-    public Date getCreatedAt() {
-        return this.createdAt;
+    public Long getCreatedAt() {
+        return new Long(this.createdAt);
     }
 
     public void setCreatedAt(Date createdAt) {
         if (createdAt == null) {
             throw new IllegalArgumentException("createdAt passed in should not be null.");
         }
-        
-        this.createdAt = createdAt;
+
+        this.createdAt = new Long(createdAt.getTime());
     }
 
-    public int getEventId() {
+    public String getEventId() {
         return this.eventId;
     }
 
-    public void setEventId(int eventId) {
+    public void setEventId(String eventId) {
         this.eventId = eventId;
     }
 
