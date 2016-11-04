@@ -8,8 +8,9 @@ public class GetMessagesRequest {
 
     /**
      * The id of the event whose messages we want to retrieve
+     * (a UUID String)
      * */
-    private int eventId;
+    private String eventId;
 
     /**
      * Offset in the db; used to facilitate pagination
@@ -25,11 +26,11 @@ public class GetMessagesRequest {
     /////                getters and setters                   //////
     /////////////////////////////////////////////////////////////////
 
-    public int getEventId() {
+    public String getEventId() {
         return this.eventId;
     }
 
-    public void setEventId(int eventId) {
+    public void setEventId(String eventId) {
         this.eventId = eventId;
     }
 
