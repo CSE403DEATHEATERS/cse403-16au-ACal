@@ -1,4 +1,4 @@
-package com.acalendar.acal.Messages;
+package util.Messages;
 
 import java.util.ArrayList;
 import java.util.List;

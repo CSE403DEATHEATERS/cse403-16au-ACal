@@ -1,4 +1,4 @@
-package com.acalendar.acal.Messages;
+package util.Messages;
 
 public enum MessageCategory {
     NEW_TIME_PROPOSED,

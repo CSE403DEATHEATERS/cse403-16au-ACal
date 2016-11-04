@@ -1,4 +1,6 @@
-package com.acalendar.acal.Messages;
+package util.Messages;
+
+import util.Messages.MessageCategory;
 
 /**
  * Request object used to create a message

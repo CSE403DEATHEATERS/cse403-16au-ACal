@@ -1,4 +1,4 @@
-package com.acalendar.acal.Messages;
+package util.Messages;
 
 /**
  * Reqeust object used when retrieving objects from db
