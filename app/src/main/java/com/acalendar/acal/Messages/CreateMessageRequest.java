@@ -13,8 +13,9 @@ public class CreateMessageRequest {
 
     /**
      * The id of the event that is associated with this message.
+     * (a UUID string)
      * */
-    private int eventId;
+    private String eventId;
 
     /////////////////////////////////////////////////////////////////////
     //////                  Getters and setters                     /////
@@ -43,7 +44,7 @@ public class CreateMessageRequest {
      *
      * @return event id
      * */
-    public int getEventId() {
+    public String getEventId() {
         return this.eventId;
     }
 
@@ -52,7 +53,7 @@ public class CreateMessageRequest {
      *
      * @param eventId
      * */
-    public void setEventId(int eventId) {
+    public void setEventId(String eventId) {
         this.eventId = eventId;
     }
 

@@ -8,8 +8,9 @@ public class CreateMessageResponse {
 
     /**
      * The id the message that was just created.
+     * (a UUID string)
      * */
-    private int messageId;
+    private String messageId;
 
     /////////////////////////////////////////////////////////////////////
     //////                  Getters and setters                     /////
@@ -20,7 +21,7 @@ public class CreateMessageResponse {
      *
      * @return the id of the message created
      * */
-    public int getMessageId() {
+    public String getMessageId() {
         return this.messageId;
     }
 
@@ -29,7 +30,7 @@ public class CreateMessageResponse {
      *
      * @param messageId
      * */
-    public void setMessageId(int messageId) {
+    public void setMessageId(String messageId) {
         this.messageId = messageId;
     }
 
