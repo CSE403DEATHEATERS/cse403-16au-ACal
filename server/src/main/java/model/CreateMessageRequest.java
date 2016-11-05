@@ -1,4 +1,4 @@
-package com.acalendar.acal.Messages;
+package model;
 
 /**
  * Request object used to create a message

@@ -1,4 +1,5 @@
-package com.acalendar.acal.Messages;
+package model;
+
 
 import java.util.Date;
 
@@ -50,15 +51,15 @@ public class Message {
     }
 
     public String getMessageCategory() {
-        return this.messageCategory;
+        return this.messageCategory.toString();
     }
 
-    public void setMessageCategory(String messageCategory) {
+    public void setMessageCategory(MessageCategory messageCategory) {
         if (messageCategory == null) {
             throw new IllegalArgumentException("messageCategory passed in should not be null.");
         }
 
-        this.messageCategory = messageCategory;
+        this.messageCategory = messageCategory.toString();
     }
 
     public String getCreatedBy() {
@@ -90,3 +91,4 @@ public class Message {
     }
 
 }
+
