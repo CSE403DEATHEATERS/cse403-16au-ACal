@@ -2,6 +2,7 @@ package util.Messages;
 
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import model.MessageCategory;
 
 @DynamoDBTable(tableName = "message")
 public class MessageTableClass {

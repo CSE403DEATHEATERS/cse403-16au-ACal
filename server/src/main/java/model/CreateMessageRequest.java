@@ -1,6 +1,4 @@
-package util.Messages;
-
-import util.Messages.MessageCategory;
+package model;
 
 /**
  * Request object used to create a message

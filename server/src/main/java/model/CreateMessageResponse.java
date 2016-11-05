@@ -1,4 +1,4 @@
-package util.Messages;
+package model;
 
 /**
  * Response object used when creatign a message
