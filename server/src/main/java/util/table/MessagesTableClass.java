@@ -41,7 +41,7 @@ public class MessagesTableClass {
     private String eventId;
 
     /////////////////////////////////////////////////////////////////
-    /////                getters and setters                   //////
+    /////                Getters and setters                   //////
     /////////////////////////////////////////////////////////////////
 
     public String getMessageCategory() {
