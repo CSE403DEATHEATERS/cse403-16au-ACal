@@ -1,4 +1,4 @@
-package util.Messages;
+package util.table;
 
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
