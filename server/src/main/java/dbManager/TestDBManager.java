@@ -16,7 +16,7 @@ public class TestDBManager {
 		// TODO Auto-generated method stub
 		BasicAWSCredentials b = new BasicAWSCredentials("AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY");
 
-		AmazonDynamoDBClient client = new AmazonDynamoDBClient(b).withEndpoint("https://dynamodb.us-west-2.amazonaws.com");
+		AmazonDynamoDBClient client = new AmazonDynamoDBClient().withEndpoint("https://dynamodb.us-west-2.amazonaws.com");
 
 		DynamoDB dynamoDB = new DynamoDB(client);
 
