@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Account {
+    Table table;
 	String userId;
 	String username;
 	String password;
@@ -38,16 +39,22 @@ public class Account {
 		this.password = password;
 	}
 
+	public static void main(String[] args) {
+        // test
+        new Account("", "");
+    }
+
 	public Account() {
-        BasicAWSCredentials b = new BasicAWSCredentials("AKIAIAR43PGC5IJIJK6Q","PfvvhHBDRfI7AdTMw1wJzVL8ocinXf+tUjOla/TQ");
-        AmazonDynamoDBClient client = new AmazonDynamoDBClient(b);
+        AmazonDynamoDBClient client = new AmazonDynamoDBClient();
         DynamoDB dynamoDB = new DynamoDB(client);
-        Table table = dynamoDB.getTable("acalendar-mobilehub-1275254137-Account");
+        table = dynamoDB.getTable("acalendar-mobilehub-1275254137-Account");
 	}
 
 	public Account(String username, String password) {
         this();
-        this.username = username;
+        GetItemSpec testGet = new GetItemSpec().withPrimaryKey("userId", "123");
+        Item res = table.getItem(testGet);
+        this.username = res.getString("username");
         this.password = password;
         // TODO: verify account password from database and assign following fields
         this.userId = null;
