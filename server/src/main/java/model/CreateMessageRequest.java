@@ -17,6 +17,11 @@ public class CreateMessageRequest {
      * */
     private String eventId;
 
+    /**
+     * The id of the user that created this message
+     */
+    private String userId;
+
     /////////////////////////////////////////////////////////////////////
     //////                  Getters and setters                     /////
     /////////////////////////////////////////////////////////////////////
@@ -57,6 +62,14 @@ public class CreateMessageRequest {
         this.eventId = eventId;
     }
 
+    public String getUserId() {
+        return this.userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+    
 }
 
 
