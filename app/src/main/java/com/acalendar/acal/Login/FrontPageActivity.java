@@ -19,6 +19,25 @@ public class FrontPageActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.front_page);
 
+        buttonSetUp();
+
+
+        Button openSingUp = (Button) findViewById(R.id.openNewSignUp);
+        openSingUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(FrontPageActivity.this, SignUPActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void buttonSetUp() {
+        activatedLogin();
+        activatedSignUp();
+    }
+
+    private void activatedLogin() {
         Button openNewLogin = (Button) findViewById(R.id.openNewLogin);
         openNewLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -28,7 +47,9 @@ public class FrontPageActivity extends Activity {
                 finish();
             }
         });
+    }
 
+    private void activatedSignUp() {
         Button openSingUp = (Button) findViewById(R.id.openNewSignUp);
         openSingUp.setOnClickListener(new View.OnClickListener() {
             @Override
