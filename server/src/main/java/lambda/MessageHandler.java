@@ -30,18 +30,19 @@ public class MessageHandler {
 
         PutItemSpec putItemSpec = new PutItemSpec();
         Item item = new Item();
-        item.with("id", UUID.randomUUID().toString());
+        UUID randomUUID = UUID.randomUUID();
+        item.with("id", randomUUID.toString());
         Date currTime = new Date();
         item.with("createdAt", currTime.getTime());
-
-
-        item.with("createdBy", "a user id");
-        item.with("eventId", "an event id");
-        item.with("messageCategory", "a category");
+        item.with("createdBy", request.getUserId());
+        item.with("eventId", request.getEventId());
+        item.with("messageCategory", request.getMessageCategory());
         putItemSpec.withItem(item);
         table.putItem(putItemSpec);
 
-        return null;
+        CreateMessageResponse response = new CreateMessageResponse();
+        response.setMessageId(randomUUID.toString());
+        return response;
     }
 
     public GetMessagesResponse getMessages(GetMessagesRequest request, Context context) {
