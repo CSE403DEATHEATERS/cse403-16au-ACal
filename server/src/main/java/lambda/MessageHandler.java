@@ -11,10 +11,7 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.PutItemRequest;
 import com.amazonaws.services.lambda.runtime.Context;
 
-import model.CreateMessageRequest;
-import model.CreateMessageResponse;
-import model.GetMessagesRequest;
-import model.GetMessagesResponse;
+import model.*;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -26,9 +23,10 @@ public class MessageHandler {
     public CreateMessageResponse createMessage(CreateMessageRequest request, Context context) {
         AmazonDynamoDBClient client = new AmazonDynamoDBClient().withEndpoint("https://dynamodb.us-west-2.amazonaws.com");
         DynamoDB dynamoDB = new DynamoDB(client);
-        Table table = dynamoDB.getTable("acalendar-mobilehub-1275254137-messages");
+        Table messagesTable = dynamoDB.getTable("acalendar-mobilehub-1275254137-messages");
+        Table messageAttributesTable = dynamoDB.getTable("acalendar-mobilehub-1275254137-message_attributes");
 
-        PutItemSpec putItemSpec = new PutItemSpec();
+        PutItemSpec messagesTableputItemSpec = new PutItemSpec();
         Item item = new Item();
         UUID randomUUID = UUID.randomUUID();
         item.with("id", randomUUID.toString());
@@ -37,8 +35,16 @@ public class MessageHandler {
         item.with("createdBy", request.getUserId());
         item.with("eventId", request.getEventId());
         item.with("messageCategory", request.getMessageCategory());
-        putItemSpec.withItem(item);
-        table.putItem(putItemSpec);
+        messagesTableputItemSpec.withItem(item);
+        messagesTable.putItem(messagesTableputItemSpec);
+
+        PutItemSpec messageAttributesTableputItemSpec = new PutItemSpec();
+        Item item2 = new Item();
+        item2.with("messageId", randomUUID.toString());
+        item2.with("attributeType", MessageAttributeType.MESSAGE_CONTENT.toString());
+        item2.with("attributeValue", request.getMessageContent());
+        messageAttributesTableputItemSpec.withItem(item2);
+        messageAttributesTable.putItem(messageAttributesTableputItemSpec);
 
         CreateMessageResponse response = new CreateMessageResponse();
         response.setMessageId(randomUUID.toString());

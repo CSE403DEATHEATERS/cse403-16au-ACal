@@ -22,6 +22,11 @@ public class CreateMessageRequest {
      */
     private String userId;
 
+    /**
+     * The content of the message
+     */
+    private String messageContent;
+
     /////////////////////////////////////////////////////////////////////
     //////                  Getters and setters                     /////
     /////////////////////////////////////////////////////////////////////
@@ -68,6 +73,14 @@ public class CreateMessageRequest {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getMessageContent() {
+        return this.messageContent;
+    }
+
+    public void setMessageContent(String messageContent) {
+        this.messageContent = messageContent;
     }
 
 }
