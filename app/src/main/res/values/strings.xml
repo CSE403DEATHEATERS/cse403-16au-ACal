@@ -3,12 +3,17 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_friends">Friends</string>
 
     <string name="action_settings">Settings</string>
+
+    <string name="drawer_layout">SCREEN </string>
 
 
     <!-- Strings related to login -->
     <string name="login_login_button"> LOGIN </string>
+    <string name="login_back_button">BACK</string>
+    <string name="login_reset_button">RESET_PASSWORD</string>
 
     <!-- String related to frontPage -->
     <string name="login_open_button"> LOGIN </string>
@@ -17,4 +22,11 @@
 
     <!-- String related to signup -->
     <string name="signup_signup_button">SIGN UP</string>
+    <string name="signup_back_button">BACK</string>
+    <string name="signup_verify_button">VERIFY</string>
+
+    <!-- String related to friend -->
+    <string name="friend_list"> MY FRIENDS</string>
+
+    <string name="fragment_container"></string>
 </resources>

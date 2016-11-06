@@ -17,7 +17,35 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
+        buttonSetUP();
+    }
 
+    private void buttonSetUP() {
+        activatedLogin();
+        activatedReset();
+        activatedBack();
+    }
+
+    private void activatedBack() {
+        Button back = (Button) findViewById(R.id.login_back_button);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+    }
+
+    private void activatedReset() {
+        Button reset = (Button) findViewById(R.id.login_reset_button);
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
+    }
+
+    private void activatedLogin() {
         Button login = (Button) findViewById(R.id.login_login_button);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
