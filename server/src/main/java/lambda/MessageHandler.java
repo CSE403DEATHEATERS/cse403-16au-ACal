@@ -16,6 +16,7 @@ import model.CreateMessageResponse;
 import model.GetMessagesRequest;
 import model.GetMessagesResponse;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -23,7 +24,22 @@ import java.util.UUID;
 public class MessageHandler {
 
     public CreateMessageResponse createMessage(CreateMessageRequest request, Context context) {
+        AmazonDynamoDBClient client = new AmazonDynamoDBClient().withEndpoint("https://dynamodb.us-west-2.amazonaws.com");
+        DynamoDB dynamoDB = new DynamoDB(client);
+        Table table = dynamoDB.getTable("acalendar-mobilehub-1275254137-messages");
 
+        PutItemSpec putItemSpec = new PutItemSpec();
+        Item item = new Item();
+        item.with("id", UUID.randomUUID().toString());
+        Date currTime = new Date();
+        item.with("createdAt", currTime.getTime());
+
+
+        item.with("createdBy", "a user id");
+        item.with("eventId", "an event id");
+        item.with("messageCategory", "a category");
+        putItemSpec.withItem(item);
+        table.putItem(putItemSpec);
 
         return null;
     }
@@ -40,22 +56,7 @@ public class MessageHandler {
      * @param args
      */
     public static void main(String[] args) {
-        BasicAWSCredentials b = new BasicAWSCredentials("AKIAJUJRA7EPIJNW4QNQ", "F90UEQ3dj0KYTOBqfSJqm/pi8xdHrG0rQe5rkAmM");
-        AmazonDynamoDBClient client = new AmazonDynamoDBClient(b).withEndpoint("https://dynamodb.us-west-2.amazonaws.com");
-        DynamoDB dynamoDB = new DynamoDB(client);
-        Table table = dynamoDB.getTable("acalendar-mobilehub-1275254137-messages");
 
-        PutItemSpec putItemSpec = new PutItemSpec();
-        Item item = new Item();
-        item.with("id", UUID.randomUUID().toString());
-        item.with("createdAt", 333);
-        item.with("createBy", "a user id");
-        item.with("eventId", "an event id");
-        item.with("messageCategory", "a category");
-        putItemSpec.withItem(item);
-        table.putItem(putItemSpec);
-
-        System.out.println("Got to here???");
     }
 
 }

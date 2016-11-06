@@ -69,7 +69,7 @@ public class CreateMessageRequest {
     public void setUserId(String userId) {
         this.userId = userId;
     }
-    
+
 }
 
 
