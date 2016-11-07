@@ -12,6 +12,10 @@ import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 
 public class Account {
+    public static final AmazonDynamoDBClient CLIENT = new AmazonDynamoDBClient().withEndpoint("https://dynamodb.us-west-2.amazonaws.com");
+    public static final DynamoDB DYNAMO_DB = new DynamoDB(CLIENT);
+    public static final String TABLE_NAME = "acalendar-mobilehub-1275254137-Account";
+    public static final Table TABLE = DYNAMO_DB.getTable(TABLE_NAME);
 	String userId;
 	String username;
 	String password;
@@ -20,55 +24,44 @@ public class Account {
 	String firstname;
 	boolean login;
 
-	public String getUsername() {
-		return this.username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return this.password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public Account(String username, String password) {
 		this.username = username;
 		this.password = password;
 		// TODO: verify account password from database and assign following fields
-        AmazonDynamoDBClient client = new AmazonDynamoDBClient().withEndpoint("https://dynamodb.us-west-2.amazonaws.com");
-        DynamoDB dynamoDB = new DynamoDB(client);
-        Table table = dynamoDB.getTable("acalendar-mobilehub-1275254137-Account");
-        GetItemSpec testGet = new GetItemSpec().withPrimaryKey("userId", "123");
-        Item res = table.getItem(testGet);
+        GetItemSpec testGet = new GetItemSpec().withPrimaryKey("userName", this.username);
+        Item res = TABLE.getItem(testGet);
 		this.userId = res.getString("userId");
         System.out.println(this.userId);
         System.out.println(res.toString());
-		this.email = null;
-		this.lastname = null;
-		this.firstname = null;
-		if (this.lastname == null && this.firstname == null) {
-			this.login = false;
-		} else {
+		this.email = res.getString("email");
+		this.lastname = res.getString("lastname");
+		this.firstname = res.getString("firstname");
+		if (this.password.equals(res.getString("password"))) {
 			this.login = true;
+		} else {
+			this.login = false;
 		}
 	}
 
 	private Account(String username, String password, String email, String lastname, String firstname) {
+        // only use for new account sign up
+        // TODO: autogenerate userId
 		this.userId = "000";
 		this.username = username;
 		this.password = password;
 		this.email = email;
 		this.lastname = lastname;
 		this.firstname = firstname;
+        // TODO: check unique email and username, then decide login and write data to db
         this.login = true;
 	}
 
-	public Map<String, String> getInfo() {
+    /**
+     * Get information about the account
+     *
+     * @return Map<String, String> stores account info
+     */
+	private Map<String, String> getInfo() {
 		Map<String, String> info = new HashMap<String, String>();
 		info.put("userId", this.userId);
 		info.put("username", this.username);
