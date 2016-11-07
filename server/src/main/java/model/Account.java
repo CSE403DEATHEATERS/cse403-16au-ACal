@@ -1,6 +1,7 @@
 package model;
 
-import com.amazonaws.auth.BasicAWSCredentials;
+import java.util.HashMap;
+import java.util.Map;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
@@ -10,11 +11,7 @@ import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Account {
-    Table table;
 	String userId;
 	String username;
 	String password;
@@ -22,55 +19,47 @@ public class Account {
 	String lastname;
 	String firstname;
 	boolean login;
-	
+
 	public String getUsername() {
 		return this.username;
 	}
-	
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
+
 	public String getPassword() {
 		return this.password;
 	}
-	
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	public static void main(String[] args) {
-        // test
-        new Account("", "");
-    }
-
-	public Account() {
-        AmazonDynamoDBClient client = new AmazonDynamoDBClient();
-        DynamoDB dynamoDB = new DynamoDB(client);
-        table = dynamoDB.getTable("acalendar-mobilehub-1275254137-Account");
-	}
-
 	public Account(String username, String password) {
-        this();
+		this.username = username;
+		this.password = password;
+		// TODO: verify account password from database and assign following fields
+        AmazonDynamoDBClient client = new AmazonDynamoDBClient().withEndpoint("https://dynamodb.us-west-2.amazonaws.com");
+        DynamoDB dynamoDB = new DynamoDB(client);
+        Table table = dynamoDB.getTable("acalendar-mobilehub-1275254137-Account");
         GetItemSpec testGet = new GetItemSpec().withPrimaryKey("userId", "123");
         Item res = table.getItem(testGet);
-        this.username = res.getString("username");
-        this.password = password;
-        // TODO: verify account password from database and assign following fields
-        this.userId = null;
-        this.email = null;
-        this.lastname = null;
-        this.firstname = null;
-        if (this.lastname == null && this.firstname == null) {
-            this.login = false;
-        } else {
-            this.login = true;
-        }
-    }
+		this.userId = res.getString("userId");
+        System.out.println(this.userId);
+        System.out.println(res.toString());
+		this.email = null;
+		this.lastname = null;
+		this.firstname = null;
+		if (this.lastname == null && this.firstname == null) {
+			this.login = false;
+		} else {
+			this.login = true;
+		}
+	}
 
 	private Account(String username, String password, String email, String lastname, String firstname) {
-		this();
-        this.userId = "000";
+		this.userId = "000";
 		this.username = username;
 		this.password = password;
 		this.email = email;
