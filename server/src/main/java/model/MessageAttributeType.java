@@ -5,5 +5,5 @@ package model;
  *
  */
 public enum MessageAttributeType {
-    MESSAGE_CONTENT,
+    MESSAGE_CONTENT
 }
