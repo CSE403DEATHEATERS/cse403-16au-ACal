@@ -96,7 +96,7 @@ public class MessageDBHelper {
             // For each messageId, retrieve the corresponding records
             // from message_attributes table.
             PrimaryKey primaryKey = new PrimaryKey();
-            primaryKey.addComponent("messageId", "10");
+            primaryKey.addComponent("messageId", messageId);
             primaryKey.addComponent("attributeType", MessageAttributeType.MESSAGE_CONTENT.toString());
             GetItemSpec getItemSpec = new GetItemSpec().withPrimaryKey(primaryKey);
             Item messageAttributesRow = messageAttributesTable.getItem(getItemSpec);
