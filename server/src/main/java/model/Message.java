@@ -38,6 +38,11 @@ public class Message {
      */
     private String eventId;
 
+    /**
+     * Content of the message
+     */
+    private String messageContent;
+
     /////////////////////////////////////////////////////////////////////
     //////                  Getters and setters                     /////
     /////////////////////////////////////////////////////////////////////
@@ -88,6 +93,14 @@ public class Message {
 
     public void setEventId(String eventId) {
         this.eventId = eventId;
+    }
+
+    public String getMessageContent() {
+        return this.messageContent;
+    }
+
+    public void setMessageContent(String messageContent) {
+        this.messageContent = messageContent;
     }
 
 }
