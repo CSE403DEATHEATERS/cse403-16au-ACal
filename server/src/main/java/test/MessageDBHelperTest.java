@@ -4,7 +4,6 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.spec.PutItemSpec;
-import com.amazonaws.services.lambda.runtime.Context;
 import model.CreateMessageRequest;
 import model.GetMessagesRequest;
 import model.MessageCategory;
@@ -13,14 +12,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.UUID;
-
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * Test class for MessageDBHelper

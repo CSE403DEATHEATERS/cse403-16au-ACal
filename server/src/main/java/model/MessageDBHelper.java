@@ -1,6 +1,5 @@
 package model;
 
-import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.document.*;
 import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
@@ -8,7 +7,6 @@ import com.amazonaws.services.dynamodbv2.document.spec.PutItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
-import com.amazonaws.services.lambda.runtime.Context;
 
 import java.math.BigDecimal;
 import java.util.*;
