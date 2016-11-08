@@ -26,10 +26,9 @@ public class MessageDBHelper {
      * Create a message and store it in our db
      *
      * @param request the request obejct used to construct the new record(s) in table(s)
-     * @param context an Android specific param
      * @return a CreateMessageResponse containing the id of the record in the db
      */
-    public CreateMessageResponse createMessage(CreateMessageRequest request, Context context) {
+    public CreateMessageResponse createMessage(CreateMessageRequest request) {
         validateCreateMessageRequest(request);
 
         AmazonDynamoDBClient client = new AmazonDynamoDBClient().withEndpoint(DYNAMODB_ENDPOINT);
@@ -45,7 +44,7 @@ public class MessageDBHelper {
         item.with("createdAt", currTime.getTime());
         item.with("createdBy", request.getUserId());
         item.with("eventId", request.getEventId());
-        item.with("messageCategory", request.getMessageCategory());
+        item.with("messageCategory", request.getMessageCategory().toString());
         messagesTableputItemSpec.withItem(item);
         messagesTable.putItem(messagesTableputItemSpec);
 
@@ -66,11 +65,10 @@ public class MessageDBHelper {
      * Retrieve messages associated with a specific event from db
      *
      * @param request an request object containing criteria used to retrieve records from db
-     * @param context an Android specific param
      * @return a GetMessagesResponse containing a list of Messages matching the criteria
      *         specified by the request.
      */
-    public GetMessagesResponse getMessages(GetMessagesRequest request, Context context) {
+    public GetMessagesResponse getMessages(GetMessagesRequest request) {
         validateGetMessagesRequest(request);
 
         AmazonDynamoDBClient client = new AmazonDynamoDBClient().withEndpoint(DYNAMODB_ENDPOINT);

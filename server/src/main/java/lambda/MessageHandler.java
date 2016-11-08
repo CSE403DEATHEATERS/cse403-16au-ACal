@@ -20,14 +20,13 @@ public class MessageHandler {
      * Create a message and store it in our db
      *
      * @param request the request obejct used to construct the new record(s) in table(s)
-     * @param context an Android specific param
      * @return a CreateMessageResponse containing the id of the record in the db
      */
-    public CreateMessageResponse createMessage(CreateMessageRequest request, Context context) {
+    public CreateMessageResponse createMessage(CreateMessageRequest request) {
         validateCreateMessageRequest(request);
 
         MessageDBHelper helper = new MessageDBHelper();
-        CreateMessageResponse response = helper.createMessage(request, context);
+        CreateMessageResponse response = helper.createMessage(request);
         return response;
     }
 
@@ -35,15 +34,14 @@ public class MessageHandler {
      * Retrieve messages associated with a specific event from db
      *
      * @param request an request object containing criteria used to retrieve records from db
-     * @param context an Android specific param
      * @return a GetMessagesResponse containing a list of Messages matching the criteria
      *         specified by the request.
      */
-    public GetMessagesResponse getMessages(GetMessagesRequest request, Context context) {
+    public GetMessagesResponse getMessages(GetMessagesRequest request) {
         validateGetMessagesRequest(request);
 
         MessageDBHelper helper = new MessageDBHelper();
-        GetMessagesResponse response = helper.getMessages(request, context);
+        GetMessagesResponse response = helper.getMessages(request);
         return response;
     }
 
