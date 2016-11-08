@@ -6,6 +6,7 @@ import model.Account;
 import java.util.*;
 
 public class AccountHandler {
+    /*
 	public static void main(String[] args) {
 		Map<String, String> test = new HashMap<String, String>();
 		test.put("username", "rettmoo");
@@ -17,6 +18,7 @@ public class AccountHandler {
 		new AccountHandler().signup(test, null);
 
 	}
+	*/
 	
 	public Map<String, String> login(Map<String, String> input, Context context) {
 		System.out.println("(login) " + input.get("username") + ": " + input.get("password"));
