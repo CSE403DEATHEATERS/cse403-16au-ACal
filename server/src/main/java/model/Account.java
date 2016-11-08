@@ -31,17 +31,21 @@ public class Account {
         ScanSpec scan = new ScanSpec().withFilterExpression("username=:v_username")
 										.withValueMap(new ValueMap().withString(":v_username", this.username));
         Iterator<Item> items= TABLE.scan(scan).iterator();
-		Item account = items.next();
         if (items.hasNext()) {
-            this.login = false;
-			throw new IllegalArgumentException("Database corrupted. Duplicate username.");
-        }
-		if (this.password.equals(account.getString("password"))) {
-			this.login = true;
-            this.userId = account.getString("userId");
-            this.email = account.getString("email");
-            this.lastname = account.getString("lastname");
-            this.firstname = account.getString("firstname");
+		    Item account = items.next();
+            if (items.hasNext()) {
+                this.login = false;
+                throw new IllegalArgumentException("Database corrupted. Duplicate username.");
+            }
+            if (this.password.equals(account.getString("password"))) {
+                this.login = true;
+                this.userId = account.getString("userId");
+                this.email = account.getString("email");
+                this.lastname = account.getString("lastname");
+                this.firstname = account.getString("firstname");
+            } else {
+                this.login = false;
+            }
 		} else {
 			this.login = false;
 		}
