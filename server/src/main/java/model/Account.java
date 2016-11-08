@@ -1,43 +1,47 @@
 package model;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.UUID;
+
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
-import com.amazonaws.services.dynamodbv2.document.DynamoDB;
-import com.amazonaws.services.dynamodbv2.document.Item;
-import com.amazonaws.services.dynamodbv2.document.PrimaryKey;
-import com.amazonaws.services.dynamodbv2.document.Table;
-import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
-import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
+import com.amazonaws.services.dynamodbv2.document.*;
+import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
+import com.amazonaws.services.dynamodbv2.document.spec.ScanSpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
+import com.amazonaws.services.dynamodbv2.model.ConditionalOperator;
+
+import static dbManager.DynamoDBManager.dynamoDB;
 
 public class Account {
-    public static final AmazonDynamoDBClient CLIENT = new AmazonDynamoDBClient().withEndpoint("https://dynamodb.us-west-2.amazonaws.com");
-    public static final DynamoDB DYNAMO_DB = new DynamoDB(CLIENT);
     public static final String TABLE_NAME = "acalendar-mobilehub-1275254137-Account";
-    public static final Table TABLE = DYNAMO_DB.getTable(TABLE_NAME);
-	String userId;
-	String username;
-	String password;
-	String email;
-	String lastname;
-	String firstname;
-	boolean login;
+    public static final Table TABLE = dynamoDB.getTable(TABLE_NAME);
+	private String userId;
+	private String username;
+	private String password;
+	private String email;
+	private String lastname;
+	private String firstname;
+	private boolean login;
 
 	public Account(String username, String password) {
 		this.username = username;
 		this.password = password;
-		// TODO: verify account password from database and assign following fields
-        GetItemSpec testGet = new GetItemSpec().withPrimaryKey("userName", this.username);
-        Item res = TABLE.getItem(testGet);
-		this.userId = res.getString("userId");
-        System.out.println(this.userId);
-        System.out.println(res.toString());
-		this.email = res.getString("email");
-		this.lastname = res.getString("lastname");
-		this.firstname = res.getString("firstname");
-		if (this.password.equals(res.getString("password"))) {
+        ScanSpec scan = new ScanSpec().withFilterExpression("username=:v_username")
+										.withValueMap(new ValueMap().withString(":v_username", this.username));
+        Iterator<Item> items= TABLE.scan(scan).iterator();
+		Item account = items.next();
+        if (items.hasNext()) {
+            this.login = false;
+			throw new IllegalArgumentException("Database corrupted. Duplicate username.");
+        }
+		if (this.password.equals(account.getString("password"))) {
 			this.login = true;
+            this.userId = account.getString("userId");
+            this.email = account.getString("email");
+            this.lastname = account.getString("lastname");
+            this.firstname = account.getString("firstname");
 		} else {
 			this.login = false;
 		}
@@ -46,14 +50,30 @@ public class Account {
 	private Account(String username, String password, String email, String lastname, String firstname) {
         // only use for new account sign up
         // TODO: autogenerate userId
-		this.userId = "000";
-		this.username = username;
-		this.password = password;
-		this.email = email;
-		this.lastname = lastname;
-		this.firstname = firstname;
-        // TODO: check unique email and username, then decide login and write data to db
-        this.login = true;
+		ScanSpec scan = new ScanSpec().withFilterExpression("username=:v_username OR email=:v_email")
+				.withValueMap(new ValueMap().withString(":v_username", username)
+											.withString(":v_email", email));
+		if (TABLE.scan(scan).iterator().hasNext()) {
+			this.login = false;
+			System.out.println("Username or email is being used.");
+		} else {
+			this.userId = UUID.randomUUID().toString();
+			this.username = username;
+			this.password = password;
+			this.email = email;
+			this.lastname = lastname;
+			this.firstname = firstname;
+			// TODO: check unique email and username, then decide login and write data to db
+			this.login = true;
+			Item item = new Item()
+					.withPrimaryKey("userId", this.userId)
+					.withString("username", this.username)
+					.withString("password", this.password)
+					.withString("email", this.email)
+					.withString("firstname", this.firstname)
+					.withString("lastname", this.lastname);
+            TABLE.putItem(item);
+		}
 	}
 
     /**
@@ -65,6 +85,7 @@ public class Account {
 		Map<String, String> info = new HashMap<String, String>();
 		info.put("userId", this.userId);
 		info.put("username", this.username);
+        info.put("email", this.email);
 		info.put("lastname", this.lastname);
 		info.put("firstname", this.firstname);
         return info;
