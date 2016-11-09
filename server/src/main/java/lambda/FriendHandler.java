@@ -59,6 +59,7 @@ public class FriendHandler {
 
     /**
      * Send friend request
+     *
      * @param input userId_1, userId_2 or username or email as key in a Map<String, String>
      *              which userId_1 is the user who send the friend request,
      *                  userId_2 or username or email is the user who will receive the friend request
@@ -82,6 +83,7 @@ public class FriendHandler {
 
     /**
      * Reject friend request
+     *
      * @param input userId_1, userId_2 as key in a Map<String, String>
      *              which userId_1 is the user who received the friend request,
      *                  userId_2 is the user who will be rejected
@@ -102,6 +104,7 @@ public class FriendHandler {
 
     /**
      * Reject friend request
+     *
      * @param input userId_1, userId_2 as key in a Map<String, String>
      *              which userId_1 is the user who received the friend request,
      *                  userId_2 is the user who will be accepted

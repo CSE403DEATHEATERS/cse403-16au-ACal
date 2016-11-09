@@ -18,6 +18,12 @@ public class FriendManager {
     public static final String TABLE_NAME = "acalendar-mobilehub-1275254137-relationship";
     public static final Table TABLE = dynamoDB.getTable(TABLE_NAME);
 
+    /**
+     * Get friend list of a user by userId
+     *
+     * @param userId userId of the user
+     * @return list of account info which is the user's friend, empty list if no friend
+     */
     public List<Map<String, String>> getFriendList(String userId) {
         List<Map<String, String>> result = new ArrayList<Map<String, String>>();
         QuerySpec query = new QuerySpec().withHashKey("userId_1", userId);
@@ -25,7 +31,7 @@ public class FriendManager {
         Iterator<Item> itemIterator = items.iterator();
         if (!itemIterator.hasNext()) {
             System.out.println("no friends.");
-            return new ArrayList<Map<String, String>>();
+            return result;
         }
         BatchGetItemSpec batch = new BatchGetItemSpec();
         while (itemIterator.hasNext()) {
@@ -49,6 +55,7 @@ public class FriendManager {
 
     /**
      * send friend request from userId_1 to userId_2 or user with username or email
+     *
      * @param userId_1 userId of the request sender
      * @param userId_2 userId of the request receiver
      * @param username username of the request receiver
@@ -76,6 +83,7 @@ public class FriendManager {
 
     /**
      * accept or reject request from userId_2 to userId_1
+     *
      * @param userId_1 userId of the request receiver
      * @param userId_2 userId of the request sender
      * @param accept true when receiver accepts the request, or false when reject
