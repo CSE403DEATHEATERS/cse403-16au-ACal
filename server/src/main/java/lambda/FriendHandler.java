@@ -38,6 +38,13 @@ public class FriendHandler {
         fm = new FriendManager();
     }
 
+    /**
+     * Get friend list lambda
+     *
+     * @param input userId as key in a Map<String, String> indicating the user
+     * @param context
+     * @return a list of account info who is friend with the userId
+     */
     public List<Map<String, String>> getFriend(Map<String, String> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
@@ -51,8 +58,10 @@ public class FriendHandler {
     }
 
     /**
-     * send friend request
-     * @param input
+     * Send friend request
+     * @param input userId_1, userId_2 or username or email as key in a Map<String, String>
+     *              which userId_1 is the user who send the friend request,
+     *                  userId_2 or username or email is the user who will receive the friend request
      * @param context
      * @return true if request is sent, false if other user doesn't exist or already friends
      */
@@ -71,6 +80,14 @@ public class FriendHandler {
         return fm.sendFriendRequest(userId_1, userId_2, username, email);
     }
 
+    /**
+     * Reject friend request
+     * @param input userId_1, userId_2 as key in a Map<String, String>
+     *              which userId_1 is the user who received the friend request,
+     *                  userId_2 is the user who will be rejected
+     * @param context
+     * @return true if request is rejected, false if other user doesn't exist or no request between them
+     */
     public boolean rejectFriend(Map<String, String> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
@@ -83,6 +100,14 @@ public class FriendHandler {
         return fm.processFriendRequest(userId_1, userId_2, false);
     }
 
+    /**
+     * Reject friend request
+     * @param input userId_1, userId_2 as key in a Map<String, String>
+     *              which userId_1 is the user who received the friend request,
+     *                  userId_2 is the user who will be accepted
+     * @param context
+     * @return true if request is accepted, false if other user doesn't exist or no request between them
+     */
     public boolean acceptFriend(Map<String, String> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
