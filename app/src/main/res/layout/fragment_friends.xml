@@ -2,18 +2,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.acalendar.acal.FriendsFragment">
-
+    tools:context="com.acalendar.acal.FriendsFragment"
+    android:orientation="vertical"
+    android:weightSum="1">
 
     <TextView
-        android:text="to be draw out"
+        android:text=""
+        android:id="@+id/friends_add_input"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="140dp"
-        android:layout_marginStart="140dp"
-        android:layout_marginTop="174dp"
-        android:id="@+id/textView8" />
+        android:layout_height="wrap_content" />
+
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.39">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="67dp"
+                android:id="@+id/textView8" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:text="MyFriend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="49dp"
+                    android:id="@+id/textView14"
+                    android:textSize="30sp" />
+
+                <Button
+                    android:text="Add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/friends_add"
+                    android:layout_weight="0.33"
+                    android:layout_alignBaseline="@+id/textView14"
+                    android:layout_alignBottom="@+id/textView14"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+            </RelativeLayout>
+
+            <SearchView
+                android:queryHint="Search"
+                android:id="@+id/friend_search_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <ListView
+                android:id="@+id/friends_list"
+                android:layout_width="match_parent"
+                android:layout_height="394dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
 </RelativeLayout>
