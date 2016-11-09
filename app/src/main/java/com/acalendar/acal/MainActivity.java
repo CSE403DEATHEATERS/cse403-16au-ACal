@@ -14,7 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.acalendar.acal.SideMenu.PublicEventsPoolFragment;
+import com.acalendar.acal.SideMenu.PublicEventsPoolActivity;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -145,11 +145,19 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.fragment_container, fragment);
             fragmentTransaction.commit();
         } else if (id == R.id.nav_public_events_pool) {
-            PublicEventsPoolFragment fragment = new PublicEventsPoolFragment();
-            android.support.v4.app.FragmentTransaction fragmentTransaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
-            fragmentTransaction.commit();
+//            PublicEventsPoolFragment fragment = new PublicEventsPoolFragment();
+//            android.support.v4.app.FragmentTransaction fragmentTransaction =
+//                    getSupportFragmentManager().beginTransaction();
+//            fragmentTransaction.replace(R.id.fragment_container, fragment);
+//            fragmentTransaction.commit();
+
+//            // Initiate the one with GoogleMaps.
+//            Intent intent = new Intent(this, PublicEventsPoolMapsActivity.class);
+//            startActivity(intent);
+
+            // Initiate the one without GoogleMaps
+            Intent intent = new Intent(this, PublicEventsPoolActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
