@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.document.*;
+import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.spec.ScanSpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
@@ -24,6 +25,21 @@ public class Account {
 	private String lastname;
 	private String firstname;
 	private boolean login;
+
+    public Account(String userId) {
+        this.userId = userId;
+        GetItemSpec getItem = new GetItemSpec().withPrimaryKey("userId", userId);
+        Item item = TABLE.getItem(getItem);
+        if (item != null) {
+            this.username = item.getString("username");
+            this.email = item.getString("email");
+            this.lastname = item.getString("lastname");
+            this.firstname = item.getString("firstname");
+            this.login = true;
+        } else {
+            this.login = false;
+        }
+    }
 
 	public Account(String username, String password) {
 		this.username = username;
@@ -130,5 +146,25 @@ public class Account {
 		Account newAccount = new Account(username, password, email, lastname, firstname);
 		return newAccount.getInfo();
 	}
+
+	public static String getUserIdByUsernameOrEmail(String username, String email) {
+        ScanSpec scan = new ScanSpec().withFilterExpression("username=:v_username OR email=:v_email")
+                .withValueMap(new ValueMap().withString(":v_username", username)
+                        .withString(":v_email", email));
+        try {
+            Iterator<Item> items = TABLE.scan(scan).iterator();
+            if (items.hasNext()) {
+                return items.next().getString("userId");
+            } else {
+                return "";
+            }
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+	public static Map<String, String> getInfoByUserId(String userId) {
+        return new Account(userId).getInfo();
+    }
 
 }

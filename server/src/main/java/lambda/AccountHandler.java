@@ -7,19 +7,17 @@ import java.util.*;
 
 public class AccountHandler {
 
-	/*
 	public static void main(String[] args) {
 		Map<String, String> test = new HashMap<String, String>();
-		test.put("username", "rettmoo");
+		test.put("username", "myfriend");
 		test.put("password", "hehe");
-		test.put("email", "rettymoo@hotmail.");
+		test.put("email", "rettymoo@gmail.com");
 		test.put("firstname", "Ruoyu");
 		test.put("lastname", "Mo");
 		//System.out.println(test.get("heh"));
 		//new AccountHandler().signup(test, null);
 
 	}
-	*/
 
 	/**
 	 * Login lambda
