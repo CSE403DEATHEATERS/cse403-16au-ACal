@@ -30,25 +30,29 @@ public class Account {
 		this.password = password;
         ScanSpec scan = new ScanSpec().withFilterExpression("username=:v_username")
 										.withValueMap(new ValueMap().withString(":v_username", this.username));
-        Iterator<Item> items= TABLE.scan(scan).iterator();
-        if (items.hasNext()) {
-		    Item account = items.next();
+        try {
+            Iterator<Item> items = TABLE.scan(scan).iterator();
             if (items.hasNext()) {
-                this.login = false;
-                throw new IllegalArgumentException("Database corrupted. Duplicate username.");
-            }
-            if (this.password.equals(account.getString("password"))) {
-                this.login = true;
-                this.userId = account.getString("userId");
-                this.email = account.getString("email");
-                this.lastname = account.getString("lastname");
-                this.firstname = account.getString("firstname");
+                Item account = items.next();
+                if (items.hasNext()) {
+                    this.login = false;
+                    throw new IllegalArgumentException("Database corrupted. Duplicate username.");
+                }
+                if (this.password.equals(account.getString("password"))) {
+                    this.login = true;
+                    this.userId = account.getString("userId");
+                    this.email = account.getString("email");
+                    this.lastname = account.getString("lastname");
+                    this.firstname = account.getString("firstname");
+                } else {
+                    this.login = false;
+                }
             } else {
                 this.login = false;
             }
-		} else {
-			this.login = false;
-		}
+        } catch (Exception e) {
+            this.login = false;
+        }
 	}
 
 	private Account(String username, String password, String email, String lastname, String firstname) {
@@ -57,27 +61,31 @@ public class Account {
 		ScanSpec scan = new ScanSpec().withFilterExpression("username=:v_username OR email=:v_email")
 				.withValueMap(new ValueMap().withString(":v_username", username)
 											.withString(":v_email", email));
-		if (TABLE.scan(scan).iterator().hasNext()) {
-			this.login = false;
-			System.out.println("Username or email is being used.");
-		} else {
-			this.userId = UUID.randomUUID().toString();
-			this.username = username;
-			this.password = password;
-			this.email = email;
-			this.lastname = lastname;
-			this.firstname = firstname;
-			// TODO: check unique email and username, then decide login and write data to db
-			this.login = true;
-			Item item = new Item()
-					.withPrimaryKey("userId", this.userId)
-					.withString("username", this.username)
-					.withString("password", this.password)
-					.withString("email", this.email)
-					.withString("firstname", this.firstname)
-					.withString("lastname", this.lastname);
-            TABLE.putItem(item);
-		}
+        try {
+            if (TABLE.scan(scan).iterator().hasNext()) {
+                this.login = false;
+                System.out.println("Username or email is being used.");
+            } else {
+                this.userId = UUID.randomUUID().toString();
+                this.username = username;
+                this.password = password;
+                this.email = email;
+                this.lastname = lastname;
+                this.firstname = firstname;
+                // TODO: check unique email and username, then decide login and write data to db
+                this.login = true;
+                Item item = new Item()
+                        .withPrimaryKey("userId", this.userId)
+                        .withString("username", this.username)
+                        .withString("password", this.password)
+                        .withString("email", this.email)
+                        .withString("firstname", this.firstname)
+                        .withString("lastname", this.lastname);
+                TABLE.putItem(item);
+            }
+        } catch (Exception e) {
+            this.login = false;
+        }
 	}
 
     /**
