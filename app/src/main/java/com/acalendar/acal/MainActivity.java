@@ -13,6 +13,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import com.amazonaws.mobileconnectors.lambdainvoker.*;
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.regions.Regions;
 
 import com.acalendar.acal.SideMenu.PublicEventsPoolActivity;
 
