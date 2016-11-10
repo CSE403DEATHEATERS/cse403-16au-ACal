@@ -158,17 +158,12 @@
         <ol>
           <li>Configure email sending on mac: follow <a href="http://www.developerfiles.com/how-to-send-emails-from-localhost-mac-os-x-el-capitan/">this guide</a></li>
           <li><p>Add a cronjob though the terminal:</p>
-
-          <p><code>
-          crontab -e
-          </code></p></li>
+          <pre><code>crontab -e</code></pre>
           <li><p>This should open the editor, so add:</p>
 
-          <p><code style="display:block">
-          MAILTO=”your_email”<br>
-          */10 23 * * * &lt;path to ci.sh&gt; &lt;base_directory&gt; &lt;name_of_tmp_directory&gt; &lt;path_to_android_sdk&gt;
-          </code>
-          with one empty line at the end of the file.</p></li>
+          <pre><code>MAILTO=”your_email” <br /> */10 23 * * * &lt;path to ci.sh&gt; &lt;base_directory&gt; &lt;name_of_tmp_directory&gt; &lt;path_to_android_sdk&gt;</code></pre>
+
+          <p>with one empty line at the end of the file.</p></li>
           <li><p>Format of cronjob configuration file follow <a href="http://www.nncron.ru/help/EN/working/cron-format.htm">this guide</a></p></li>
         </ol>
 
@@ -187,12 +182,13 @@
 		<li>Android Studio displays the results of the unit test execution in the Run window.</li>
 		</ol>
 	<p>To run local unit tests in your Gradle project from the command-line, call the test task command.</p>
-		<p><code>./gradlew test</code></p>
+		<pre><code>./gradlew test</code></pre>
 	<p>If there are failing tests, the command will display links to HTML reports (one per build variant). You can find the generated HTML test result reports in the <path_to_your_project>/app/build/reports/tests/ directory, and the corresponding XML files in the <path_to_your_project>/app/build/test-results/ directory.</p>
 	<p>For more information on creating and conducting unit tests in Android Studio, follow <a href="http://developer.android.com/training/testing/start/index.html#run-local-tests">this link</a>.</p>
 	    
 	<h4>How To Run Unit Tests On The Server Side</h4>
-    <p>All unit tests on the server side will be run with the command <br /><code>mvn test</code></p>
+    <p>All unit tests on the server side will be run with the command <br />
+    <pre><code>mvn test</code></pre>
     <p>Note that the above command should be run in the <code>server</code> folder.</p>
 		
       <h4>How To Release A New Version</h4>
