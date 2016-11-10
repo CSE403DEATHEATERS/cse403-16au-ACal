@@ -19,17 +19,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select a filter:" />
-
-        <Button
-            android:id="@+id/publicEventsPoolFilterButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="false"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="0dp"
-            android:text="Filters..." />
+            android:text="Please select an event type:" />
+
+        <Spinner
+        android:id="@+id/publicEventsPoolEventTypeFilterSpinner"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="false"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="0dp"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown" />
     </LinearLayout>
 
     <LinearLayout
@@ -39,7 +41,50 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
-            android:text="List of public events:" />
+            android:text="Please select a location:" />
+
+        <Spinner
+            android:id="@+id/publicEventsPoolLocationFilterSpinner"
+            android:layout_width="160dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="false"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="60dp"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="120dp"
+            android:text="Public events available:" />
+    </LinearLayout>
+
+    <fragment
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:id="@+id/map"
+        android:layout_marginTop="150dp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/publicEventsPoolRedoSearchInThisArea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="false"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="470dp"
+            android:text="Redo Search In This Area" />
     </LinearLayout>
 
 </RelativeLayout>
