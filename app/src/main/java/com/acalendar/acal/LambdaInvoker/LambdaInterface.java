@@ -1,4 +1,5 @@
 package com.acalendar.acal.LambdaInvoker;
+import com.acalendar.acal.Login.LoginInput;
 import com.amazonaws.mobileconnectors.lambdainvoker.LambdaFunction;
 
 /*
@@ -10,12 +11,12 @@ public interface LambdaInterface {
      * Invoke lambda function "echo". The function name is the method name
      */
     @LambdaFunction
-    String echo(NameInfo nameInfo);
+    String login(LoginInput loginInput);
 
     /**
      * Invoke lambda function "echo". The functionName in the annotation
      * overrides the default which is the method name
      */
-    @LambdaFunction(functionName = "echo")
-    void noEcho(NameInfo nameInfo);
+    @LambdaFunction(functionName = "login")
+    void noEcho(LoginInput loginInput);
 }

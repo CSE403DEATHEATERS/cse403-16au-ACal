@@ -1,17 +1,28 @@
 package com.acalendar.acal.Login;
 
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.acalendar.acal.LambdaInvoker.LambdaInterface;
+import com.acalendar.acal.LambdaInvoker.NameInfo;
+import com.acalendar.acal.MainActivity;
 import com.acalendar.acal.R;
-
-
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.AWSCredentialsProviderChain;
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.lambdainvoker.LambdaFunctionException;
+import com.amazonaws.mobileconnectors.lambdainvoker.LambdaInvokerFactory;
+import com.amazonaws.regions.Regions;
 
 
 public class LoginActivity extends Activity {
+    public static final Regions REGION = Regions.US_WEST_2;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +61,38 @@ public class LoginActivity extends Activity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                LambdaInvokerFactory factory = invokeLogin();
+                final LambdaInterface lambdaInterface = factory.build(LambdaInterface.class);
+
+                LoginInput loginInput = new LoginInput("myfriend", "hehe");
+                new AsyncTask<LoginInput, Void, String>() {
+                    @Override
+                    protected String doInBackground(LoginInput... params) {
+                        // invoke "echo" method. In case it fails, it will throw a
+                        // LambdaFunctionException.
+                        try {
+                            System.out.println(lambdaInterface.login(params[0]));
+                            return lambdaInterface.login(params[0]);
+                        } catch (LambdaFunctionException lfe) {
+                            return null;
+                        }
+                    }
+                }.execute(loginInput);
                 finish();
             }
         });
     }
+
+    private LambdaInvokerFactory invokeLogin() {
+        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                this.getApplicationContext(),
+                "us-west-2_UU8IM4FSD",
+                REGION);
+        LambdaInvokerFactory factory = new LambdaInvokerFactory(
+                this.getApplicationContext(),
+                REGION,
+                credentialsProvider);
+        return factory;
+    }
+
 }
