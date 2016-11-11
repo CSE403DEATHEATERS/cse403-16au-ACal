@@ -2,16 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.acalendar.acal.FriendsFragment"
-    android:orientation="vertical"
-    android:weightSum="1">
+    tools:context="com.acalendar.acal.InviteFriendsFragment">
 
     <TextView
-        android:text=""
-        android:id="@+id/friends_add_input"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="" />
 
     <ScrollView
         android:layout_width="wrap_content"
@@ -33,14 +29,14 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:text="MyFriend"
+                    android:text="My Friends"
                     android:layout_width="wrap_content"
                     android:layout_height="49dp"
                     android:id="@+id/textView14"
                     android:textSize="30sp" />
 
                 <Button
-                    android:text="Add"
+                    android:text="Invite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/friends_add"
@@ -53,13 +49,13 @@
 
             <SearchView
                 android:queryHint="Search"
-                android:id="@+id/friend_search_view"
+                android:id="@+id/friend_search_view_inviting"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
             <ListView
-                android:id="@+id/friends_list"
+                android:id="@+id/friends_list_inviting"
                 android:layout_width="match_parent"
                 android:layout_height="394dp" />
 
