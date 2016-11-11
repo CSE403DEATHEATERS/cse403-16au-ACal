@@ -10,9 +10,9 @@
 /.idea
 
 /app/build/*
-!/app/build/outputs
+/app/build/outputs
 /app/build/outputs/*
-!/app/build/outputs/apk
+/app/build/outputs/apk
 
 /projectFilesBackup*
 /build
