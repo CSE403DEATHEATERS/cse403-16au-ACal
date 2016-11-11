@@ -144,7 +144,7 @@ public class Account {
 											 String firstname) {
 		// TODO: check information is unique, save account to database, assign
 		Account newAccount = new Account(username, password, email, lastname, firstname);
-		return newAccount.getInfo();
+		return newAccount.isLogin();
 	}
 
 	public static String getUserIdByUsernameOrEmail(String username, String email) {
