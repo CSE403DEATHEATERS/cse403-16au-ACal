@@ -4,9 +4,13 @@ package com.acalendar.acal.Login;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
+import android.widget.EditText;
 
 import com.acalendar.acal.InvokeAPISample;
 import com.acalendar.acal.MainActivity;
@@ -23,13 +27,21 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.HashMap;
 
-
 public class LoginActivity extends Activity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        AutoCompleteTextView usernameView = (AutoCompleteTextView) findViewById(R.id.login_username_input);
+        EditText passwordView = (EditText) findViewById(R.id.login_password_input);
+
+        String usernameInput = usernameView.getText().toString();
+        String passwordInput = passwordView.getText().toString();
+
+
+
 
         buttonSetUP();
     }
@@ -45,7 +57,7 @@ public class LoginActivity extends Activity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+               finish();
             }
         });
     }
@@ -55,6 +67,7 @@ public class LoginActivity extends Activity {
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
             }
         });
     }
@@ -66,6 +79,8 @@ public class LoginActivity extends Activity {
             public void onClick(View view) {
                 String apiResponse = InvokeAPISample.invokeAPI("GET", "/login", "", "?username=myfriend&password=hehe");
                 String fullname = getFullname(apiResponse);
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });
@@ -78,5 +93,6 @@ public class LoginActivity extends Activity {
         else
             return "";
     }
+
 
 }
