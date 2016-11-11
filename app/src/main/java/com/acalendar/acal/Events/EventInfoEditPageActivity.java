@@ -1,72 +1,113 @@
 package com.acalendar.acal.Events;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.DatePicker;
-import android.app.DatePickerDialog;
-import android.widget.EditText;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import android.widget.TimePicker;
 
 import com.acalendar.acal.R;
 
-import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 
 
 public class EventInfoEditPageActivity  extends Activity {
 
-    private Calendar javaCalendar;
-    private EditText dateEditText;
-    private Date datePicked;
+    private Calendar startCalendar;
+    private Button startTimeViewButton;
+    private TimePickerDialog stpDialog;
+
+    private Calendar endCalendar;
+    private Button endTimeViewButton;
+    private TimePickerDialog etpDialog;
+
+    private Button datePickerViewButton;
+    private DatePickerDialog dpDialog;
+
+    private SimpleDateFormat sdf;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_info_edit_page);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        startCalendar = Calendar.getInstance();
+        endCalendar = Calendar.getInstance();
+        sdf = new SimpleDateFormat("MM/dd/yy", Locale.US);
+        // get the widgets
+        datePickerViewButton = (Button) findViewById(R.id.datePickerButton);
+        startTimeViewButton = (Button) findViewById(R.id.startTimeViewButton);
+        endTimeViewButton = (Button) findViewById(R.id.endTimeViewButton);
+        if (false) {  // TODO: if previous page gives event info
+
+        } else {
+            datePickerViewButton.setText(sdf.format(startCalendar.getTime()));
+            startTimeViewButton.setText(startCalendar.get(Calendar.HOUR_OF_DAY)
+                    + " : " + startCalendar.get(Calendar.MINUTE));
+            endTimeViewButton.setText(startCalendar.get(Calendar.HOUR_OF_DAY)
+                    + " : " + startCalendar.get(Calendar.MINUTE));
+        }
         // set up date picker dialog
-        javaCalendar = Calendar.getInstance();
-        dateEditText = (EditText) findViewById(R.id.dateEditText);
-
-        final DatePickerDialog.OnDateSetListener datePickerListener =
-                new DatePickerDialog.OnDateSetListener() {
+        dpDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                javaCalendar.set(Calendar.YEAR, year);
-                javaCalendar.set(Calendar.MONTH, monthOfYear);
-                javaCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                datePicked = javaCalendar.getTime();
-                System.out.print(datePicked);
-                showDate();
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                startCalendar.set(Calendar.YEAR, year);
+                startCalendar.set(Calendar.MONTH, monthOfYear);
+                startCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                datePickerViewButton.setText(sdf.format(startCalendar.getTime())); // only prints out the date
             }
-        };
-        dateEditText.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        new DatePickerDialog(EventInfoEditPageActivity.this,
-                                datePickerListener,
-                                javaCalendar.get(Calendar.YEAR),
-                                javaCalendar.get(Calendar.MONTH),
-                                javaCalendar.get(Calendar.DAY_OF_MONTH)
-                                ).show();
-                    }
-                }
-        );
+        }, startCalendar.get(Calendar.YEAR),
+                startCalendar.get(Calendar.MONTH), startCalendar.get(Calendar.DAY_OF_MONTH));
+        datePickerViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dpDialog.show();
+            }
+        });
 
-        // TODO: if any get and display bundle data from previous activity
+        // set up start time picker dialogs
+        stpDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                startCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                startCalendar.set(Calendar.MINUTE, minute);
+                startTimeViewButton.setText(String.valueOf(hourOfDay) + ":" + String.valueOf(minute));
+            }
+        }, startCalendar.get(Calendar.HOUR_OF_DAY), startCalendar.get(Calendar.MINUTE), false);
+        startTimeViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stpDialog.show();
+            }
+        });
+        endCalendar = (Calendar) startCalendar.clone();
+        // set up start time picker dialogs
+        etpDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                endCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                endCalendar.set(Calendar.MINUTE, minute);
+                endTimeViewButton.setText(String.valueOf(hourOfDay) + ":" + String.valueOf(minute));
+            }
+        }, endCalendar.get(Calendar.HOUR_OF_DAY), endCalendar.get(Calendar.MINUTE), false);
+        endTimeViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etpDialog.show();
+            }
+        });
+        // set up location picker
 
-        // TODO: save button listener -> save & goes back to where it comes from!
+        // TODO: save button listener -> save & goes back to previous page! alert if needed
 
         // TODO: share with friends -> goes to select Friends Page
-    }
-
-    private void showDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy", Locale.US);
-        dateEditText.setText(sdf.format(javaCalendar.getTime()));
     }
 
     @Override

@@ -53,6 +53,13 @@
             android:label="@string/title_activity_public_events_pool"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".Events.EventInfoDisplayPageActivity"
+            android:label="event display page" />
+        <activity
+            android:name=".Events.EventInfoEditPageActivity"
+            android:label="event edit page" />
+
 
     </application>
 
