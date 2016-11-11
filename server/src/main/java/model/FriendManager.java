@@ -64,10 +64,10 @@ public class FriendManager {
      * @return true if request is sent, false if request is already sent before or receiver doesn't exist
      */
     public boolean sendFriendRequest(String userId_1, String userId_2, String username, String email) {
-        if (userId_2 == null) {
+        if (userId_2 == null || userId_2.isEmpty()) {
             userId_2 = Account.getUserIdByUsernameOrEmail(username, email);
         }
-        if (userId_2.length() == 0) {
+        if (userId_2.isEmpty()) {
             return false;
         }
         GetItemSpec getItem = new GetItemSpec().withPrimaryKey(new PrimaryKey("userId_1", userId_1, "userId_2", userId_2));

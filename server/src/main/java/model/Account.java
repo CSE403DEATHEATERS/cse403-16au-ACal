@@ -148,6 +148,8 @@ public class Account {
 	}
 
 	public static String getUserIdByUsernameOrEmail(String username, String email) {
+        username = username.isEmpty() ? null : username;
+        email = email.isEmpty() ? null : email;
         ScanSpec scan = new ScanSpec().withFilterExpression("username=:v_username OR email=:v_email")
                 .withValueMap(new ValueMap().withString(":v_username", username)
                         .withString(":v_email", email));
@@ -159,6 +161,7 @@ public class Account {
                 return "";
             }
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return "";
         }
     }

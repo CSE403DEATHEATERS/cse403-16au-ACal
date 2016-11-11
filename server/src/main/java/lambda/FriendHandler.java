@@ -15,24 +15,25 @@ public class FriendHandler {
     /*
     public static void main(String[] args) {
         Map<String, String> input = new HashMap<String, String>();
-        input.put("userId", "acdb4fe0-5945-442c-9252-fdceb9682820");
-        input.put("userId_2", "7d9943f4-4326-44a6-9f39-50f890140b26");
-        //input.put("username", "myfriend");
-        input.put("email", "rettymoo@gmail");
+        input.put("userId_1", "acdb4fe0-5945-442c-9252-fdceb9682820");
+        input.put("userId_2", "");
+        input.put("username", "myfriend");
+        input.put("email", "");
 
-        List<Map<String, String>> res = new FriendHandler().getFriend(input, null);
+        //List<Map<String, String>> res = new FriendHandler().getFriend(input, null);
 
-        for (Map<String, String> map : res) {
-            System.out.println(map);
-        }
+        //for (Map<String, String> map : res) {
+        //    System.out.println(map);
+        //}
 
-        System.out.println(res.size());
+        //System.out.println(res.size());
 
-        boolean add = new FriendHandler().acceptFriend(input, null);
+        boolean add = new FriendHandler().addFriend(input, null);
         System.out.println(add);
 
     }
     */
+
 
     public FriendHandler() {
         fm = new FriendManager();
@@ -45,7 +46,7 @@ public class FriendHandler {
      * @param context
      * @return a list of account info who is friend with the userId
      */
-    public List<Map<String, String>> getFriend(Map<String, String> input, Context context) {
+    public List<Map<String, String>> getFriends(Map<String, String> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
         }
@@ -74,7 +75,8 @@ public class FriendHandler {
         String userId_2 = input.get("userId_2");
         String username = input.get("username");
         String email = input.get("email");
-        if (userId_1 == null || (userId_2 == null && username == null && email == null)) {
+        if (userId_1 == null || ((userId_2 == null || userId_2.isEmpty()) && (username == null || username.isEmpty()) &&
+                (email == null || email.isEmpty()))) {
             return false;
         }
         System.out.println("(addFriend)" + userId_1 + ":" + userId_2 + ":" + username + ":" + email);
