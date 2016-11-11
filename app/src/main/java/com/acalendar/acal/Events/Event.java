@@ -3,7 +3,7 @@ package com.acalendar.acal.Events;
 import java.sql.Time;
 
 /**
- * Event Model for storing event data.
+ * Front end Event Model for storing event data.
  */
 public class Event {
 
@@ -19,14 +19,14 @@ public class Event {
     private String eventTitle;
     private Time startTime;
     private Time endTime;
-    private String location;
+    private Location location;
     private String description;
     private Boolean isPublic;
 
 
     public Event(String eid, String ownerId, Time createTime,
                  String eventTitle, Time startTime, Time endTime,
-                 String location, String description, Boolean isPublic) {
+                 Location location, String description, Boolean isPublic) {
         this.eid = eid;
         this.ownerId = ownerId;
         this.createTime = createTime;
@@ -62,11 +62,11 @@ public class Event {
         this.endTime = endTime;
     }
 
-    public String getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 

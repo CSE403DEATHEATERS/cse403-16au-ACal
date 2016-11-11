@@ -5,60 +5,57 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import com.acalendar.acal.R;
 
-import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 
 public class EventInfoEditPageActivity  extends Activity {
 
-
-    private DatePicker datePicker;
     private Calendar javaCalendar;
-    private int year, month, day;
-    private EditText dateView;
+    private EditText dateEditText;
+    private Date datePicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_info_edit_page);
+        // set up date picker dialog
         javaCalendar = Calendar.getInstance();
-        year = javaCalendar.get(Calendar.YEAR);
-        month = javaCalendar.get(Calendar.MONTH);
-        year = javaCalendar.get(Calendar.DAY_OF_YEAR);
-        dateView = (EditText) findViewById(R.id.dateEditText);
-        final DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
+        dateEditText = (EditText) findViewById(R.id.dateEditText);
+
+        final DatePickerDialog.OnDateSetListener datePickerListener =
+                new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
-                // TODO Auto-generated method stub
                 javaCalendar.set(Calendar.YEAR, year);
                 javaCalendar.set(Calendar.MONTH, monthOfYear);
                 javaCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                datePicked = javaCalendar.getTime();
+                System.out.print(datePicked);
                 showDate();
             }
         };
-        dateView.setOnClickListener(
+        dateEditText.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         new DatePickerDialog(EventInfoEditPageActivity.this,
-                                datePickerListener, year, month, day
+                                datePickerListener,
+                                javaCalendar.get(Calendar.YEAR),
+                                javaCalendar.get(Calendar.MONTH),
+                                javaCalendar.get(Calendar.DAY_OF_MONTH)
                                 ).show();
                     }
                 }
         );
-
-
-
 
         // TODO: if any get and display bundle data from previous activity
 
@@ -69,7 +66,7 @@ public class EventInfoEditPageActivity  extends Activity {
 
     private void showDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy", Locale.US);
-        dateView.setText(sdf.format(javaCalendar.getTime()));
+        dateEditText.setText(sdf.format(javaCalendar.getTime()));
     }
 
     @Override
