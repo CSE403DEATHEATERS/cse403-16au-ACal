@@ -19,7 +19,7 @@
 /captures
 
 /server/target
-/server/main/java/dbManager/DynamoDBManager.java
+/server/src/main/java/dbManager/DynamoDBManager.java
 /server/*.iml
 /server/dependency-reduced-pom.xml
 /server/.idea/
