@@ -41,4 +41,6 @@
     <string name="end_time_string">End Time</string>
     <string name="saveText">Save</string>
     <string name="locationText">Location</string>
+    <string name="privateCbText">make this event private</string>
+    <string name="descriptionText">Description</string>
 </resources>

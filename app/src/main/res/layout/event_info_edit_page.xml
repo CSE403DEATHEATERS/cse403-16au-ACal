@@ -80,12 +80,33 @@
                 style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:textSize="24sp" />
 
+            <!-- add location widget here-->
+
             <TextView
                 android:text="@string/locationText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/locationLabel"
                 android:textSize="18sp"/>
+
+            <TextView
+                android:text="@string/descriptionText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/descriptionLabel"
+                android:textSize="18sp"/>
+
+            <MultiAutoCompleteTextView
+                android:text="MultiAutoCompleteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/multiAutoCompleteTextView" />
+
+            <CheckBox
+                android:text="@string/privateCbText"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:id="@+id/privateCheckbox" />
 
             <Button
                 android:text="@string/saveText"
