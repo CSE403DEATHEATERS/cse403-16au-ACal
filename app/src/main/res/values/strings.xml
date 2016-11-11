@@ -38,6 +38,4 @@
     <string name="default_text">default text</string>
     <string name="start_time_string">Start Time</string>
     <string name="dateString">Date</string>
-    <string name="title_activity_public_events_pool_maps">Map</string>
-    <string name="title_activity_public_events_pool">PublicEventsPoolActivity</string>
 </resources>
