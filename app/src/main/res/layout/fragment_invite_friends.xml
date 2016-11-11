@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.acalendar.acal.InviteFriendsFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="" />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.39">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="67dp"
+                android:id="@+id/textView8" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:text="My Friends"
+                    android:layout_width="wrap_content"
+                    android:layout_height="49dp"
+                    android:id="@+id/textView14"
+                    android:textSize="30sp" />
+
+                <Button
+                    android:text="Invite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/friends_add"
+                    android:layout_weight="0.33"
+                    android:layout_alignBaseline="@+id/textView14"
+                    android:layout_alignBottom="@+id/textView14"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+            </RelativeLayout>
+
+            <SearchView
+                android:queryHint="Search"
+                android:id="@+id/friend_search_view_inviting"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <ListView
+                android:id="@+id/friends_list_inviting"
+                android:layout_width="match_parent"
+                android:layout_height="394dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
