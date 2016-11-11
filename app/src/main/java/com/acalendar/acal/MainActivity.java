@@ -14,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.acalendar.acal.amazonaws.mobile.AWSMobileClient;
 import com.amazonaws.mobileconnectors.lambdainvoker.*;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
@@ -29,6 +31,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        AWSMobileClient.initializeMobileClientIfNecessary(this.getApplicationContext());
 
         Intent FrontPageActivity = new Intent(this, com.acalendar.acal.Login.FrontPageActivity.class);
         startActivity(FrontPageActivity);

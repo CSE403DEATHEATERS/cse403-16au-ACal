@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.acalendar.acal.InvokeAPISample;
 import com.acalendar.acal.LambdaInvoker.LambdaInterface;
 import com.acalendar.acal.LambdaInvoker.NameInfo;
 import com.acalendar.acal.MainActivity;
@@ -61,23 +62,7 @@ public class LoginActivity extends Activity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LambdaInvokerFactory factory = invokeLogin();
-                final LambdaInterface lambdaInterface = factory.build(LambdaInterface.class);
-
-                LoginInput loginInput = new LoginInput("myfriend", "hehe");
-                new AsyncTask<LoginInput, Void, String>() {
-                    @Override
-                    protected String doInBackground(LoginInput... params) {
-                        // invoke "echo" method. In case it fails, it will throw a
-                        // LambdaFunctionException.
-                        try {
-                            System.out.println(lambdaInterface.login(params[0]));
-                            return lambdaInterface.login(params[0]);
-                        } catch (LambdaFunctionException lfe) {
-                            return null;
-                        }
-                    }
-                }.execute(loginInput);
+                InvokeAPISample.invokeAPI("GET", "/login", "{}");
                 finish();
             }
         });
