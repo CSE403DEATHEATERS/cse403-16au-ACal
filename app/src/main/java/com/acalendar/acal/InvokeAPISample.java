@@ -4,6 +4,7 @@ import android.net.UrlQuerySanitizer;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import com.acalendar.acal.Login.LoginActivity;
 import com.acalendar.acal.amazonaws.mobile.AWSMobileClient;
 import com.acalendar.acal.amazonaws.mobile.api.CloudLogicAPI;
 import com.acalendar.acal.amazonaws.mobile.api.CloudLogicAPIConfiguration;
@@ -21,25 +22,22 @@ import java.util.List;
 import java.util.Map;
 
 public class InvokeAPISample {
+    public static String apiResponse;
+
     public static void main(String[] args) {
-        invokeAPI("POST", "/login", "");
     }
 
-    public static void invokeAPI(String method, String path, String body) {
-        // Set your request method, path, query string parameters, and request body
-//        method = "POST";
-//        path = "/login";
-//        body = "{\"myfriend\":\"hehe\"}";
-        Map<String, String> queryStringParameters = new HashMap<String, String>();
+    public static String invokeAPI(String method, String path, String body, String query) {
+        Map<String, String> queryStringParameters = convertQueryStringToParameters(query);
         Map<String, String> headers = new HashMap<String, String>();
-        CloudLogicAPIConfiguration[] apiConfigurations = CloudLogicAPIFactory.getAPIs();
+        final CloudLogicAPIConfiguration[] apiConfigurations = CloudLogicAPIFactory.getAPIs();
+
+        final byte[] content = body.getBytes(StringUtils.UTF8);
 
         final CloudLogicAPI client =
                 AWSMobileClient.defaultMobileClient().createAPIClient(apiConfigurations[0].getClientClass());
 
-        final byte[] content = body.getBytes(StringUtils.UTF8);
-
-        ApiRequest tmpRequest =
+        final ApiRequest tmpRequest =
                 new ApiRequest(client.getClass().getSimpleName())
                         .withPath(path)
                         .withHttpMethod(HttpMethodName.valueOf(method))
@@ -57,7 +55,6 @@ public class InvokeAPISample {
         } else {
             request = tmpRequest;
         }
-
         // Make network call on background thread
         new Thread(new Runnable() {
             Exception exception = null;
@@ -67,17 +64,37 @@ public class InvokeAPISample {
                 try {
 //                    Log.d(LOG_TAG, "Invoking API w/ Request : " + request.getHttpMethod() + ":" + request.getPath());
 
-                    long startTime = System.currentTimeMillis();
-
                     final ApiResponse response = client.execute(request);
 
                     final String responseData = IOUtils.toString(response.getContent());
+                    apiResponse = responseData;
 
                 } catch (final Exception exception) {
                     exception.printStackTrace();
                 }
             }
         }).start();
+        return apiResponse;
+    }
 
+    private static Map<String,String> convertQueryStringToParameters(String queryStringText) {
+
+        while (queryStringText.startsWith("?") && queryStringText.length() > 1) {
+            queryStringText = queryStringText.substring(1);
+        }
+
+        final UrlQuerySanitizer sanitizer = new UrlQuerySanitizer();
+        sanitizer.setAllowUnregisteredParamaters(true);
+        sanitizer.parseQuery(queryStringText);
+
+        final List<UrlQuerySanitizer.ParameterValuePair> pairList = sanitizer.getParameterList();
+        final Map<String, String> parameters = new HashMap<>();
+
+        for (final UrlQuerySanitizer.ParameterValuePair pair : pairList) {
+            Log.d("LOG", pair.mParameter + " = " + pair.mValue);
+            parameters.put(pair.mParameter, pair.mValue);
+        }
+
+        return parameters;
     }
 }
