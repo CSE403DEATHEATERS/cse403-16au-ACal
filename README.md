@@ -18,8 +18,6 @@ They all start with: "[Beta Release]"
 Features that are working for our Beta Release:      
 * User signup      
 * User signin    
-* Create an event     
-* Edit an event      
 
 
 
