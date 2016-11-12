@@ -1,6 +1,7 @@
 package com.acalendar.acal;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.TextView;
+
+import com.acalendar.acal.Events.EventInfoEditPageActivity;
 
 
 /**
@@ -60,7 +63,10 @@ public class EventPoolFragment extends Fragment {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                // go to edit page
+                Intent intentToEdit = new Intent(getActivity(),
+                        EventInfoEditPageActivity.class);
+                startActivity(intentToEdit);
             }
         });
 

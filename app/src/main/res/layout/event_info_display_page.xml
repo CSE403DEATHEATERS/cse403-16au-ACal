@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:text="@string/event_title_string"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/eventTitleLabel"
+                android:textSize="18sp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="17dp" />
+
+            <TextView
+                android:text="@string/default_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:id="@+id/eventTitleDisplayText"
+                android:textSize="24sp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp" />
+
+            <TextView
+                android:text="@string/start_time_string"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/startTimeLabel"
+                android:textSize="18sp"
+                android:layout_marginTop="22dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp" />
+
+            <TextView
+                android:text="@string/default_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/startTimeDisplayText"
+                android:textSize="24sp"
+                android:layout_marginTop="22dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp" />
+
+            <TextView
+                android:text="End Time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/endTimeLabel"
+                android:textSize="18sp"
+                android:layout_marginTop="22dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp" />
+
+            <TextView
+                android:text="@string/default_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/endTimeDisplayText"
+                android:textSize="24sp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="17dp" />
+
+            <TextView
+                android:text="Location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:id="@+id/LocationLable"
+                android:textSize="18sp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp" />
+
+            <TextView
+                android:text="@string/default_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:id="@+id/LocationDisplayText"
+                android:textSize="24sp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp" />
+
+            <TextView
+                android:text="Description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:id="@+id/DescriptionLabel"
+                android:textSize="18sp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp" />
+
+            <TextView
+                android:text="@string/default_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:id="@+id/DescriptionDisplayText"
+                android:textSize="18sp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/buttonLayout">
+
+                <Button
+                    android:text="Edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/EditButton"
+                    android:layout_weight="1"
+                    style="@style/Widget.AppCompat.Button.Borderless" />
+
+                <Button
+                    android:text="Delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/DeleteButton"
+                    android:layout_weight="1"
+                    style="@style/Widget.AppCompat.Button.Borderless" />1
+
+            </LinearLayout>
+
+            <Button
+                android:text="see event comments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/SeeCommentsButton" />
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</LinearLayout>
