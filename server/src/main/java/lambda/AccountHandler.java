@@ -9,13 +9,13 @@ public class AccountHandler {
 
 	public static void main(String[] args) {
 		Map<String, String> test = new HashMap<String, String>();
-		test.put("username", "myfriend");
-		test.put("password", "hehe");
-		test.put("email", "rettymoo@gmail.com");
-		test.put("firstname", "Ruoyu");
-		test.put("lastname", "Mo");
+		test.put("username", "shent3");
+		test.put("password", "password");
+		test.put("email", "shent3@uw.edu");
+		test.put("firstname", "Tong");
+		test.put("lastname", "Shen");
 		//System.out.println(test.get("heh"));
-		//new AccountHandler().signup(test, null);
+		new AccountHandler().signup(test, null);
 
 	}
 
