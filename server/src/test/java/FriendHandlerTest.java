@@ -20,12 +20,12 @@ public class FriendHandlerTest {
     }
 
     /////////////////////////////////////////////////////////////////////
-    //////                      getFriend()                         /////
+    //////                      getFriendList()                         /////
     /////////////////////////////////////////////////////////////////////
 
     @Test(expected = IllegalArgumentException.class)
-    public void getFriendTest_nullInput() {
-        this.fh.getFriend(null, context);
+    public void getFriendsTest_nullInput() {
+        this.fh.getFriends(null, context);
     }
 
     /////////////////////////////////////////////////////////////////////
