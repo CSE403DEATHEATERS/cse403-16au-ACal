@@ -12,6 +12,7 @@ import java.util.Map;
  *
  */
 public class EventHandler {
+    /*
     public static void main(String[] args) {
         Map<String, Object> input = new HashMap<String, Object>();
         input.put("ownerId", "123");
@@ -37,6 +38,7 @@ public class EventHandler {
         System.out.println(new EventHandler().getEvent(input2, null));
         System.out.println(new EventHandler().getEvents(input2, null));
     }
+    */
 
     public boolean createEvent(Map<String, Object> input, Context context) {
         if (input == null) {
