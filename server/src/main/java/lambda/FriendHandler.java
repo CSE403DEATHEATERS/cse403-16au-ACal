@@ -1,7 +1,6 @@
 package lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import model.Account;
 import model.FriendManager;
 
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class FriendHandler {
             throw new IllegalArgumentException();
         }
         String userId = input.get("userId");
-        if (userId == null) {
+        if ((userId == null || userId.isEmpty())) {
             return new ArrayList<Map<String, String>>();
         }
         System.out.println("(getFriends)" + userId);
@@ -75,8 +74,8 @@ public class FriendHandler {
         String userId_2 = input.get("userId_2");
         String username = input.get("username");
         String email = input.get("email");
-        if (userId_1 == null || ((userId_2 == null || userId_2.isEmpty()) && (username == null || username.isEmpty()) &&
-                (email == null || email.isEmpty()))) {
+        if ((userId_1 == null || userId_1.isEmpty()) || ((userId_2 == null || userId_2.isEmpty()) &&
+                (username == null || username.isEmpty()) && (email == null || email.isEmpty()))) {
             return false;
         }
         System.out.println("(addFriend)" + userId_1 + ":" + userId_2 + ":" + username + ":" + email);
@@ -98,7 +97,7 @@ public class FriendHandler {
         }
         String userId_1 = input.get("userId_1");
         String userId_2 = input.get("userId_2");
-        if (userId_1 == null || userId_2 == null) {
+        if ((userId_1 == null || userId_1.isEmpty()) || (userId_2 == null || userId_2.isEmpty())) {
             return false;
         }
         return fm.processFriendRequest(userId_1, userId_2, false);
@@ -119,7 +118,7 @@ public class FriendHandler {
         }
         String userId_1 = input.get("userId_1");
         String userId_2 = input.get("userId_2");
-        if (userId_1 == null || userId_2 == null) {
+        if ((userId_1 == null || userId_1.isEmpty()) || (userId_2 == null || userId_2.isEmpty())) {
             return false;
         }
         return fm.processFriendRequest(userId_1, userId_2, true);

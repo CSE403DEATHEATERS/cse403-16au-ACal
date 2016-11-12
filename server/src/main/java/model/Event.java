@@ -16,7 +16,6 @@ public class Event {
     public static final String EVENT_SHARING_TABLE_NAME = "acalendar-mobilehub-1275254137-event";
     public static final Table EVENT_TABLE = dynamoDB.getTable(EVENT_TABLE_NAME);
     public static final Table EVENT_SHARING_TABLE = dynamoDB.getTable(EVENT_SHARING_TABLE_NAME);
-    public static final DateFormat FORMATTER = new SimpleDateFormat("yyyy-mm-dd");
     private String eventId;
     private String ownerId;
     private String title;
@@ -41,7 +40,7 @@ public class Event {
         }
     }
 
-    public Event(String ownerId, String createTime, String startTime, String endTime, String title, String description,
+    public Event(String ownerId, Long createTime, Long startTime, Long endTime, String title, String description,
                  Location location, boolean isPublic, List<String> attendees) {
         this.eventId = UUID.randomUUID().toString();
         this.ownerId = ownerId;
@@ -49,13 +48,9 @@ public class Event {
         this.description = description;
         this.isPublic = isPublic;
         this.location = location;
-        try {
-            this.createTime = FORMATTER.parse(createTime);
-            this.startTime = FORMATTER.parse(startTime);
-            this.endTime = FORMATTER.parse(endTime);
-        } catch (ParseException pe) {
-            System.err.println(pe.getMessage());
-        }
+        this.createTime = new Date(createTime);
+        this.startTime = new Date(startTime);
+        this.endTime = new Date(endTime);
         try {
             Item item = new Item()
                     .withPrimaryKey("eventId", this.eventId)
@@ -87,11 +82,13 @@ public class Event {
         return info;
     }
 
-    public static Map<String, Object> createEvent() {
-        return null;
+    public static boolean createEvent(String ownerId, Long createTime, Long startTime, Long endTime, String title,
+                                      String description, Map<String, Object>location, boolean isPublic, List<String> attendees) {
+        Event event = new Event(ownerId, createTime, startTime, endTime, title, description, new Location(location), isPublic, attendees);
+        return event != null;
     }
 
-    public class Location {
+    public static class Location {
         double lat;
         double lng;
         String address;
