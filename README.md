@@ -9,3 +9,17 @@ Link: https://github.com/CSE403DEATHEATERS/cse403-16au-ACal/blob/gh-pages/ACal_D
 
 All other documents on ACalendar can be found here:     
 Link: https://github.com/CSE403DEATHEATERS/cse403-16au-ACal/tree/gh-pages/ACal_Documents
+
+11/11/16     
+Udpated versions of our SRS and SDS documents can be found here:     
+Link: https://github.com/CSE403DEATHEATERS/cse403-16au-ACal/tree/gh-pages/ACal_Documents          
+They all start with: "[Beta Release]"       
+
+Features that are working for our Beta Release:      
+* User signup      
+* User signin    
+* Create an event     
+* Edit an event      
+
+
+

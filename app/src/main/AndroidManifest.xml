@@ -67,6 +67,15 @@
         <activity
             android:name=".Login.SignUPActivity"
             android:label="Sign Up" />
+
+        <activity
+            android:name=".Events.EventInfoDisplayPageActivity"
+            android:label="event display page" />
+        <activity
+            android:name=".Events.EventInfoEditPageActivity"
+            android:label="event edit page" />
+
+
         <activity android:name=".InviteFriendsActivity"></activity>
     </application>
 

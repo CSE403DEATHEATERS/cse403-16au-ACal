@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="20dp"
+    android:paddingRight="20dp"
+    android:paddingLeft="20dp"
+    android:paddingTop="20dp"
+    android:weightSum="1">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <TextView
+                android:text="@string/event_title_string"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/eventTitleLabel"
+                android:allowUndo="false"
+                android:textSize="18sp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="@string/default_text"
+                android:ems="10"
+                android:id="@+id/EventTitleEditText" />
+
+            <TextView
+                android:text="@string/dateString"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/datePickerLabel"
+                android:textSize="18sp" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:id="@+id/datePickerButton"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:textSize="24sp" />
+
+            <TextView
+                android:text="@string/start_time_string"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/startTimePickerLabel"
+                android:textSize="18sp" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:id="@+id/startTimeViewButton"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:textSize="24sp" />
+
+            <TextView
+                android:text="@string/end_time_string"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/endTimePickerLabel"
+                android:textSize="18sp" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:id="@+id/endTimeViewButton"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:textSize="24sp" />
+
+            <!-- add location widget here-->
+
+            <TextView
+                android:text="@string/locationText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/locationLabel"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:text="@string/descriptionText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/descriptionLabel"
+                android:textSize="18sp"/>
+
+            <MultiAutoCompleteTextView
+                android:text="MultiAutoCompleteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/border_style"
+                android:id="@+id/multiAutoCompleteTextView" />
+
+            <CheckBox
+                android:text="@string/privateCbText"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:id="@+id/privateCheckbox" />
+
+            <Button
+                android:text="@string/saveText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/saveEditButton" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
