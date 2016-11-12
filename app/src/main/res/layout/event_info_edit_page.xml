@@ -89,6 +89,14 @@
                 android:id="@+id/locationLabel"
                 android:textSize="18sp"/>
 
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="@string/default_text"
+                android:ems="10"
+                android:id="@+id/locationEditText" />
+
             <TextView
                 android:text="@string/descriptionText"
                 android:layout_width="match_parent"
@@ -108,6 +116,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:id="@+id/privateCheckbox" />
+
+            <Button
+                android:text="manage participants"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/manageParticipantButton" />
 
             <Button
                 android:text="@string/saveText"

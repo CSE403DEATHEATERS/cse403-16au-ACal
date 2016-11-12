@@ -83,6 +83,8 @@ public class LoginActivity extends Activity {
                 Log.v("TestInput", usernameInput + " " + passwordInput);
                 LoginedAccount.logIn(usernameInput, passwordInput);
                 Account user = LoginedAccount.getCurrentUser();
+//                String apiResponse = InvokeAPISample.invokeAPI("GET", "/login", "", "?username=myfriend&password=hehe");
+//                String fullname = getFullname(apiResponse);
                 Intent intent = new Intent();
                 if (user != null) {
 //                    if (LoginedAccount.isLogedIn()) {

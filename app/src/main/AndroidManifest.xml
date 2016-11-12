@@ -46,7 +46,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        android:label="Login" />
+            android:label="Login" />
         <activity android:name=".Login.FrontPageActivity" />
         <activity
             android:name=".Login.SignUPActivity"
@@ -74,6 +74,8 @@
         <activity
             android:name=".Events.EventInfoEditPageActivity"
             android:label="event edit page" />
+        <activity
+            android:name=".Events.EditEventParticipantsActivity"></activity>
 
 
         <activity android:name=".InviteFriendsActivity"></activity>

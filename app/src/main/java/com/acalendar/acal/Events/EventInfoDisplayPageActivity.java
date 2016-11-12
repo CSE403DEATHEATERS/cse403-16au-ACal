@@ -22,7 +22,8 @@ public class EventInfoDisplayPageActivity extends Activity {
         // create layout, UI here
         setContentView(R.layout.event_info_display_page);
         final Bundle eventInfoBundle = getIntent().getExtras();
-        // 1. extract everything from Bundle and display
+        // extract everything from Bundle and display
+        UpdateTextViews(eventInfoBundle);
 
 
         // 2. buttons:
@@ -49,7 +50,6 @@ public class EventInfoDisplayPageActivity extends Activity {
                 public void onClick(View v) {
                     String eid = eventInfoBundle.getString("eid");
                     // TODO: call back end to delete event id from local and aws DATABASE
-                    // or should this be calling another service??
                     // TODO: notify status of deletion: success/failed.
                 }
             }
@@ -64,8 +64,9 @@ public class EventInfoDisplayPageActivity extends Activity {
                 }
             }
         );
+    }
 
-        // TODO: display timeline and all comments(message)
+    private void UpdateTextViews(Bundle eventInfoBundle) {
 
     }
 
@@ -77,6 +78,5 @@ public class EventInfoDisplayPageActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        // TODO: commit any changes. which exactly?
     }
 }

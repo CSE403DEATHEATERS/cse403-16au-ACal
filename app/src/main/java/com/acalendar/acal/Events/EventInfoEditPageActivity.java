@@ -3,7 +3,9 @@ package com.acalendar.acal.Events;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -13,10 +15,14 @@ import android.widget.TimePicker;
 import com.acalendar.acal.R;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-
+/**
+ * A page where user can edit/create a single event. This page is reached when clicked add in
+ * main page or clicked edit in even info display page.
+ */
 public class EventInfoEditPageActivity  extends Activity {
 
     private Calendar startCalendar;
@@ -32,6 +38,9 @@ public class EventInfoEditPageActivity  extends Activity {
 
     private SimpleDateFormat sdf;
 
+    private Button manageParticipantButton;
+    private Button saveButton;
+    private String eventid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +54,11 @@ public class EventInfoEditPageActivity  extends Activity {
         datePickerViewButton = (Button) findViewById(R.id.datePickerButton);
         startTimeViewButton = (Button) findViewById(R.id.startTimeViewButton);
         endTimeViewButton = (Button) findViewById(R.id.endTimeViewButton);
-        if (false) {  // TODO: if previous page gives event info
+        saveButton = (Button) findViewById(R.id.saveEditButton);
+        manageParticipantButton = (Button) findViewById(R.id.manageParticipantButton);
 
+        if (false) {  // TODO: if previous page gives event info
+            // TODO: set eventid
         } else {
             datePickerViewButton.setText(sdf.format(startCalendar.getTime()));
             startTimeViewButton.setText(startCalendar.get(Calendar.HOUR_OF_DAY)
@@ -103,11 +115,45 @@ public class EventInfoEditPageActivity  extends Activity {
                 etpDialog.show();
             }
         });
-        // set up location picker
 
-        // TODO: save button listener -> save & goes back to previous page! alert if needed
+        // location picker is just a editText for now; may be changed later
 
-        // TODO: share with friends -> goes to select Friends Page
+        // share with friends -> goes to select participatting Friends Page
+        manageParticipantButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(EventInfoEditPageActivity.this,
+                        EditEventParticipantsActivity.class);
+                startActivityForResult(i, 0); // results returned are handled in OnActicityResult
+            }
+        });
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: alert any invalid inputs
+                // TODO: collect all information in this page. Backup remotely
+                if (eventid == null) {
+                    // TODO: call backend create event.
+                } else {
+                    // TODO: update the event which has eventid in DB
+                }
+                finish();
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // super.onActivityResult(requestCode, resultCode, data);
+        Log.v("Test", "onActivityResult is called; result is returned");
+        if (resultCode == RESULT_CANCELED) {
+            // TODO: nothing for now.
+        } else if (requestCode == 0 && resultCode == RESULT_OK) {
+            // TODO: get from the intent the data.
+            ArrayList<String> lst = data.getStringArrayListExtra("listOfSelectedUid");
+            Log.v("Test", "list that was return is" + lst.toString());
+        }
     }
 
     @Override
