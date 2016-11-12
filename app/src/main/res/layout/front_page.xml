@@ -38,7 +38,8 @@
             android:id="@+id/openNewLogin"
             android:layout_weight="0.27"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:onClick="start_login_page" />
 
     </RelativeLayout>
 
