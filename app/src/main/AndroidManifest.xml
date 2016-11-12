@@ -63,11 +63,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".Login.FrontPageActivity"></activity>
-        <activity
-            android:name=".Login.SignUPActivity"
-            android:label="Sign Up" />
-
         <activity
             android:name=".Events.EventInfoDisplayPageActivity"
             android:label="event display page" />
