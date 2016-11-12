@@ -66,7 +66,7 @@ public class EventPoolFragment extends Fragment {
                 // go to edit page
                 Intent intentToEdit = new Intent(getActivity(),
                         EventInfoEditPageActivity.class);
-                startActivity(intentToEdit);
+                startActivityForResult(intentToEdit, 0);
             }
         });
 

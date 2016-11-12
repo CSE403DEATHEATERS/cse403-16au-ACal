@@ -77,8 +77,8 @@ public class LoginActivity extends Activity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String apiResponse = InvokeAPISample.invokeAPI("GET", "/login", "", "?username=myfriend&password=hehe");
-                String fullname = getFullname(apiResponse);
+//                String apiResponse = InvokeAPISample.invokeAPI("GET", "/login", "", "?username=myfriend&password=hehe");
+//                String fullname = getFullname(apiResponse);
                 Intent intent = new Intent();
                 setResult(RESULT_OK, intent);
                 finish();

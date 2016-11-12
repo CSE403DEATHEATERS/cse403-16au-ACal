@@ -39,7 +39,7 @@
                     android:text="Invite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/friends_add"
+                    android:id="@+id/friends_add_button"
                     android:layout_weight="0.33"
                     android:layout_alignBaseline="@+id/textView14"
                     android:layout_alignBottom="@+id/textView14"
