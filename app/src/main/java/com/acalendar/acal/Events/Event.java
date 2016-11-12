@@ -43,6 +43,10 @@ public class Event {
     }
 
     public void setEventTitle(String eventTitle) {
+        if (eventTitle == null) {
+            throw new IllegalArgumentException("Event title passed in should not be null!");
+        }
+
         this.eventTitle = eventTitle;
     }
 
@@ -51,6 +55,10 @@ public class Event {
     }
 
     public void setStartTime(Time startTime) {
+        if (startTime == null) {
+            throw new IllegalArgumentException("Start time passed in should not be null!");
+        }
+
         this.startTime = startTime;
     }
 
@@ -59,6 +67,10 @@ public class Event {
     }
 
     public void setEndTime(Time endTime) {
+        if (endTime == null) {
+            throw new IllegalArgumentException("End time passed in should not be null!");
+        }
+
         this.endTime = endTime;
     }
 
@@ -67,6 +79,10 @@ public class Event {
     }
 
     public void setLocation(Location location) {
+        if (location == null) {
+            throw new IllegalArgumentException("Location passed in should not be null!");
+        }
+
         this.location = location;
     }
 
@@ -75,6 +91,10 @@ public class Event {
     }
 
     public void setDescription(String description) {
+        if (description == null) {
+            throw new IllegalArgumentException("Description passed in should not be null!");
+        }
+
         this.description = description;
     }
 
@@ -83,6 +103,10 @@ public class Event {
     }
 
     public void setPublic(Boolean aPublic) {
+        if (aPublic == null) {
+            throw new IllegalArgumentException("Boolean passed in should not be null!");
+        }
+
         isPublic = aPublic;
     }
 }
