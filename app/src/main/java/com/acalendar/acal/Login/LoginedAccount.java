@@ -27,17 +27,15 @@ public class LoginedAccount {
         if (user != null) {
             return;
         }
-//        String params = "?username=" + username + "&password=" + password;
-//        Log.v("testApi", "params: " + params);
         Map<String, String> query = new HashMap<>();
         query.put("username", username);
         query.put("password", password);
-        Log.v("testApi", "query=" + query);
         String apiResponse = InvokeAPISample.invokeAPI("GET", "/login", null, query);
         Log.v("testApi", "response: " + apiResponse);
         HashMap<String,String> map = new Gson().fromJson(apiResponse, new TypeToken<HashMap<String, String>>(){}.getType());
-        user = new Account(map.get("userId"), map.get("username"), map.get("email"), map.get("lastname"), map.get("firstname"));
-//        user = new Account("3f984hde", username, "test@uw.edu", "testLast", "testFirst");
+        if (map.get("userId") != null) {
+            user = new Account(map.get("userId"), map.get("username"), map.get("email"), map.get("lastname"), map.get("firstname"));
+        }
     }
 
     public static void signUp(String body) {

@@ -44,8 +44,8 @@ public class InvokeAPISample {
                         .withParameters(query);
 
         final ApiRequest request;
-        final byte[] content = body.toString().getBytes(StringUtils.UTF8);
         if (body != null) {
+            final byte[] content = body.toString().getBytes(StringUtils.UTF8);
             request = tempRequest.addHeader("Content-Length", String.valueOf(content.length))
                     .withBody(content);
         } else {
