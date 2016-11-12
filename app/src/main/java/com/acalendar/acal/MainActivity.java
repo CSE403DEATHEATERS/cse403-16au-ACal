@@ -10,6 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.acalendar.acal.Login.LoginedAccount;
+import com.acalendar.acal.amazonaws.mobile.AWSMobileClient;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -20,12 +24,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
+        AWSMobileClient.initializeMobileClientIfNecessary(this.getApplicationContext());
 
 
         Intent FrontPageActivity = new Intent(this, com.acalendar.acal.Login.FrontPageActivity.class);
-        startActivity(FrontPageActivity);
+        startActivityForResult(FrontPageActivity, 1);
 
 
 
@@ -143,5 +146,18 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                TextView profileView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.UserFullName);
+                profileView.setText(LoginedAccount.getUserFullName());
+                TextView emailView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.AccountInfo);
+                emailView.setText(LoginedAccount.getEmail());
+            }
+        }
     }
 }

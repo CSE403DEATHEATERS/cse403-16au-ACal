@@ -1,30 +1,20 @@
 package com.acalendar.acal;
 
-
 import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CheckedTextView;
-import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
-public class InviteFriendsFragment extends Activity {
+public class InviteFriendsActivity extends Activity {
 
     View view;
     ArrayAdapter adapter;
@@ -34,38 +24,9 @@ public class InviteFriendsFragment extends Activity {
 
     ArrayList<String> toBeInvited;
 
-
-//    public InviteFriendsFragment() {
-//        // Required empty public constructor
-//    }
-
-
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        // Inflate the layout for this fragment
-////        return inflater.inflate(R.layout.fragment_invite_friends, container, false);
-//
-//        // replace this to db friend list
-//        friends = new ArrayList<>();
-//        friends.add("Lisa");
-//        friends.add("Moo Moo");
-//        friends.add("Gao");
-//        friends.add("Snail");
-//        friends.add("Shen");
-//        friends.add("YaoZi");
-//
-//        toBeInvited = new ArrayList<>();
-//        view = inflater.inflate(R.layout.fragment_invite_friends, container, false);
-//        adapter = new ArrayAdapter<>(getActivity(), R.layout.invite_friend_item, R.id.friend_name, friends);
-//
-//        populateListView();
-//
-//        return view;
-//    }
-
     @Override
-    public void onCreate(final Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_invite_friends);
 
@@ -79,7 +40,9 @@ public class InviteFriendsFragment extends Activity {
 
         toBeInvited = new ArrayList<>();
 
-        adapter = new ArrayAdapter<>(InviteFriendsFragment.this, R.layout.invite_friend_item, R.id.friend_name, friends);
+        view = this.findViewById(android.R.id.content);
+
+        adapter = new ArrayAdapter<>(InviteFriendsActivity.this, R.layout.invite_friend_item, R.id.friend_name, friends);
 
         populateListView();
     }
@@ -121,5 +84,4 @@ public class InviteFriendsFragment extends Activity {
             }
         });
     }
-
 }
