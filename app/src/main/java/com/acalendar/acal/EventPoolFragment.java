@@ -1,8 +1,7 @@
 package com.acalendar.acal;
 
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,9 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.acalendar.acal.Events.EventInfoEditPageActivity;
 
 
 /**
@@ -37,7 +36,8 @@ public class EventPoolFragment extends Fragment {
 
         CalendarView calendarView = (CalendarView) view.findViewById(R.id.event_pool_calendarView);
         textView = (TextView) view.findViewById(R.id.calendar_text_view);
-        Button button = (Button) view.findViewById((R.id.calendar_button));
+        Button detail = (Button) view.findViewById((R.id.calendar_button));
+        Button add = (Button) view.findViewById((R.id.event_add));
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -53,10 +53,20 @@ public class EventPoolFragment extends Fragment {
             }
         });
 
-        button.setOnClickListener(new View.OnClickListener() {
+        detail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+            }
+        });
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // go to edit page
+                Intent intentToEdit = new Intent(getActivity(),
+                        EventInfoEditPageActivity.class);
+                startActivity(intentToEdit);
             }
         });
 
