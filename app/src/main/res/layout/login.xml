@@ -34,7 +34,7 @@
         android:layout_height="45dp">
 
         <TextView
-            android:text="Email/Username"
+            android:text="Username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/login_username_textview"

@@ -6,9 +6,13 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.EditText;
 
@@ -33,12 +37,6 @@ public class LoginActivity extends Activity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-
-        AutoCompleteTextView usernameView = (AutoCompleteTextView) findViewById(R.id.login_username_input);
-        EditText passwordView = (EditText) findViewById(R.id.login_password_input);
-
-        String usernameInput = usernameView.getText().toString();
-        String passwordInput = passwordView.getText().toString();
 
 
 
@@ -77,22 +75,32 @@ public class LoginActivity extends Activity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AutoCompleteTextView usernameView = (AutoCompleteTextView) findViewById(R.id.login_username_input);
+                EditText passwordView = (EditText) findViewById(R.id.login_password_input);
+
+                String usernameInput = usernameView.getText().toString();
+                String passwordInput = passwordView.getText().toString();
+                Log.v("TestInput", usernameInput + " " + passwordInput);
+                LoginedAccount.logIn(usernameInput, passwordInput);
+                Account user = LoginedAccount.getCurrentUser();
 //                String apiResponse = InvokeAPISample.invokeAPI("GET", "/login", "", "?username=myfriend&password=hehe");
 //                String fullname = getFullname(apiResponse);
                 Intent intent = new Intent();
-                setResult(RESULT_OK, intent);
+                if (user != null) {
+//                    if (LoginedAccount.isLogedIn()) {
+//                        LinearLayout ll = ((R.id.nav_header);
+//                        TextView profileView = (TextView) ll.findViewById(R.id.UserFullName);
+//                        profileView.setText(LoginedAccount.getUserFullName());
+//                        TextView emailView = (TextView) ll.findViewById(R.id.AccountInfo);
+//                        emailView.setText(LoginedAccount.getEmail());
+//                    }
+                    setResult(RESULT_OK, intent);
+                } else {
+                    setResult(RESULT_CANCELED, intent);
+                }
                 finish();
             }
         });
     }
-
-    private String getFullname(String json) {
-        HashMap<String,String> map = new Gson().fromJson(json, new TypeToken<HashMap<String, String>>(){}.getType());
-        if (map.containsKey("firstname") || map.containsKey("lastname"))
-            return "" + map.get("firsname") + map.get("lastname");
-        else
-            return "";
-    }
-
 
 }
