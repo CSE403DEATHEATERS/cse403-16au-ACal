@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity
 
 
 
-       Intent FrontPageActivity = new Intent(this, com.acalendar.acal.Login.FrontPageActivity.class);
-       startActivity(FrontPageActivity);
+        Intent FrontPageActivity = new Intent(this, com.acalendar.acal.Login.FrontPageActivity.class);
+        startActivity(FrontPageActivity);
 
 
 

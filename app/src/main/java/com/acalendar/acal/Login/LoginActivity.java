@@ -1,19 +1,34 @@
 package com.acalendar.acal.Login;
 
 
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Toast;
 import android.widget.EditText;
 
+import com.acalendar.acal.InvokeAPISample;
+import com.acalendar.acal.MainActivity;
 import com.acalendar.acal.R;
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.AWSCredentialsProviderChain;
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.http.JsonErrorResponseHandler;
+import com.amazonaws.mobileconnectors.lambdainvoker.LambdaFunctionException;
+import com.amazonaws.mobileconnectors.lambdainvoker.LambdaInvokerFactory;
+import com.amazonaws.regions.Regions;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-
+import java.util.HashMap;
 
 public class LoginActivity extends Activity {
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,11 +77,22 @@ public class LoginActivity extends Activity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String apiResponse = InvokeAPISample.invokeAPI("GET", "/login", "", "?username=myfriend&password=hehe");
+                String fullname = getFullname(apiResponse);
                 Intent intent = new Intent();
                 setResult(RESULT_OK, intent);
                 finish();
             }
         });
     }
+
+    private String getFullname(String json) {
+        HashMap<String,String> map = new Gson().fromJson(json, new TypeToken<HashMap<String, String>>(){}.getType());
+        if (map.containsKey("firstname") || map.containsKey("lastname"))
+            return "" + map.get("firsname") + map.get("lastname");
+        else
+            return "";
+    }
+
 
 }
