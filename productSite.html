@@ -225,6 +225,7 @@
 	  <p>In particular, we implemented our account and login module using the Single Design Pattern. <code>Account.java</code> is a class that is implemented as a singleton. We implemented it as a singleton because, since this will be on the app side, for each device, there will only be onw user trying to login at any point in time. Therefore, implementing the account and login module as a singleton facilitates us in accessing the the current user's information. Furthermore, we declared <code>LoginActivity.java</code> as a wrapper class for <code>Account.java</code>, which allows us to more easily manage users' information.</p>
 	  <p>Similar to the one above, the <code>dynamodbManager.java</code> on the server side is also implemented as a singleton.</p>
 	  <p>Furthermore, we structured our entire project with the MVC (model-view-controller) Design Pattern in mind. All data manipulation, such as communications with the databse and verification, is handle by models (files in our repo that are named <code>xxxModel.java</code>). We used controller classes to control the workflow of our app (controller classes are generally named <code>xxxManager.java</code>). Different view classes are responsible for rendering the UI and some other sytling issues.</p>
+	  <p>Besides, we used the AWS <code>cloudlogicApiFactory.java</code> Factory Method (Creational Pattern) to help us more easily deal with AWS objects and APIs.</p>
 
 
       <h4>Known Bugs List</h4>
