@@ -1,15 +1,13 @@
 package com.acalendar.acal.Login;
 
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.acalendar.acal.R;
-import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
@@ -67,7 +65,7 @@ public class SignUPActivity extends Activity {
                 String lastname = lastnameInput.getText().toString();
                 String email = emailInput.getText().toString();
                 String password = passwordInput.getText().toString();
-                Map<String, String> query = new HashMap<String, String>();
+                Map<String, String> query = new HashMap<>();
                 query.put("username", username);
                 query.put("password", password);
                 query.put("email", email);

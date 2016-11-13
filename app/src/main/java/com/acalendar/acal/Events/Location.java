@@ -23,6 +23,10 @@ public class Location {
         this.streetNumber = streetNumber;
     }
 
+    public Location(String address) {
+        this(-100000, -1000000, address, -100000, "fake state", "fake Stree", "fake street number");
+    }
+
     public double getLatitude() {
         return lat;
     }

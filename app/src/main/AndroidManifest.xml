@@ -73,7 +73,7 @@
             android:name=".Events.EditEventParticipantsActivity"></activity>
 
 
-        <activity android:name=".InviteFriendsActivity"></activity>
+        <activity android:name=".Events.InviteFriendsActivity"></activity>
     </application>
 
 </manifest>
