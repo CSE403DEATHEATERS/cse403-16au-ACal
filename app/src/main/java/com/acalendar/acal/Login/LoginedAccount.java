@@ -30,7 +30,11 @@ public class LoginedAccount {
         query.put("password", password);
         String apiResponse = InvokeAPISample.invokeAPI("GET", "/login", null, query);
         Log.v("testApi", "response: " + apiResponse);
-        HashMap<String,String> map = new Gson().fromJson(apiResponse, new TypeToken<HashMap<String, String>>(){}.getType());
+        String events = apiResponse.substring(1, apiResponse.indexOf(','));
+        String accountString = apiResponse.substring(apiResponse.indexOf(",") + 1, apiResponse.length() - 1);
+        String accountInfo = accountString.substring(accountString.indexOf(':') + 1, accountString.length());
+        Log.v("Test", "accountInfo" + accountInfo);
+        HashMap<String,String> map = new Gson().fromJson(accountInfo, new TypeToken<HashMap<String, String>>(){}.getType());
         if (map.get("userId") != null) {
             user = new Account(map.get("userId"), map.get("username"), map.get("email"), map.get("lastname"), map.get("firstname"));
             eventsManager = new EventsManager(user.getUserId());
