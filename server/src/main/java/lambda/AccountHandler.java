@@ -8,17 +8,18 @@ import java.util.*;
 
 public class AccountHandler {
 
+    /*
 	public static void main(String[] args) {
 		Map<String, Object> test = new HashMap<String, Object>();
-		test.put("username", "shent3");
-		test.put("password", "password");
-		test.put("email", "shent3@uw.edu");
-		test.put("firstname", "Tong");
-		test.put("lastname", "Shen");
+		test.put("username", "hehe");
+		test.put("password", "hehe");
+        test.put("email", "hehe");
+        test.put("firstname", "hehe");
+        test.put("lastname", "hehe");
 		//System.out.println(test.get("heh"));
-		new AccountHandler().signup(test, null);
-
+		System.out.println(new AccountHandler().signup(test, null));
 	}
+	*/
 
 	/**
 	 * Login lambda
@@ -27,7 +28,7 @@ public class AccountHandler {
 	 * @param context
 	 * @return a Map stores user info if username and password are matched, or empty map
 	 */
-	public Map<String, Object> login(Map<String, Object> input, Context context) {
+	public Map<String, Object> login(Map<String, String> input, Context context) {
 		if (input == null) {
 			throw new IllegalArgumentException();
 		}

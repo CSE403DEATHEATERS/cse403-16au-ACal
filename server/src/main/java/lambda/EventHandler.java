@@ -13,9 +13,10 @@ import java.util.Map;
  */
 public class EventHandler {
 
+
     public static void main(String[] args) {
         Map<String, Object> input = new HashMap<String, Object>();
-        input.put("ownerId", "123");
+        input.put("ownerId", "7d9943f4-4326-44a6-9f39-50f890140b26");
         input.put("startTime", 1478914319677L);
         input.put("endTime", 1478914319677L);
         input.put("isPublic", new Boolean(false));
@@ -29,9 +30,9 @@ public class EventHandler {
         location.put("streetName", "902");
         location.put("streetNumber", 902);
         input.put("location", location);
-        list.add("abc");
-        list.add("hahah");
-        input.put("attendees", list);
+        //list.add("abc");
+        //list.add("hahah");
+        input.put("attendees", null);
         //new EventHandler().createEvent(input, null);
         Map<String, String> input2 = new HashMap<>();
         input2.put("eventId", "fa6f6d78-0795-41d7-994c-56b6f987c0fb");
@@ -39,6 +40,7 @@ public class EventHandler {
         System.out.println(new EventHandler().createEvent(input, null));
         // System.out.println(new EventHandler().getAttendingEvents(input2, null));
     }
+
 
 
     /**

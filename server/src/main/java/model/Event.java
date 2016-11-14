@@ -1,10 +1,7 @@
 package model;
 
 import com.amazonaws.services.dynamodbv2.document.*;
-import com.amazonaws.services.dynamodbv2.document.spec.BatchWriteItemSpec;
-import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
-import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
-import com.amazonaws.services.dynamodbv2.document.spec.ScanSpec;
+import com.amazonaws.services.dynamodbv2.document.spec.*;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 
@@ -108,12 +105,14 @@ public class Event {
             EVENT_TABLE.putItem(item);
             TableWriteItems attendeeList = new TableWriteItems(EVENT_SHARING_TABLE_NAME);
             attendeeList.addItemToPut(new Item().withPrimaryKey("eventId", this.eventId, "recipientId", ownerId)
-                    .withString("status",  "ACCEPT")
+                    .withString("inviteStatus",  "ACCEPT")
                     .withNumber("sentTime", new Date().getTime()));
-            for (String attendee : attendees) {
-                attendeeList.addItemToPut(new Item().withPrimaryKey("eventId", this.eventId, "recipientId", attendee)
-                                            .withString("status",  "PENDING")
-                                            .withNumber("sentTime", new Date().getTime()));
+            if (attendees != null) {
+                for (String attendee : attendees) {
+                    attendeeList.addItemToPut(new Item().withPrimaryKey("eventId", this.eventId, "recipientId", attendee)
+                            .withString("inviteStatus", "PENDING")
+                            .withNumber("sentTime", new Date().getTime()));
+                }
             }
             BatchWriteItemSpec batch = new BatchWriteItemSpec().withTableWriteItems(attendeeList);
             dynamoDB.batchWriteItem(batch);
@@ -134,10 +133,37 @@ public class Event {
      * @param attendees
      * @return
      */
-    public Map<String, Object> update(String ownerId, String title, Long startTime,
-                                      Long endTime, String description, boolean isPublic,
+    public Event update(String ownerId, String title, Long startTime,
+                                      Long endTime, String description, Boolean isPublic,
                                       Map<String, Object> location, List<String> attendees) {
-        return null;
+        // TODO: call message handler
+        if (this.eventId != null || this.eventId.isEmpty()) {
+            return this;
+        }
+        UpdateItemSpec update = new UpdateItemSpec().withPrimaryKey("eventId", this.eventId);
+        if (ownerId != null) {
+            update.addAttributeUpdate(new AttributeUpdate("ownerId").put(ownerId));
+        }
+        if (title != null) {
+            update.addAttributeUpdate(new AttributeUpdate("title").put(title));
+        }
+        if (startTime != null) {
+            update.addAttributeUpdate(new AttributeUpdate("startTime").put(startTime));
+        }
+        if (endTime != null) {
+            update.addAttributeUpdate(new AttributeUpdate("endTime").put(endTime));
+        }
+        if (description != null) {
+            update.addAttributeUpdate(new AttributeUpdate("description").put(description));
+        }
+        if (isPublic != null) {
+            update.addAttributeUpdate(new AttributeUpdate("isPublic").put(isPublic));
+        }
+        if (description != null) {
+            update.addAttributeUpdate(new AttributeUpdate("description").put(description));
+        }
+        //EVENT_TABLE.updateItem();
+        return this;
     }
 
     /**
@@ -179,9 +205,10 @@ public class Event {
     }
 
     public static Map<String, Object> updateEvent(String eventId, String ownerId, String title, Long startTime,
-                                                  Long endTime, String description, boolean isPublic,
+                                                  Long endTime, String description, Boolean isPublic,
                                                   Map<String, Object> location, List<String> attendees) {
-        return new Event(eventId).update(ownerId, title, startTime, endTime, description, isPublic, location, attendees);
+        return new Event(eventId)
+                .update(ownerId, title, startTime, endTime, description, isPublic, location, attendees).getInfo();
     }
 
     public static Map<String, Object> getInfoByEventId(String eventId) {
@@ -190,7 +217,7 @@ public class Event {
 
     public static List<Map<String, Object>> getEventsByUserId(String userId, String status) {
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-        ScanSpec scan = new ScanSpec().withFilterExpression("recipientId=:v_recipientId AND status=:v_status")
+        ScanSpec scan = new ScanSpec().withFilterExpression("recipientId=:v_recipientId AND inviteStatus =:v_status")
                                             .withValueMap(new ValueMap().withString(":v_recipientId", userId)
                                                                         .withString(":v_status", status));
         Iterator<Item> items = EVENT_SHARING_TABLE.scan(scan).iterator();
@@ -226,13 +253,13 @@ public class Event {
         public Location(Map<String, Object> info) {
             if (info != null) {
                 System.out.println(info);
-                this.lat = (Double) info.get("lat");
-                this.lng = (Double) info.get("lng");
-                this.address = (String) info.get("address");
-                this.postal = (Integer) info.get("postal");
-                this.state = (String) info.get("state");
-                this.streetName = (String) info.get("streetName");
-                this.streetNumber = (Integer) info.get("streetNumber");
+                this.lat = (Double)info.get("lat");
+                this.lng = (Double)info.get("lng");
+                this.address = (String)info.get("address");
+                this.postal = (Integer)info.get("postal");
+                this.state = (String)info.get("state");
+                this.streetName = (String)info.get("streetName");
+                this.streetNumber = (Integer)info.get("streetNumber");
                 System.out.println(lat + lng + address + postal + state);
             }
         }

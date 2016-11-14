@@ -24,8 +24,8 @@ public class FriendManager {
      * @param userId userId of the user
      * @return list of account info which is the user's friend, empty list if no friend
      */
-    public List<Map<String, String>> getFriendList(String userId) {
-        List<Map<String, String>> result = new ArrayList<Map<String, String>>();
+    public List<Map<String, Object>> getFriendList(String userId) {
+        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
         QuerySpec query = new QuerySpec().withHashKey("userId_1", userId);
         ItemCollection<QueryOutcome> items = TABLE.query(query);
         Iterator<Item> itemIterator = items.iterator();
@@ -45,7 +45,7 @@ public class FriendManager {
                 .getResponses().get(TABLE_NAME);
 
         for (Map<String, AttributeValue> friend : approvedFriends) {
-            Map<String, String> friendInfo = Account.getInfoByUserId(friend.get("userId_1").getS());
+            Map<String, Object> friendInfo = Account.getInfoByUserId(friend.get("userId_1").getS());
             if (!friendInfo.isEmpty()) {
                 result.add(friendInfo);
             }
