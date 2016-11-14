@@ -44,8 +44,11 @@ public class LoginedAccount {
         Map<String, String> query = new HashMap<>();
         String apiResponse = InvokeAPISample.invokeAPI("POST", "/signup", body, query);
         Log.v("testApi", "response: " + apiResponse);
-//        HashMap<String,String> map = new Gson().fromJson(apiResponse, new TypeToken<HashMap<String, String>>(){}.getType());
-//        user = new Account(map.get("userId"), map.get("username"), map.get("email"), map.get("lastname"), map.get("firstname"));
+//        HashMap<String,Object> map = new Gson().fromJson(apiResponse, new TypeToken<HashMap<String, Object>>(){}.getType());
+//        if (!map.isEmpty()) {
+//            // TODO: error handling, notify user signup fail
+//
+//        }
     }
 
     public static void logOut() {
