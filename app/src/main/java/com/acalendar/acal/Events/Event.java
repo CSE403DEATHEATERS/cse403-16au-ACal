@@ -13,7 +13,7 @@ import java.util.List;
 public class Event {
 
     /**
-     * Fields that are not editable
+     * Fields that are not editable after first set.
      */
     private String eid;
     private String ownerId;
@@ -39,7 +39,7 @@ public class Event {
         this.eventTitle = eventTitle;
         this.startTime = startTime;
         this.endTime = endTime;
-        setLocation(address);
+        setLocation(address); // Note: is the address passed in is empty string or null, Location is not set
         this.description = description;
         this.isPublic = isPublic;
         listOfParticipantUsers = new ArrayList<>();
@@ -48,6 +48,10 @@ public class Event {
     public Event(String eventTitle, Date startTime, Date endTime,
                  String address, String description, Boolean isPublic) {
         this(null, null, null, eventTitle, startTime, endTime, address, description, isPublic);
+    }
+
+    public String getEventId() {
+        return this.eid;
     }
 
     public void setEventId(String eid) {
@@ -70,6 +74,10 @@ public class Event {
 
     public void addParticipant(Account friend) {
         listOfParticipantUsers.add(friend);
+    }
+
+    public void setListOfParticipantsUids(List<String> listOfUserids) {
+        //this.listOfParticipantUsers = new ArrayList<>(listOfUserids);
     }
 
     public List<String> getListOfParticipantsUids() {
@@ -120,13 +128,22 @@ public class Event {
         return location;
     }
 
-    public void setLocation(String address) {
+    /**
+     * An Overload funciton for setLocation. Used only
+     *
+     * @param address the address text that user specified
+     */
+    private void setLocation(String address) {
         if (address != null && address.length() != 0) {
             //TODO: validate the addr, valid then put in actual data, otherwise putin fake data
 
-            Location l = new Location(address);
+            Location l = new Location(address);  // for now it contains a lot of fake data.
             this.location = l;
         }
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public String getDescription() {
