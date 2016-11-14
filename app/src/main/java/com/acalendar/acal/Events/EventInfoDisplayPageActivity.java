@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 
+import com.acalendar.acal.Login.LoginedAccount;
 import com.acalendar.acal.R;
+import com.google.android.gms.vision.text.Text;
 
 
 /**
@@ -67,7 +69,16 @@ public class EventInfoDisplayPageActivity extends Activity {
     }
 
     private void UpdateTextViews(Bundle eventInfoBundle) {
-
+        TextView titleView = (TextView) findViewById(R.id.eventTitleDisplayText);
+        titleView.setText("Beta Demo");
+        TextView descripView = (TextView) findViewById(R.id.DescriptionDisplayText);
+        descripView.setText("Demo");
+        TextView  locationView = (TextView) findViewById(R.id.LocationDisplayText);
+        locationView.setText("Savery Hall");
+        TextView startView = (TextView) findViewById(R.id.startTimeDisplayText);
+        startView.setText("11/14/16 9:00");
+        TextView endView = (TextView) findViewById(R.id.endTimeDisplayText);
+        endView.setText("11/14/16 10:00");
     }
 
     @Override
