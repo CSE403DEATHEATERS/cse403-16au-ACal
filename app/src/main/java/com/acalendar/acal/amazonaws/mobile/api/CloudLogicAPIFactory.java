@@ -31,6 +31,11 @@ public class CloudLogicAPIFactory {
                                               new String[] {
                                                   "/login",
                                                   "/signup",
+                                                  "/rejectFriend",
+                                                  "/addFriend",
+                                                  "/getFriends",
+                                                  "/acceptFriend",
+                                                  "/createEvent",
                                               },
                                               com.acalendar.acal.amazonaws.mobile.api.id84kwqa3pde.LambdaMicroserviceClient.class),
         };
