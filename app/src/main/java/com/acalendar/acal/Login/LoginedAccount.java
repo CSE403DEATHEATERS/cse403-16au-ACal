@@ -33,8 +33,8 @@ public class LoginedAccount {
         String apiResponse = InvokeAPISample.invokeAPI("GET", "/login", null, query);
         Log.v("testApi", "response: " + apiResponse);
         HashMap<String,Object> map = new Gson().fromJson(apiResponse, new TypeToken<HashMap<String, Object>>(){}.getType());
-        Map<String, String> account = (Map<String, String>) map.get("account");
-        if (account.get("userId") != null) {
+        if (!map.isEmpty()) {
+            Map<String, String> account = (Map<String, String>) map.get("account");
             user = new Account(account.get("userId"), account.get("username"), account.get("email"), account.get("lastname"), account.get("firstname"));
         }
     }
@@ -43,8 +43,9 @@ public class LoginedAccount {
         Log.v("Test", "query: " + body);
         Map<String, String> query = new HashMap<>();
         String apiResponse = InvokeAPISample.invokeAPI("POST", "/signup", body, query);
-        HashMap<String,String> map = new Gson().fromJson(apiResponse, new TypeToken<HashMap<String, String>>(){}.getType());
-        user = new Account(map.get("userId"), map.get("username"), map.get("email"), map.get("lastname"), map.get("firstname"));
+        Log.v("testApi", "response: " + apiResponse);
+//        HashMap<String,String> map = new Gson().fromJson(apiResponse, new TypeToken<HashMap<String, String>>(){}.getType());
+//        user = new Account(map.get("userId"), map.get("username"), map.get("email"), map.get("lastname"), map.get("firstname"));
     }
 
     public static void logOut() {
