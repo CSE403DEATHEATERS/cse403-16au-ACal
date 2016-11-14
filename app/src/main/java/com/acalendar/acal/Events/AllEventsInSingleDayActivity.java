@@ -39,7 +39,7 @@ public class AllEventsInSingleDayActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     Intent intentToViewSingleEvent = new Intent(AllEventsInSingleDayActivity.this,
-                            EventInfoEditPageActivity.class);
+                            EventInfoDisplayPageActivity.class);
                     intentToViewSingleEvent.putExtra("eventId", eid);
                     startActivity(intentToViewSingleEvent);
                 }

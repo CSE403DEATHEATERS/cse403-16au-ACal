@@ -33,9 +33,6 @@ public class EventsManager {
         for (Map<String, Object> event : listOfEventMaps) {
             String eid = (String) event.get("eventId");
             String ownerId = (String) event.get("ownerId");
-
-
-
             Date createTime = new Date(((Double)event.get("createTime")).longValue());
             String eventTitle = (String) event.get("title");
             Date startTime = new Date(((Double)event.get("startTime")).longValue());
@@ -60,7 +57,9 @@ public class EventsManager {
                 eventMap.put(key, new ArrayList<Event>());
             }
 
-            Log.v("Test", key + eventMap.get(key).add(entry)); // TODO: sort eventList);
+            Log.v("Test", "key of this event is " + key);
+            Log.v("Test", "entry added status : " + eventMap.get(key).add(entry));
+            // TODO: sort eventList;
         }
     }
 
@@ -72,6 +71,7 @@ public class EventsManager {
             queryData.put("title", e.getEventTitle());
         }
         queryData.put("startTime", e.getStartTime().getTime());
+        Log.v("Test", "start of this event is " + e.getStartTime().toString());
         queryData.put("endTime", e.getEndTime().getTime());
         if (e.getDescription() != null && !e.getDescription().isEmpty()) {
             queryData.put("description", e.getDescription());
@@ -83,7 +83,6 @@ public class EventsManager {
         if (e.getLocation() != null) {
             queryData.put("location", e.getLocation().getInfo()); // Location
         }
-        Log.v("Test", "create new event query: " + queryData.toString());
         String jsonObjectBody = (new JSONObject(queryData)).toString();
         // submit request
         Log.v("Test", "create new event query: " + jsonObjectBody);
@@ -97,14 +96,14 @@ public class EventsManager {
             Log.v("Test", "responseMap is empty, failed to add new event");
             return false;
         }
-        Log.v("Test", responseMap.toString());
+        Log.v("Test", "responce map is " + responseMap.toString());
 
         String eid = (String) responseMap.get("eventId");
         Date createTime = new Date(((Double)responseMap.get("createTime")).longValue());
         e.setEventId(eid);
         e.setCreateTime(createTime);
         String key = dateToString(e.getStartTime());
-        Log.v("Test", "************************key gonna be added" + key);
+        Log.v("Test", "************************key gonna be added is " + key);
         if (!eventMap.containsKey(key)) {
             eventMap.put(key, new ArrayList<Event>());
         }

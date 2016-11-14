@@ -4,7 +4,6 @@ package com.acalendar.acal;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,9 @@ import android.widget.TextView;
 import com.acalendar.acal.Events.AllEventsInSingleDayActivity;
 import com.acalendar.acal.Events.EventInfoEditPageActivity;
 import com.acalendar.acal.Events.EventsManager;
+
+import java.util.Calendar;
+import java.util.Date;
 
 
 /**
@@ -61,7 +63,13 @@ public class EventPoolFragment extends Fragment {
             public void onClick(View view) {
                 Intent intentToViewAll = new Intent(getActivity(),
                         AllEventsInSingleDayActivity.class);
-                intentToViewAll.putExtra("dateSelected", year_x + " " + month_x + " " + day_x);
+
+                Calendar tempCal = Calendar.getInstance();
+                tempCal.set(Calendar.YEAR, year_x);
+                tempCal.set(Calendar.MONTH, month_x);
+                tempCal.set(Calendar.DAY_OF_MONTH, day_x);
+                Date date = tempCal.getTime();
+                intentToViewAll.putExtra("dateSelected", EventsManager.dateToString(date));
                 startActivity(intentToViewAll);
             }
         });
