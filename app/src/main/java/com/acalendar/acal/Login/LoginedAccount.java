@@ -32,9 +32,10 @@ public class LoginedAccount {
         query.put("password", password);
         String apiResponse = InvokeAPISample.invokeAPI("GET", "/login", null, query);
         Log.v("testApi", "response: " + apiResponse);
-        HashMap<String,String> map = new Gson().fromJson(apiResponse, new TypeToken<HashMap<String, String>>(){}.getType());
-        if (map.get("userId") != null) {
-            user = new Account(map.get("userId"), map.get("username"), map.get("email"), map.get("lastname"), map.get("firstname"));
+        HashMap<String,Object> map = new Gson().fromJson(apiResponse, new TypeToken<HashMap<String, Object>>(){}.getType());
+        Map<String, String> account = (Map<String, String>) map.get("account");
+        if (account.get("userId") != null) {
+            user = new Account(account.get("userId"), account.get("username"), account.get("email"), account.get("lastname"), account.get("firstname"));
         }
     }
 
