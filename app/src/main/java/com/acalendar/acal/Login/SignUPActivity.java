@@ -1,15 +1,14 @@
 package com.acalendar.acal.Login;
 
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.acalendar.acal.R;
-import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
@@ -74,8 +73,13 @@ public class SignUPActivity extends Activity {
                 query.put("firstname", firstname);
                 query.put("lastname", lastname);
                 JSONObject jsonObject = new JSONObject(query);
-                LoginedAccount.signUp(jsonObject.toString());
-                finish();
+                boolean succeed = LoginedAccount.signUp(jsonObject.toString());
+                if (succeed) {
+                    finish();
+                } else {
+                    Toast missmatch = Toast.makeText(SignUPActivity.this, "exited username", Toast.LENGTH_SHORT);
+                    missmatch.show();
+                }
             }
         });
     }

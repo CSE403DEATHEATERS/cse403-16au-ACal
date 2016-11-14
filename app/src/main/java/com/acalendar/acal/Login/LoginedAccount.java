@@ -39,16 +39,18 @@ public class LoginedAccount {
         }
     }
 
-    public static void signUp(String body) {
+    public static boolean signUp(String body) {
         Log.v("Test", "query: " + body);
         Map<String, String> query = new HashMap<>();
         String apiResponse = InvokeAPISample.invokeAPI("POST", "/signup", body, query);
         Log.v("testApi", "response: " + apiResponse);
-//        HashMap<String,Object> map = new Gson().fromJson(apiResponse, new TypeToken<HashMap<String, Object>>(){}.getType());
-//        if (map.isEmpty()) {
-//            // TODO: error handling, notify user signup fail
-//
-//        }
+        HashMap<String,Object> map = new Gson().fromJson(apiResponse, new TypeToken<HashMap<String, Object>>(){}.getType());
+        if (map.isEmpty()) {
+            // TODO: error handling, notify user signup fail
+            return false;
+
+        }
+        return true;
     }
 
     public static void logOut() {

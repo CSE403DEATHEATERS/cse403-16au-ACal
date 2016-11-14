@@ -1,35 +1,17 @@
 package com.acalendar.acal.Login;
 
 
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import com.acalendar.acal.InvokeAPISample;
-import com.acalendar.acal.MainActivity;
 import com.acalendar.acal.R;
-import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.auth.AWSCredentialsProviderChain;
-import com.amazonaws.auth.CognitoCachingCredentialsProvider;
-import com.amazonaws.http.JsonErrorResponseHandler;
-import com.amazonaws.mobileconnectors.lambdainvoker.LambdaFunctionException;
-import com.amazonaws.mobileconnectors.lambdainvoker.LambdaInvokerFactory;
-import com.amazonaws.regions.Regions;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.HashMap;
 
 public class LoginActivity extends Activity {
 
@@ -95,10 +77,12 @@ public class LoginActivity extends Activity {
 //                        emailView.setText(LoginedAccount.getEmail());
 //                    }
                     setResult(RESULT_OK, intent);
+                    finish();
                 } else {
-                    setResult(RESULT_CANCELED, intent);
+                    Toast missmatch = Toast.makeText(LoginActivity.this, "Invalid username/password", Toast.LENGTH_SHORT);
+                    missmatch.show();
                 }
-                finish();
+
             }
         });
     }
