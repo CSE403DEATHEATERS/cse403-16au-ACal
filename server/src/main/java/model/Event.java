@@ -32,6 +32,10 @@ public class Event {
     private List<String> attendees;
     private boolean isPublic;
 
+    /**
+     * Constructor for searching event
+     * @param eventId
+     */
     public Event(String eventId) {
         GetItemSpec getItem = new GetItemSpec().withPrimaryKey("eventId", eventId);
         Item item = EVENT_TABLE.getItem(getItem);
@@ -62,6 +66,17 @@ public class Event {
         }
     }
 
+    /**
+     * Constructor for creating event
+     * @param ownerId
+     * @param startTime
+     * @param endTime
+     * @param title
+     * @param description
+     * @param location
+     * @param isPublic
+     * @param attendees
+     */
     public Event(String ownerId, Long startTime, Long endTime, String title, String description,
                  Location location, boolean isPublic, List<String> attendees) {
         this.eventId = UUID.randomUUID().toString();
@@ -107,12 +122,29 @@ public class Event {
         }
     }
 
+    /**
+     * Update event with information provided by parameters. null means no update for this field
+     * @param ownerId
+     * @param title
+     * @param startTime
+     * @param endTime
+     * @param description
+     * @param isPublic
+     * @param location
+     * @param attendees
+     * @return
+     */
     public Map<String, Object> update(String ownerId, String title, Long startTime,
                                       Long endTime, String description, boolean isPublic,
                                       Map<String, Object> location, List<String> attendees) {
         return null;
     }
 
+    /**
+     * Get information about the event
+     *
+     * @return Map<String, Object> stores event info
+     */
     public Map<String, Object> getInfo() {
         Map<String, Object> info = new HashMap<String, Object>();
         if (this.eventId == null || this.eventId.isEmpty()) {
@@ -225,8 +257,6 @@ public class Event {
             info.put("streetName", this.streetName);
             info.put("streetNumber", this.streetNumber);
             return info;
-
         }
     }
-
 }

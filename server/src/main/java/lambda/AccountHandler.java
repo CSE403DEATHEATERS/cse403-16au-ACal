@@ -2,13 +2,14 @@ package lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import model.Account;
+import model.Event;
 
 import java.util.*;
 
 public class AccountHandler {
 
 	public static void main(String[] args) {
-		Map<String, String> test = new HashMap<String, String>();
+		Map<String, Object> test = new HashMap<String, Object>();
 		test.put("username", "shent3");
 		test.put("password", "password");
 		test.put("email", "shent3@uw.edu");
@@ -26,17 +27,23 @@ public class AccountHandler {
 	 * @param context
 	 * @return a Map stores user info if username and password are matched, or empty map
 	 */
-	public Map<String, String> login(Map<String, String> input, Context context) {
+	public Map<String, Object> login(Map<String, Object> input, Context context) {
 		if (input == null) {
 			throw new IllegalArgumentException();
 		}
-        String username = input.get("username");
-		String password = input.get("password");
+        String username = (String)input.get("username");
+		String password = (String)input.get("password");
 		if (username == null || password == null) {
-			return new HashMap<String, String>();
+			return new HashMap<String, Object>();
 		}
 		System.out.println("(login) " + username + ": " + password);
-        return new Account(username, password).isLogin();
+		Map<String, Object> res = new HashMap<String, Object>();
+		Map<String, Object> loginInfo = new Account(username, password).isLogin();
+		if (!loginInfo.isEmpty()) {
+			res.put("account", new Account(username, password).isLogin());
+			res.put("event", Event.getEventsByUserId((String)loginInfo.get("userId"), "ACCEPT"));
+		}
+        return res;
 	}
 
 	/**
@@ -46,17 +53,17 @@ public class AccountHandler {
 	 * @param context
 	 * @return a Map stores user info if username and email are unique (never be used by others), or empty map
 	 */
-	public Map<String, String> signup(Map<String, String> input, Context context) {
+	public Map<String, Object> signup(Map<String, Object> input, Context context) {
 		if (input == null) {
 			throw new IllegalArgumentException();
 		}
-		String username = input.get("username");
-		String password = input.get("password");
-		String email = input.get("email");
-		String lastname = input.get("lastname");
-		String firstname = input.get("firstname");
+		String username = (String)input.get("username");
+		String password = (String)input.get("password");
+		String email = (String)input.get("email");
+		String lastname = (String)input.get("lastname");
+		String firstname = (String)input.get("firstname");
 		if (username == null || password == null || email == null || lastname == null || firstname == null) {
-			return new HashMap<String, String>();
+			return new HashMap<String, Object>();
 		}
 		System.out.println("(signup) " + username + ": " + password);
 		return Account.signup(username, password, email, lastname, firstname);
