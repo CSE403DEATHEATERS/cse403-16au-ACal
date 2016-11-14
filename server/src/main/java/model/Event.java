@@ -62,7 +62,7 @@ public class Event {
         }
     }
 
-    public Event(String ownerId, Long createTime, Long startTime, Long endTime, String title, String description,
+    public Event(String ownerId, Long startTime, Long endTime, String title, String description,
                  Location location, boolean isPublic, List<String> attendees) {
         this.eventId = UUID.randomUUID().toString();
         this.ownerId = ownerId;
@@ -70,25 +70,17 @@ public class Event {
         this.description = description;
         this.isPublic = isPublic;
         this.location = location;
-        this.createTime = new Date(createTime);
-        if (startTime != null) {
-            this.startTime = new Date(startTime);
-        }
-        if (endTime != null) {
-            this.endTime = new Date(endTime);
-        }
+        this.createTime = new Date();
+        this.startTime = new Date(startTime);
+        this.endTime = new Date(endTime);
         try {
             Item item = new Item()
                     .withPrimaryKey("eventId", this.eventId)
                     .withString("ownerId", this.ownerId)
                     .withBoolean("isPublic", this.isPublic)
-                    .withNumber("createTime", this.createTime.getTime());
-            if (startTime != null) {
-                item.withNumber("startTime", this.startTime.getTime());
-            }
-            if (endTime != null) {
-                item.withNumber("endTime", this.endTime.getTime());
-            }
+                    .withNumber("createTime", this.createTime.getTime())
+                    .withNumber("startTime", this.startTime.getTime())
+                    .withNumber("endTime", this.endTime.getTime());
             if (location != null) {
                 item.withMap("location", this.location.getInfo());
             }
@@ -115,6 +107,12 @@ public class Event {
         }
     }
 
+    public Map<String, Object> update(String ownerId, String title, Long startTime,
+                                      Long endTime, String description, boolean isPublic,
+                                      Map<String, Object> location, List<String> attendees) {
+        return null;
+    }
+
     public Map<String, Object> getInfo() {
         Map<String, Object> info = new HashMap<String, Object>();
         if (this.eventId == null || this.eventId.isEmpty()) {
@@ -124,12 +122,8 @@ public class Event {
         info.put("ownerId", this.ownerId);
         info.put("isPublic", this.isPublic);
         info.put("createTime", this.createTime.getTime());
-        if (this.startTime != null) {
-            info.put("startTime", this.startTime.getTime());
-        }
-        if (this.endTime != null) {
-            info.put("endTime", this.endTime.getTime());
-        }
+        info.put("startTime", this.startTime.getTime());
+        info.put("endTime", this.endTime.getTime());
         if (this.title != null && !this.title.isEmpty()) {
             info.put("title", this.title);
         }
@@ -145,21 +139,28 @@ public class Event {
         return info;
     }
 
-    public static boolean createEvent(String ownerId, Long createTime, Long startTime, Long endTime, String title,
+    public static Map<String, Object> createEvent(String ownerId, Long startTime, Long endTime, String title,
                                       String description, Map<String, Object>location, boolean isPublic, List<String> attendees) {
-        Event event = new Event(ownerId, createTime, startTime, endTime, title, description,
+        Event event = new Event(ownerId, startTime, endTime, title, description,
                 (location != null && !location.isEmpty()) ? new Location(location) : null, isPublic, attendees);
-        return event != null;
+        return event.getInfo();
+    }
+
+    public static Map<String, Object> updateEvent(String eventId, String ownerId, String title, Long startTime,
+                                                  Long endTime, String description, boolean isPublic,
+                                                  Map<String, Object> location, List<String> attendees) {
+        return new Event(eventId).update(ownerId, title, startTime, endTime, description, isPublic, location, attendees);
     }
 
     public static Map<String, Object> getInfoByEventId(String eventId) {
         return new Event(eventId).getInfo();
     }
 
-    public static List<Map<String, Object>> getEventsByUserId(String userId) {
+    public static List<Map<String, Object>> getEventsByUserId(String userId, String status) {
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-        ScanSpec scan = new ScanSpec().withFilterExpression("recipientId=:v_recipientId")
-                                            .withValueMap(new ValueMap().withString(":v_recipientId", userId));
+        ScanSpec scan = new ScanSpec().withFilterExpression("recipientId=:v_recipientId AND status=:v_status")
+                                            .withValueMap(new ValueMap().withString(":v_recipientId", userId)
+                                                                        .withString(":v_status", status));
         Iterator<Item> items = EVENT_SHARING_TABLE.scan(scan).iterator();
         while (items.hasNext()) {
             result.add(Event.getInfoByEventId(items.next().getString("eventId")));
