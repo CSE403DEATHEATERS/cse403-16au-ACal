@@ -2,6 +2,7 @@ package com.acalendar.acal.Login;
 
 import android.util.Log;
 
+import com.acalendar.acal.Events.EventsManager;
 import com.acalendar.acal.InvokeAPISample;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -9,12 +10,9 @@ import com.google.gson.reflect.TypeToken;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Yaoz on 11/11/16.
- */
-
 public class LoginedAccount {
     private static Account user;
+    private static EventsManager eventsManager;
 
     public static Account getCurrentUser() {
         if (user == null) {
@@ -35,6 +33,7 @@ public class LoginedAccount {
         HashMap<String,String> map = new Gson().fromJson(apiResponse, new TypeToken<HashMap<String, String>>(){}.getType());
         if (map.get("userId") != null) {
             user = new Account(map.get("userId"), map.get("username"), map.get("email"), map.get("lastname"), map.get("firstname"));
+            eventsManager = new EventsManager(user.getUserId());
         }
     }
 
@@ -48,6 +47,7 @@ public class LoginedAccount {
 
     public static void logOut() {
         user = null;
+        eventsManager = null;
     }
 
     public static boolean isLogedIn() {

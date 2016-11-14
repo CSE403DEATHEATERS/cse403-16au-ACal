@@ -3,6 +3,7 @@ package com.acalendar.acal.Events;
 import android.util.Log;
 
 import com.acalendar.acal.InvokeAPISample;
+import com.acalendar.acal.Login.LoginedAccount;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -25,7 +26,7 @@ public class EventsManager {
     private final static int initialSize = 100;
 
     public EventsManager(String uid) {
-        userId = uid;
+        userId = LoginedAccount.getCurrentUser().getUserId();
         Comparator<Event> eventComparator = new Comparator<Event>() {
             @Override
             public int compare(Event lhs, Event rhs) {
