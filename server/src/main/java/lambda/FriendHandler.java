@@ -45,13 +45,13 @@ public class FriendHandler {
      * @param context
      * @return a list of account info who is friend with the userId
      */
-    public List<Map<String, String>> getFriends(Map<String, String> input, Context context) {
+    public List<Map<String, Object>> getFriends(Map<String, String> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
         }
         String userId = input.get("userId");
         if ((userId == null || userId.isEmpty())) {
-            return new ArrayList<Map<String, String>>();
+            return new ArrayList<Map<String, Object>>();
         }
         System.out.println("(getFriends)" + userId);
         return fm.getFriendList(userId);

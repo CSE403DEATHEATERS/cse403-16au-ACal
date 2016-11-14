@@ -2,19 +2,18 @@ package com.acalendar.acal.Login;
 
 import android.util.Log;
 
+import com.acalendar.acal.Events.EventsManager;
 import com.acalendar.acal.InvokeAPISample;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-/**
- * Created by Yaoz on 11/11/16.
- */
 
 public class LoginedAccount {
     private static Account user;
+    private static EventsManager eventsManager;
 
     public static Account getCurrentUser() {
         if (user == null) {
@@ -36,6 +35,7 @@ public class LoginedAccount {
         if (!map.isEmpty()) {
             Map<String, String> account = (Map<String, String>) map.get("account");
             user = new Account(account.get("userId"), account.get("username"), account.get("email"), account.get("lastname"), account.get("firstname"));
+            eventsManager = new EventsManager((List<Map<String, Object>>) map.get("event"));
         }
     }
 
@@ -55,6 +55,7 @@ public class LoginedAccount {
 
     public static void logOut() {
         user = null;
+        eventsManager = null;
     }
 
     public static boolean isLogedIn() {
@@ -71,5 +72,9 @@ public class LoginedAccount {
 
     public static String getEmail() {
         return user.getEmail();
+    }
+
+    public static EventsManager getEventsManager() {
+        return eventsManager;
     }
 }

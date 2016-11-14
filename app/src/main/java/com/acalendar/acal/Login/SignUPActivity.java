@@ -66,7 +66,7 @@ public class SignUPActivity extends Activity {
                 String lastname = lastnameInput.getText().toString();
                 String email = emailInput.getText().toString();
                 String password = passwordInput.getText().toString();
-                Map<String, String> query = new HashMap<String, String>();
+                Map<String, String> query = new HashMap<>();
                 query.put("username", username);
                 query.put("password", password);
                 query.put("email", email);
