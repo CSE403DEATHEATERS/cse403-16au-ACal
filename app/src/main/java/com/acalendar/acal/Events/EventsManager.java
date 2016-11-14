@@ -2,7 +2,6 @@ package com.acalendar.acal.Events;
 
 import android.util.Log;
 
-import com.acalendar.acal.ApiResource;
 import com.acalendar.acal.InvokeAPISample;
 import com.acalendar.acal.Login.Account;
 import com.acalendar.acal.Login.LoginedAccount;
@@ -11,32 +10,22 @@ import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
 
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
 
 /**
  * Manage all events of this user. Can used to query events based on Date, add and delete events.
  */
 public class EventsManager {
     private final String userId;
-    PriorityQueue<Event> eventsQueue;
-    private final static int initialSize = 100;
+    Map<String, List<Event>> eventMap;
 
     public EventsManager(List<Map<String, Object>> listOfEventMaps) {
         userId = LoginedAccount.getCurrentUser().getUserId();
-        Comparator<Event> eventComparator = new Comparator<Event>() {
-            @Override
-            public int compare(Event lhs, Event rhs) {
-                Date lhsStartTime = lhs.getStartTime();
-                Date rhsStartTime = rhs.getStartTime();
-                return lhsStartTime.compareTo(rhsStartTime);
-            }
-        };
-        eventsQueue = new PriorityQueue<>(initialSize, eventComparator);
+        eventMap = new HashMap<>();
         parseAllEvents(listOfEventMaps);
     }
 
@@ -55,16 +44,19 @@ public class EventsManager {
 
             Event entry = new Event(eid, ownerId, createTime,
                     eventTitle, startTime, endTime, null, description, isPublic);
-
-            // TODO: list of participants uids
+            // set parsed locations
+            entry.setLocation(location);
+            // TODO: set list of participants uids
             List<String> listOfParticipantsUids = (List<String>) event.get("attendees");
             for (String uid : listOfParticipantsUids) {
                 entry.addParticipant(new Account(uid, null,null,null,null));
             }
-
-
-
-            this.eventsQueue.add(entry);
+            // put into map
+            String key = dateToString(startTime);
+            if (!eventMap.containsKey(key)) {
+                eventMap.put(key, new ArrayList<Event>());
+            }
+            eventMap.get(key).add(entry); // TODO: sort eventList
         }
     }
 
@@ -85,9 +77,9 @@ public class EventsManager {
             queryData.put("attendees", e.getListOfParticipantsUids());
         }
         if (e.getLocation() != null) {
-            queryData.put("location", e.getLocation()); // Location
+            queryData.put("location", e.getLocation().getInfo()); // Location
         }
-
+        Log.v("Test", "create new event query: " + queryData.toString());
         String jsonObjectBody = (new JSONObject(queryData)).toString();
         // submit request
         Log.v("Test", "create new event query: " + jsonObjectBody);
@@ -97,18 +89,21 @@ public class EventsManager {
         Map<String, Object> responseMap = new Gson().fromJson(apiResponse,
                 new TypeToken<HashMap<String, Object>>(){}.getType());
 
-        // TODO: set the returned eid and createtime and return status
         if (responseMap.isEmpty()) {
             return false;
         }
         Log.v("Test", responseMap.toString());
 
         String eid = (String) responseMap.get("eventId");
-        Date createTime = new Date((long) responseMap.get("createTime"));
+        Date createTime = new Date((long)(double)responseMap.get("createTime"));
         Log.v("Test", "event id was " + e.getEventId());
         e.setEventId(eid);
         e.setCreateTime(createTime);
-        boolean status = eventsQueue.add(e);
+        String key = dateToString(e.getStartTime());
+        if (!eventMap.containsKey(key)) {
+            eventMap.put(key, new ArrayList<Event>());
+        }
+        boolean status = eventMap.get(key).add(e);
         return status;
     }
 
@@ -121,6 +116,11 @@ public class EventsManager {
     public List<Event> getEventsInDate(Date eventDate) {
         // TODO: loop through the event queue to find events in given date: Binary Searchs
         return null;
+    }
+
+    private String dateToString(Date startTime) {
+        return startTime.getYear() + " "
+                + startTime.getMonth() + " " + startTime.getDate();
     }
 
 }

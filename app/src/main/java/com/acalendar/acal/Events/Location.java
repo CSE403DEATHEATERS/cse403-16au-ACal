@@ -1,5 +1,6 @@
 package com.acalendar.acal.Events;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,7 +27,7 @@ public class Location {
     }
 
     public Location(String address) {
-        this(-100000, -1000000, address, -100000, "fake state", "fake Stree", -1010101);
+        this(-1000.01, -10000.01, address, -100000, "fake state", "fake Stree", -1010101);
     }
 
     public double getLatitude() {
@@ -85,6 +86,19 @@ public class Location {
         this.streetNumber = streetNumber;
     }
 
+
+    public Map<String, Object> getInfo() {
+        Map<String, Object> info = new HashMap<>();
+        info.put("lat", new Double(this.lat));
+        info.put("lng", new Double(this.lng));
+        info.put("postal", new Integer(this.postal));
+        info.put("address", this.address);
+        info.put("state", this.state);
+        info.put("streetName", this.streetName);
+        info.put("streetNumber", this.streetNumber);
+        return info;
+    }
+
     /*
     "location" = {
         "lat" = "$input.params('lat')",
@@ -96,6 +110,9 @@ public class Location {
         "streetNumber" = "$input.params('streetNumber')"}
     */
     public static Location parseLocation(Map<String, Object> location) {
+        if (location == null || location.isEmpty()) {
+            return null;
+        }
         double lat = (Double) location.get("lat");
         double lng = (Double) location.get("lng");
         String address = (String) location.get("address");

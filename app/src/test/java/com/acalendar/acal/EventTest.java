@@ -70,7 +70,7 @@ public class EventTest {
     //////                     setLocation()                        /////
     /////////////////////////////////////////////////////////////////////
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void setLocation_nullLocation() {
         event.setLocation(null);
     }

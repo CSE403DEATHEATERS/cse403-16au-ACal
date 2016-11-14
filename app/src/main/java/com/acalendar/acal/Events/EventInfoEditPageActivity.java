@@ -50,14 +50,23 @@ public class EventInfoEditPageActivity  extends Activity {
     private Button saveButton;
     private String eventid;
 
+    private Date dateSelected;
+    private Date startTimeSelected;
+    private Date endTimeSelected;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_info_edit_page);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        // initialize fields
         startCalendar = Calendar.getInstance();
         endCalendar = Calendar.getInstance();
-        sdf = new SimpleDateFormat("MM/dd/yy", Locale.US);
+        sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+        startTimeSelected = startCalendar.getTime();
+        endTimeSelected = endCalendar.getTime();
+
         // get the widgets
         datePickerViewButton = (Button) findViewById(R.id.datePickerButton);
         startTimeViewButton = (Button) findViewById(R.id.startTimeViewButton);
@@ -81,6 +90,7 @@ public class EventInfoEditPageActivity  extends Activity {
                 startCalendar.set(Calendar.YEAR, year);
                 startCalendar.set(Calendar.MONTH, monthOfYear);
                 startCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                dateSelected = startCalendar.getTime();
                 datePickerViewButton.setText(sdf.format(startCalendar.getTime())); // only prints out the date
             }
         }, startCalendar.get(Calendar.YEAR),
@@ -98,6 +108,7 @@ public class EventInfoEditPageActivity  extends Activity {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 startCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 startCalendar.set(Calendar.MINUTE, minute);
+                startTimeSelected = startCalendar.getTime();
                 startTimeViewButton.setText(String.valueOf(hourOfDay) + ":" + String.valueOf(minute));
             }
         }, startCalendar.get(Calendar.HOUR_OF_DAY), startCalendar.get(Calendar.MINUTE), false);
@@ -114,6 +125,7 @@ public class EventInfoEditPageActivity  extends Activity {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 endCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 endCalendar.set(Calendar.MINUTE, minute);
+                endTimeSelected = endCalendar.getTime();
                 endTimeViewButton.setText(String.valueOf(hourOfDay) + ":" + String.valueOf(minute));
             }
         }, endCalendar.get(Calendar.HOUR_OF_DAY), endCalendar.get(Calendar.MINUTE), false);
@@ -140,31 +152,36 @@ public class EventInfoEditPageActivity  extends Activity {
             @Override
             public void onClick(View v) {
                 // TODO: alert any invalid inputs
-                // TODO: collect all information in this page. Backup remotely
                 if (eventid == null) {
-                    // TODO: call backend create event.
-                    // get all info of user input
+                    // get all info of user input and call backend create event.
                     EditText titleView = (EditText) findViewById(R.id.EventTitleEditText);
                     EditText locationView = (EditText) findViewById(R.id.locationEditText);
                     AutoCompleteTextView descriptionView = (AutoCompleteTextView) findViewById(R.id.multiAutoCompleteTextView);
                     String eventTitle = titleView.getText().toString();
                     String location = locationView.getText().toString();
                     String description = descriptionView.getText().toString();
-                    Button dateView = (Button) findViewById(R.id.datePickerButton);
-                    String date = dateView.getText().toString();
-                    String[] dateArr = date.split("/");
-                    int day = Integer.parseInt(dateArr[1]);
-                    int month = Integer.parseInt(dateArr[0]);
-                    int year = Integer.parseInt(dateArr[2]);
-                    Button startView = (Button) findViewById(R.id.startTimeViewButton);
-                    Button endView = (Button) findViewById(R.id.endTimeViewButton);
-                    String[] startArr = startView.getText().toString().split(":");
-                    String[] endArr = endView.getText().toString().split(":");
-                    Date startTime = new Date(year, month, day, Integer.parseInt(startArr[0]), Integer.parseInt(startArr[1]));
-                    Date endTime = new Date(year, month, day, Integer.parseInt(endArr[0]), Integer.parseInt(endArr[1]));
+
+
+//                    Button dateView = (Button) findViewById(R.id.datePickerButton);
+//                    String date = dateView.getText().toString();
+//                    String[] dateArr = date.split("/");
+//                    int day = Integer.parseInt(dateArr[1]);
+//                    int month = Integer.parseInt(dateArr[0]);
+//                    int year = Integer.parseInt(dateArr[2]);
+//                    Button startView = (Button) findViewById(R.id.startTimeViewButton);
+//                    Button endView = (Button) findViewById(R.id.endTimeViewButton);
+//                    String[] startArr = startView.getText().toString().split(":");
+//                    String[] endArr = endView.getText().toString().split(":");
+//                    Date startTime = new Date(year, month, day, Integer.parseInt(startArr[0].trim()),
+//                            Integer.parseInt(startArr[1].trim()));
+//                    Date endTime = new Date(year, month, day, Integer.parseInt(endArr[0].trim()),
+//                            Integer.parseInt(endArr[1].trim()));
+
+
                     boolean isPublic = !((CheckBox) findViewById(R.id.privateCheckbox)).isChecked();
 
-                    Event event = new Event(eventTitle, startTime, endTime, location, description, isPublic);
+                    Event event = new Event(eventTitle, startTimeSelected, endTimeSelected,
+                            location, description, isPublic);
 
                     LoginedAccount.getEventsManager().addEvent(event);
                 } else {

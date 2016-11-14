@@ -2,7 +2,6 @@ package com.acalendar.acal.Events;
 
 import com.acalendar.acal.Login.Account;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -104,7 +103,7 @@ public class Event {
         return startTime;
     }
 
-    public void setStartTime(Time startTime) {
+    public void setStartTime(Date startTime) {
         if (startTime == null) {
             throw new IllegalArgumentException("Start time passed in should not be null!");
         }
@@ -116,7 +115,7 @@ public class Event {
         return endTime;
     }
 
-    public void setEndTime(Time endTime) {
+    public void setEndTime(Date endTime) {
         if (endTime == null) {
             throw new IllegalArgumentException("End time passed in should not be null!");
         }
