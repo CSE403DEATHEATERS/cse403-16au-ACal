@@ -11,7 +11,12 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.TextView;
 
+import com.acalendar.acal.Events.AllEventsInSingleDayActivity;
 import com.acalendar.acal.Events.EventInfoEditPageActivity;
+import com.acalendar.acal.Events.EventsManager;
+
+import java.util.Calendar;
+import java.util.Date;
 
 
 /**
@@ -45,7 +50,7 @@ public class EventPoolFragment extends Fragment {
                  textView.setText(new StringBuilder()
                          .append("\nThe event(s) on ")
                          .append(year).append("-")
-                         .append(month).append("-")
+                         .append(month + 1).append("-")  // zero based index
                          .append(day).append(" :"));
                 year_x = year;
                 month_x = month;
@@ -56,7 +61,16 @@ public class EventPoolFragment extends Fragment {
         detail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intentToViewAll = new Intent(getActivity(),
+                        AllEventsInSingleDayActivity.class);
 
+                Calendar tempCal = Calendar.getInstance();
+                tempCal.set(Calendar.YEAR, year_x);
+                tempCal.set(Calendar.MONTH, month_x);
+                tempCal.set(Calendar.DAY_OF_MONTH, day_x);
+                Date date = tempCal.getTime();
+                intentToViewAll.putExtra("dateSelected", EventsManager.dateToString(date));
+                startActivity(intentToViewAll);
             }
         });
 
