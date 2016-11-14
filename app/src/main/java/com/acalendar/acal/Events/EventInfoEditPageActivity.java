@@ -5,19 +5,27 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.acalendar.acal.Login.LoginedAccount;
 import com.acalendar.acal.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * A page where user can edit/create a single event. This page is reached when clicked add in
@@ -135,7 +143,32 @@ public class EventInfoEditPageActivity  extends Activity {
                 // TODO: collect all information in this page. Backup remotely
                 if (eventid == null) {
                     // TODO: call backend create event.
+                    // get all info of user input
+                    EditText titleView = (EditText) findViewById(R.id.EventTitleEditText);
+                    EditText locationView = (EditText) findViewById(R.id.locationEditText);
+                    AutoCompleteTextView descriptionView = (AutoCompleteTextView) findViewById(R.id.multiAutoCompleteTextView);
+                    String eventTitle = titleView.getText().toString();
+                    String location = locationView.getText().toString();
+                    String description = descriptionView.getText().toString();
+                    Button dateView = (Button) findViewById(R.id.datePickerButton);
+                    String date = dateView.getText().toString();
+                    String[] dateArr = date.split("/");
+                    int day = Integer.parseInt(dateArr[1]);
+                    int month = Integer.parseInt(dateArr[0]);
+                    int year = Integer.parseInt(dateArr[2]);
+                    Button startView = (Button) findViewById(R.id.startTimeViewButton);
+                    Button endView = (Button) findViewById(R.id.endTimeViewButton);
+                    String[] startArr = startView.getText().toString().split(":");
+                    String[] endArr = endView.getText().toString().split(":");
+                    Date startTime = new Date(year, month, day, Integer.parseInt(startArr[0]), Integer.parseInt(startArr[1]));
+                    Date endTime = new Date(year, month, day, Integer.parseInt(endArr[0]), Integer.parseInt(endArr[1]));
+                    boolean isPublic = !((CheckBox) findViewById(R.id.privateCheckbox)).isChecked();
+
+                    Event event = new Event(eventTitle, startTime, endTime, location, description, isPublic);
+
+                    LoginedAccount.getEventsManager().addEvent(event);
                 } else {
+
                     // TODO: update the event which has eventid in DB
                 }
                 finish();

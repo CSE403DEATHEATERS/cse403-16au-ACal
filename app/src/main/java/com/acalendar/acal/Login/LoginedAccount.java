@@ -70,4 +70,8 @@ public class LoginedAccount {
     public static String getEmail() {
         return user.getEmail();
     }
+
+    public static EventsManager getEventsManager() {
+        return eventsManager;
+    }
 }
