@@ -2,6 +2,7 @@ package com.acalendar.acal.Login;
 
 import android.util.Log;
 
+import com.acalendar.acal.Email.EmailManager;
 import com.acalendar.acal.Events.EventsManager;
 import com.acalendar.acal.InvokeAPISample;
 import com.google.gson.Gson;
@@ -30,14 +31,10 @@ public class LoginedAccount {
         query.put("password", password);
         String apiResponse = InvokeAPISample.invokeAPI("GET", "/login", null, query);
         Log.v("testApi", "response: " + apiResponse);
-        String events = apiResponse.substring(1, apiResponse.indexOf(','));
-        String accountString = apiResponse.substring(apiResponse.indexOf(",") + 1, apiResponse.length() - 1);
-        String accountInfo = accountString.substring(accountString.indexOf(':') + 1, accountString.length());
-        Log.v("Test", "accountInfo" + accountInfo);
-        HashMap<String,String> map = new Gson().fromJson(accountInfo, new TypeToken<HashMap<String, String>>(){}.getType());
-        if (map.get("userId") != null) {
-            user = new Account(map.get("userId"), map.get("username"), map.get("email"), map.get("lastname"), map.get("firstname"));
-            eventsManager = new EventsManager(user.getUserId());
+        HashMap<String,Object> map = new Gson().fromJson(apiResponse, new TypeToken<HashMap<String, Object>>(){}.getType());
+        if (!map.isEmpty()) {
+            Map<String, String> account = (Map<String, String>) map.get("account");
+            user = new Account(account.get("userId"), account.get("username"), account.get("email"), account.get("lastname"), account.get("firstname"));
         }
     }
 
@@ -68,5 +65,9 @@ public class LoginedAccount {
 
     public static String getEmail() {
         return user.getEmail();
+    }
+
+    public static EventsManager getEventsManager() {
+        return eventsManager;
     }
 }
