@@ -99,12 +99,14 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_event_pool) {
+            toolbar.setTitle("Events");
             EventPoolFragment fragment = new EventPoolFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
             fragmentTransaction.commit();
         } else if (id == R.id.nav_friends) {
+            toolbar.setTitle("CalPals");
             FriendsFragment fragment = new FriendsFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
@@ -113,36 +115,42 @@ public class MainActivity extends AppCompatActivity
 
         }
         else if (id == R.id.nav_edit_profile) {
+            toolbar.setTitle("Edit Profile");
             ProfileFragment fragment = new ProfileFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
             fragmentTransaction.commit();
         } else if (id == R.id.nav_new_event) {
+            toolbar.setTitle("New Events");
             NewEventFragment fragment = new NewEventFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
             fragmentTransaction.commit();
         } else if (id == R.id.nav_notification) {
+            toolbar.setTitle("Notifications");
             NotifiFragment fragment = new NotifiFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
             fragmentTransaction.commit();
         } else if (id == R.id.nav_new_friend) {
+            toolbar.setTitle("New CalPals");
             NewFriend fragment = new NewFriend();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
             fragmentTransaction.commit();
         } else if (id == R.id.nav_settings) {
+            toolbar.setTitle("Settings");
             SettingFragment fragment = new SettingFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
             fragmentTransaction.commit();
         } else if (id == R.id.nav_public_events_pool) {
+            toolbar.setTitle("Public Events Pool");
             PublicEventsPoolFragment fragment = new PublicEventsPoolFragment();
             android.support.v4.app.FragmentTransaction fragmentTransaction =
                     getSupportFragmentManager().beginTransaction();

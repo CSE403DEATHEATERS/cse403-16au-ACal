@@ -31,6 +31,9 @@ public class EventsManager {
 
     private void parseAllEvents(List<Map<String, Object>> listOfEventMaps) {
         for (Map<String, Object> event : listOfEventMaps) {
+            if (event.size() == 0) {
+                continue;
+            }
             String eid = (String) event.get("eventId");
             String ownerId = (String) event.get("ownerId");
             Date createTime = new Date(((Double)event.get("createTime")).longValue());
