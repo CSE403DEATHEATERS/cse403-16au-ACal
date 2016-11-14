@@ -123,16 +123,7 @@ public class Event {
     public void setLocation(String address) {
         if (address != null && address.length() != 0) {
             //TODO: validate the addr, valid then put in actual data, otherwise putin fake data
-            /*
-            "location" = {
-                "lat" = "$input.params('lat')",
-                "lng" = "$input.params('lng')",
-                "address" = "$input.params('address')",
-                "postal" = "$input.params('postal')",
-                "state" = "$input.params('state')",
-                "streetName" = "$input.params('streetName')",
-                "streetNumber" = "$input.params('streetNumber')"}
-            */
+
             Location l = new Location(address);
             this.location = l;
         }

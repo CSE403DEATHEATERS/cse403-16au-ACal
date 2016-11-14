@@ -22,7 +22,7 @@ public class EventTest {
     private Boolean isPublic;
 
     @Mock
-    private Location location;
+    private String address;
 
     private final String eid = "An event id";
     private final String ownerId = "An ownerId";
@@ -36,7 +36,7 @@ public class EventTest {
         this.createTime = new Time((new Date()).getTime());
         this.isPublic = false;
 
-        this.event = new Event(eid, ownerId, createTime, eventTitle, startTime, endTime, location, description, isPublic);
+        this.event = new Event(eid, ownerId, createTime, eventTitle, startTime, endTime, address, description, isPublic);
     }
 
     /////////////////////////////////////////////////////////////////////

@@ -2,6 +2,7 @@ package com.acalendar.acal.Events;
 
 import android.util.Log;
 
+import com.acalendar.acal.ApiResource;
 import com.acalendar.acal.InvokeAPISample;
 import com.acalendar.acal.Login.LoginedAccount;
 import com.google.gson.Gson;
@@ -36,16 +37,37 @@ public class EventsManager {
             }
         };
         eventsQueue = new PriorityQueue<>(initialSize, eventComparator);
-        loadAllEvents();
+        // loadAllEvents();
     }
 
     private void loadAllEvents() {
-        // TODO: load all events data.
-        // GET
-        // userId
-        // /getEvents
+        // TODO: load/parse all events data.
+        Map<String, Object> queryData = new HashMap<>();
+        queryData.put("userId", this.userId);
+        String jsonObjectBody = new JSONObject(queryData).toString();
+
+        // submit request
+        Map<String, Object> responseMap = ApiResource.submitRequest(queryData,
+                "POST", ApiResource.REQUEST_CREATE_EVENT);
         // returned list<map<String, object>> each map is an Event, need to parse
     }
+
+    private void parseAllEvents(List<Map<String, Object>> listOfEventMaps) {
+        for (Map<String, Object> event : listOfEventMaps) {
+            String eid = (String) event.get("eventId");
+            String ownerId = (String) event.get("ownerId");
+            Date createTime = new Date(((long)event.get("createTime")));
+            String eventTitle = (String) event.get("title");
+            Date startTime = new Date(((long)event.get("startTime")));
+            Date endTime = new Date(((long)event.get("endTime")));
+            String description = (String) event.get("description");
+            Boolean isPublic = (Boolean) event.get("isPublic");
+            Map<String, Object> location = (Map<String, Object>) event.get("location");
+
+        }
+    }
+
+
 
     public boolean addEvent(Event e) {
         // put data into request

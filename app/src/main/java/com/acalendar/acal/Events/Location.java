@@ -1,5 +1,7 @@
 package com.acalendar.acal.Events;
 
+import java.util.Map;
+
 /**
  * Frontend model for Location
  */
@@ -10,10 +12,10 @@ public class Location {
     private int postal;
     private String state;
     private String streetName;
-    private String streetNumber;
+    private int streetNumber;
 
     public Location(double lat, double lng, String address, int postal,
-                    String state, String streetName, String streetNumber) {
+                    String state, String streetName, int streetNumber) {
         this.lat = lat;
         this.lng = lng;
         this.address = address;
@@ -24,7 +26,7 @@ public class Location {
     }
 
     public Location(String address) {
-        this(-100000, -1000000, address, -100000, "fake state", "fake Stree", "fake street number");
+        this(-100000, -1000000, address, -100000, "fake state", "fake Stree", -1010101);
     }
 
     public double getLatitude() {
@@ -75,12 +77,36 @@ public class Location {
         this.streetName = streetName;
     }
 
-    public String getStreetNumber() {
+    public int getStreetNumber() {
         return streetNumber;
     }
 
-    public void setStreetNumber(String streetNumber) {
+    public void setStreetNumber(int streetNumber) {
         this.streetNumber = streetNumber;
     }
+
+    /*
+    "location" = {
+        "lat" = "$input.params('lat')",
+        "lng" = "$input.params('lng')",
+        "address" = "$input.params('address')",
+        "postal" = "$input.params('postal')",
+        "state" = "$input.params('state')",
+        "streetName" = "$input.params('streetName')",
+        "streetNumber" = "$input.params('streetNumber')"}
+    */
+    public static Location parseLocation(Map<String, Object> location) {
+        double lat = (Double) location.get("lat");
+        double lng = (Double) location.get("lng");
+        String address = (String) location.get("address");
+        int postal = (Integer) location.get("postal");
+        String state = (String) location.get("state");
+        int streetName = (Integer) location.get("streetName");
+        String streetNumber = (String) location.get("streetNumber");
+        Location l = new Location(lat, lng, address,
+                postal, state, streetNumber, streetName);
+        return l;
+    }
+
 }
 
