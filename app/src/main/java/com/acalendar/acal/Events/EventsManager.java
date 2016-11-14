@@ -33,10 +33,13 @@ public class EventsManager {
         for (Map<String, Object> event : listOfEventMaps) {
             String eid = (String) event.get("eventId");
             String ownerId = (String) event.get("ownerId");
-            Date createTime = new Date(((long)event.get("createTime")));
+
+
+
+            Date createTime = new Date(((Double)event.get("createTime")).longValue());
             String eventTitle = (String) event.get("title");
-            Date startTime = new Date(((long)event.get("startTime")));
-            Date endTime = new Date(((long)event.get("endTime")));
+            Date startTime = new Date(((Double)event.get("startTime")).longValue());
+            Date endTime = new Date(((Double)event.get("endTime")).longValue());
             String description = (String) event.get("description");
             Boolean isPublic = (Boolean) event.get("isPublic");
             Map<String, Object> locationMap = (Map<String, Object>) event.get("location");
@@ -56,7 +59,8 @@ public class EventsManager {
             if (!eventMap.containsKey(key)) {
                 eventMap.put(key, new ArrayList<Event>());
             }
-            eventMap.get(key).add(entry); // TODO: sort eventList
+
+            Log.v("Test", key + eventMap.get(key).add(entry)); // TODO: sort eventList);
         }
     }
 
@@ -90,21 +94,27 @@ public class EventsManager {
                 new TypeToken<HashMap<String, Object>>(){}.getType());
 
         if (responseMap.isEmpty()) {
+            Log.v("Test", "responseMap is empty, failed to add new event");
             return false;
         }
         Log.v("Test", responseMap.toString());
 
         String eid = (String) responseMap.get("eventId");
-        Date createTime = new Date((long)(double)responseMap.get("createTime"));
-        Log.v("Test", "event id was " + e.getEventId());
+        Date createTime = new Date(((Double)responseMap.get("createTime")).longValue());
         e.setEventId(eid);
         e.setCreateTime(createTime);
         String key = dateToString(e.getStartTime());
+        Log.v("Test", "************************key gonna be added" + key);
         if (!eventMap.containsKey(key)) {
             eventMap.put(key, new ArrayList<Event>());
         }
         boolean status = eventMap.get(key).add(e);
         return status;
+    }
+
+    public boolean editEvent(Event originalEvent, Event newEvent) {
+        // TODO: diff 2 events, if different add the corresponding attribute to queryData
+        return false;
     }
 
     public boolean deleteEvent(String eventId) {
@@ -113,14 +123,21 @@ public class EventsManager {
         return false;
     }
 
-    public List<Event> getEventsInDate(Date eventDate) {
-        // TODO: loop through the event queue to find events in given date: Binary Searchs
-        return null;
+    public List<Event> getEventsInDate(String key) {
+        List<Event> ret = eventMap.get(key);
+        if (ret == null) {
+            return new ArrayList<>();
+        }
+        return ret;
     }
 
-    private String dateToString(Date startTime) {
+    public List<Event> getEventsInDate(Date eventDate) {
+        String key = dateToString(eventDate);
+        return getEventsInDate(key);
+    }
+
+    public static String dateToString(Date startTime) {
         return startTime.getYear() + " "
                 + startTime.getMonth() + " " + startTime.getDate();
     }
-
 }

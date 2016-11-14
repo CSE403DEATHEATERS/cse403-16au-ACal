@@ -116,12 +116,12 @@ public class Location {
         double lat = (Double) location.get("lat");
         double lng = (Double) location.get("lng");
         String address = (String) location.get("address");
-        int postal = (Integer) location.get("postal");
+        int postal = ((Double)location.get("postal")).intValue();
         String state = (String) location.get("state");
-        int streetName = (Integer) location.get("streetName");
-        String streetNumber = (String) location.get("streetNumber");
+        String streetName = (String)location.get("streetName");
+        int streetNumber = ((Double)location.get("streetNumber")).intValue();
         Location l = new Location(lat, lng, address,
-                postal, state, streetNumber, streetName);
+                postal, state, streetName, streetNumber);
         return l;
     }
 
