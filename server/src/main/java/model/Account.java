@@ -29,6 +29,10 @@ public class Account {
 	private String firstname;
 	private boolean login;
 
+    /**
+     * Constructor for searching account
+     * @param userId
+     */
     public Account(String userId) {
         this.userId = userId;
         GetItemSpec getItem = new GetItemSpec().withPrimaryKey("userId", userId);
@@ -44,6 +48,11 @@ public class Account {
         }
     }
 
+    /**
+     * Constructor for login account
+     * @param username
+     * @param password
+     */
 	public Account(String username, String password) {
 		this.username = username;
 		this.password = password;
@@ -74,6 +83,14 @@ public class Account {
         }
 	}
 
+    /**
+     * Constructor for creating account
+     * @param username
+     * @param password
+     * @param email
+     * @param lastname
+     * @param firstname
+     */
 	private Account(String username, String password, String email, String lastname, String firstname) {
         // only use for new account sign up
 		ScanSpec scan = new ScanSpec().withFilterExpression("username=:v_username OR email=:v_email")
@@ -118,10 +135,10 @@ public class Account {
     /**
      * Get information about the account
      *
-     * @return Map<String, String> stores account info
+     * @return Map<String, Object> stores account info
      */
-	private Map<String, String> getInfo() {
-		Map<String, String> info = new HashMap<String, String>();
+	private Map<String, Object> getInfo() {
+		Map<String, Object> info = new HashMap<String, Object>();
 		info.put("userId", this.userId);
 		info.put("username", this.username);
         info.put("email", this.email);
@@ -133,12 +150,12 @@ public class Account {
 	/**
 	 * Get login status of the account
 	 * 
-	 * @return Map<String, String> that stores necessary information of an account
+	 * @return Map<String, Object> that stores necessary information of an account
 	 * 							   if the account username and password is matched.
 	 * 							   If not, return empty map
 	 */
-	public Map<String, String> isLogin() {
-		return this.login ? this.getInfo() : new HashMap<String, String>();
+	public Map<String, Object> isLogin() {
+		return this.login ? this.getInfo() : new HashMap<String, Object>();
 	}
 	
 	/**
@@ -149,15 +166,20 @@ public class Account {
 	 * @param email String
 	 * @param firstname String
 	 * @param lastname String
-	 * @return Map<String, String> that stores necessary information of an account
+	 * @return Map<String, Object> that stores necessary information of an account
 	 */
-	public static Map<String, String> signup(String username, String password, String email, String lastname,
+	public static Map<String, Object> signup(String username, String password, String email, String lastname,
 											 String firstname) {
-		// TODO: check information is unique, save account to database, assign
 		Account newAccount = new Account(username, password, email, lastname, firstname);
 		return newAccount.isLogin();
 	}
 
+    /**
+     *
+     * @param username
+     * @param email
+     * @return
+     */
 	public static String getUserIdByUsernameOrEmail(String username, String email) {
         username = username.isEmpty() ? null : username;
         email = email.isEmpty() ? null : email;
@@ -177,7 +199,7 @@ public class Account {
         }
     }
 
-	public static Map<String, String> getInfoByUserId(String userId) {
+	public static Map<String, Object> getInfoByUserId(String userId) {
         return new Account(userId).getInfo();
     }
 
