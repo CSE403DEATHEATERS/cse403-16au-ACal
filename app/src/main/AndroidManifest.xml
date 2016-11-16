@@ -75,7 +75,7 @@
             android:name=".Events.AllEventsInSingleDayActivity"></activity>
 
 
-        <activity android:name=".Events.InviteFriendsActivity"></activity>
+        <activity android:name=".Friend.InviteFriendsActivity"></activity>
     </application>
 
 </manifest>

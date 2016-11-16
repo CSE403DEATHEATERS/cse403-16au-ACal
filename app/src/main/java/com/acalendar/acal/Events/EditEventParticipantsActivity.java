@@ -57,7 +57,7 @@ public class EditEventParticipantsActivity extends Activity {
 
         view = this.findViewById(android.R.id.content);
         adapter = new ArrayAdapter<>(EditEventParticipantsActivity.this,
-                R.layout.invite_friend_item, R.id.friend_name, friendsNamesToBeDisplayed);
+                R.layout.friend_list_item, R.id.friend_name, friendsNamesToBeDisplayed);
         populateListView();
 
         inviteButton.setOnClickListener(new View.OnClickListener() {

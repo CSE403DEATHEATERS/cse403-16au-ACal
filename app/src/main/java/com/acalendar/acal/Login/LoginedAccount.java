@@ -46,7 +46,6 @@ public class LoginedAccount {
         Log.v("testApi", "response: " + apiResponse);
         HashMap<String,Object> map = new Gson().fromJson(apiResponse, new TypeToken<HashMap<String, Object>>(){}.getType());
         if (map.isEmpty()) {
-            // TODO: error handling, notify user signup fail
             return false;
 
         }
@@ -76,5 +75,9 @@ public class LoginedAccount {
 
     public static EventsManager getEventsManager() {
         return eventsManager;
+    }
+
+    public static String getUserId() {
+        return user.getUserId();
     }
 }

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar1"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    <Button
+        android:id="@+id/findSelected"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+
+        <SearchView
+            android:queryHint="Search by name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/friend_search_view_inviting" >
+
+        </SearchView>
+    </LinearLayout>
+
+    <TextView
+        android:text="People you may know"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:id="@+id/textView2"
+        android:textSize="30sp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <ListView android:id="@+id/friends_list_inviting" android:layout_width="match_parent"
+                android:layout_height="406dp" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

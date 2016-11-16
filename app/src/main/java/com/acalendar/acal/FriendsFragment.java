@@ -20,7 +20,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import com.acalendar.acal.Login.LoginedAccount;
 
 import java.util.ArrayList;
 
@@ -45,37 +45,50 @@ public class FriendsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // replace this to db friend list
-        friends = new ArrayList<String>();
-        friends.add("Lisa");
-        friends.add("Moo Moo");
-        friends.add("Gao");
-        friends.add("Snail");
-        friends.add("Shen");
-        friends.add("YaoZi");
-
 
         view = inflater.inflate(R.layout.fragment_friends, container, false);
+        friends =  getFriendListFromServer(LoginedAccount.getUserId());
+
         adapter = new ArrayAdapter<String>(getActivity(), R.layout.da_item, friends);
 
-        populateListView();
+        friendListView();
         addNewFriend();
 
         return view;
     }
 
+    private ArrayList<String> getFriendListFromServer(String userId) {
+        ArrayList<String> res = new ArrayList<>();
+        // TODO: 11/15/2016  copy the list of friends from datebase to res by userId
+        res.add("momo");
+        res.add("Lisa");
+//        Map<String, String> query = new HashMap<>();
+//        query.put("userId", userId);
+//        String apiResponse = InvokeAPISample.invokeAPI("GET", "/login", null, query);
+//        Log.v("testApi", "response: " + apiResponse);
+//        List<Map<String, Object>> list = new Gson().fromJson(apiResponse, new TypeToken<List<HashMap<String, Object>>>(){}.getType());
+//        for (Map<String, Object> friendAccount: list) {
+//            String fullName = friendAccount.get("firstname") + " "+ friendAccount.get("lastname");
+//            res.add(fullName);
+//        }
+        return res;
+    }
+
     private void addNewFriend() {
         Button add = (Button) view.findViewById(R.id.friends_add);
         final TextView userinputtext = (TextView) view.findViewById(R.id.friends_add_input);
+        String userId = userinputtext.toString();
+
+        // TODO: 11/15/2016 add friend by query by userId
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                View v = (LayoutInflater.from(getActivity())).inflate(R.layout.friend_add_usr_inpt, null);
+                View v = (LayoutInflater.from(getActivity())).inflate(R.layout.dialog_frame, null);
                 AlertDialog.Builder altdial = new AlertDialog.Builder(getActivity());
                 altdial.setView(v);
 
-                final EditText userInput = (EditText) v.findViewById(R.id.frined_usr_inpt);
+                final EditText userInput = (EditText) v.findViewById(R.id.dialog_friend_add_input);
 
                 altdial.setCancelable(true)
                         .setPositiveButton("Enter", new DialogInterface.OnClickListener() {
@@ -92,7 +105,7 @@ public class FriendsFragment extends Fragment {
     }
 
 
-    private void populateListView() {
+    private void friendListView() {
 
         ListView listView = (ListView) view.findViewById(R.id.friends_list);
         listView.setAdapter(adapter);

@@ -15,8 +15,6 @@ import android.widget.TextView;
 import com.acalendar.acal.Login.LoginedAccount;
 import com.acalendar.acal.amazonaws.mobile.AWSMobileClient;
 
-import com.acalendar.acal.amazonaws.mobile.AWSMobileClient;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -46,7 +44,6 @@ public class MainActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
-
 
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -135,13 +132,10 @@ public class MainActivity extends AppCompatActivity
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
             fragmentTransaction.commit();
-        } else if (id == R.id.nav_new_friend) {
+        } else if (id == R.id.nav_invite_friend) {
             toolbar.setTitle("New CalPals");
-            NewFriend fragment = new NewFriend();
-            android.support.v4.app.FragmentTransaction fragmentTransaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
-            fragmentTransaction.commit();
+            Intent InviteFriendActivity = new Intent(this, com.acalendar.acal.Friend.InviteFriendsActivity.class);
+            startActivityForResult(InviteFriendActivity, 2);
         } else if (id == R.id.nav_settings) {
             toolbar.setTitle("Settings");
             SettingFragment fragment = new SettingFragment();
