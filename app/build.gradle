@@ -59,11 +59,3 @@ sourceSets {
 }
 
 apply plugin: 'com.google.gms.google-services'
-
-configurations {
-    custom
-}
-
-dependencies {
-    custom 'com.google.firebase:firebase-messaging:9.8.0'
-}
