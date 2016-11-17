@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "815556410873",
+    "firebase_url": "https://acal-5a2a9.firebaseio.com",
+    "project_id": "acal-5a2a9",
+    "storage_bucket": "acal-5a2a9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815556410873:android:e67e04600abb3d9c",
+        "android_client_info": {
+          "package_name": "com.acalendar.acal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "815556410873-438o0rq7k75k1gk0pnu2ohuj7ngvdb75.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBv0Dg3p3wFHvJpRmLPjIgmKw3W7t0Ymbw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
