@@ -2,8 +2,10 @@ package com.acalendar.acal.Login;
 
 import android.util.Log;
 
+import com.acalendar.acal.ApiResource;
 import com.acalendar.acal.Events.EventsManager;
 import com.acalendar.acal.InvokeAPISample;
+import com.google.android.gms.common.api.Api;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -29,9 +31,8 @@ public class LoginedAccount {
         Map<String, String> query = new HashMap<>();
         query.put("username", username);
         query.put("password", password);
-        String apiResponse = InvokeAPISample.invokeAPI("GET", "/login", null, query);
-        Log.v("testApi", "response: " + apiResponse);
-        HashMap<String,Object> map = new Gson().fromJson(apiResponse, new TypeToken<HashMap<String, Object>>(){}.getType());
+        Map<String, Object> map = ApiResource.submitRequest(query, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_LOGIN);
+        Log.v("testApi", "response: " + map);
         if (!map.isEmpty()) {
             Map<String, String> account = (Map<String, String>) map.get("account");
             user = new Account(account.get("userId"), account.get("username"), account.get("email"), account.get("lastname"), account.get("firstname"));
@@ -39,16 +40,17 @@ public class LoginedAccount {
         }
     }
 
-    public static void signUp(String body) {
+    public static boolean signUp(String body) {
         Log.v("Test", "query: " + body);
         Map<String, String> query = new HashMap<>();
-        String apiResponse = InvokeAPISample.invokeAPI("POST", "/signup", body, query);
-        Log.v("testApi", "response: " + apiResponse);
-//        HashMap<String,Object> map = new Gson().fromJson(apiResponse, new TypeToken<HashMap<String, Object>>(){}.getType());
-//        if (map.isEmpty()) {
-//            // TODO: error handling, notify user signup fail
-//
-//        }
+        Map<String,Object> map = ApiResource.submitRequest(query, body, ApiResource.POST_REQUEST, ApiResource.REQUEST_SIGNUP);
+//        String apiResponse = InvokeAPISample.invokeAPI("POST", "/signup", body, query);
+        Log.v("testApi", "response: " + map);
+        if (map.isEmpty()) {
+            return false;
+
+        }
+        return true;
     }
 
     public static void logOut() {
@@ -74,5 +76,9 @@ public class LoginedAccount {
 
     public static EventsManager getEventsManager() {
         return eventsManager;
+    }
+
+    public static String getUserId() {
+        return user.getUserId();
     }
 }
