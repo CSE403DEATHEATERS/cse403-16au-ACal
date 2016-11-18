@@ -21,6 +21,7 @@
         android:required="true" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -46,7 +47,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-            android:label="Login" />
+        android:label="Login" />
         <activity android:name=".Login.FrontPageActivity" />
         <activity
             android:name=".Login.SignUPActivity"
@@ -70,13 +71,9 @@
         <activity
             android:name=".Events.EventInfoEditPageActivity"
             android:label="event edit page" />
-        <activity
-            android:name=".Events.EditEventParticipantsActivity"></activity>
-        <activity
-            android:name=".Events.AllEventsInSingleDayActivity"></activity>
-
-
-        <activity android:name=".Events.InviteFriendsActivity"></activity>
+        <activity android:name=".Events.EditEventParticipantsActivity" />
+        <activity android:name=".Events.AllEventsInSingleDayActivity" />
+        <activity android:name=".Friend.InviteFriendsActivity" />
     </application>
 
 </manifest>

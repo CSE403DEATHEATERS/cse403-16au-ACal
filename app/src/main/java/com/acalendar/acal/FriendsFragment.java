@@ -2,6 +2,7 @@ package com.acalendar.acal;
 
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,12 +18,23 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import com.acalendar.acal.Friend.Friend;
+import com.acalendar.acal.Login.LoginedAccount;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -34,7 +46,7 @@ public class FriendsFragment extends Fragment {
     ArrayAdapter adapter;
 
     //replace this local friends list to the db friends list
-    ArrayList<String> friends;
+    ArrayList<Friend> friends;
 
     public FriendsFragment() {
         // Required empty public constructor
@@ -45,54 +57,93 @@ public class FriendsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // replace this to db friend list
-        friends = new ArrayList<String>();
-        friends.add("Lisa");
-        friends.add("Moo Moo");
-        friends.add("Gao");
-        friends.add("Snail");
-        friends.add("Shen");
-        friends.add("YaoZi");
-
 
         view = inflater.inflate(R.layout.fragment_friends, container, false);
-        adapter = new ArrayAdapter<String>(getActivity(), R.layout.da_item, friends);
+        getFriendListFromServer(LoginedAccount.getUserId());
 
-        populateListView();
+        adapter = new ArrayAdapter<Friend>(getActivity(), R.layout.da_item, friends);
+
+        friendListView();
         addNewFriend();
 
         return view;
     }
 
+    private void getFriendListFromServer(String userId) {
+        friends = new ArrayList<Friend>();
+        Map<String, String> query = new HashMap<>();
+        query.put("userId", userId);
+        Map<String, Object> apiResponse = ApiResource.submitRequest(query, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_GET_FRIENDS);
+        List<Map<String, String>> friendsResponse = (List) apiResponse.get("friends");
+//        Map<String, String> query = new HashMap<>();
+//        query.put("userId", userId);
+//        String apiResponse = InvokeAPISample.invokeAPI("GET", "/login", null, query);
+//        Log.v("testApi", "response: " + apiResponse);
+//        List<Map<String, Object>> list = new Gson().fromJson(apiResponse, new TypeToken<List<HashMap<String, Object>>>(){}.getType());
+//        for (Map<String, Object> friendAccount: list) {
+//            String fullName = friendAccount.get("firstname") + " "+ friendAccount.get("lastname");
+//            res.add(fullName);
+//        }
+        if (!friendsResponse.isEmpty()) {
+            friends.clear();
+            for (Map<String, String> friend : friendsResponse) {
+                Friend thisFriend = new Friend(friend.get("firstname") + " " + friend.get("lastname"), friend.get("email"), friend.get("username"), friend.get("userId"));
+                friends.add(thisFriend);
+            }
+        }
+    }
+
     private void addNewFriend() {
         Button add = (Button) view.findViewById(R.id.friends_add);
         final TextView userinputtext = (TextView) view.findViewById(R.id.friends_add_input);
+        String userId = userinputtext.toString();
+
+
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                View v = (LayoutInflater.from(getActivity())).inflate(R.layout.friend_add_usr_inpt, null);
+                View v = (LayoutInflater.from(getActivity())).inflate(R.layout.dialog_frame, null);
                 AlertDialog.Builder altdial = new AlertDialog.Builder(getActivity());
                 altdial.setView(v);
 
-                final EditText userInput = (EditText) v.findViewById(R.id.frined_usr_inpt);
-
+                final EditText userInputView = (EditText) v.findViewById(R.id.dialog_friend_add_input);
+                final String userInput = userInputView.getText().toString();
+                Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
+                Matcher m = p.matcher(userInput);
+                Map<String, String> bodyMap = new HashMap<String, String>();
+                bodyMap.put("userId_1", LoginedAccount.getUserId());
+                if (m.matches()) {
+                    bodyMap.put("email", userInput);
+                } else {
+                    bodyMap.put("username", userInput);
+                }
+                JSONObject jsonBody = new JSONObject(bodyMap);
+                String body = jsonBody.toString();
+                Map<String, Object> apiResponse = ApiResource.submitRequest(new HashMap<String, String>(), body, ApiResource.POST_REQUEST, ApiResource.REQUEST_ADD_FRIEND);
+                if (apiResponse.get("result") != null) {
+                    if (apiResponse.get("result").equals("true")) {
+                        //TODO: give feedback message
+                    } else {
+                        //TODO: ask for input again
+                    }
+                }
                 altdial.setCancelable(true)
                         .setPositiveButton("Enter", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                userinputtext.setText(userInput.getText());
+                                userinputtext.setText(userInput);
                             }
                         });
                 Dialog dialog = altdial.create();
-                dialog.setTitle("Enter the name of the person you want to add");
+                dialog.setTitle("Enter the username or email of the person you want to add");
                 dialog.show();
             }
         });
     }
 
 
-    private void populateListView() {
+    private void friendListView() {
 
         ListView listView = (ListView) view.findViewById(R.id.friends_list);
         listView.setAdapter(adapter);

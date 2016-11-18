@@ -8,7 +8,16 @@ import android.widget.*;
 
 import com.acalendar.acal.Login.LoginedAccount;
 import com.acalendar.acal.R;
+import com.google.android.gms.drive.realtime.internal.event.ObjectChangedDetails;
 import com.google.android.gms.vision.text.Text;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -50,7 +59,6 @@ public class EventInfoDisplayPageActivity extends Activity {
             new Button.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    String eid = eventInfoBundle.getString("eid");
                     // TODO: call back end to delete event id from local and aws DATABASE
                     // TODO: notify status of deletion: success/failed.
                 }
@@ -70,15 +78,31 @@ public class EventInfoDisplayPageActivity extends Activity {
 
     private void UpdateTextViews(Bundle eventInfoBundle) {
         TextView titleView = (TextView) findViewById(R.id.eventTitleDisplayText);
-        titleView.setText("Beta Demo");
+        Object eid = eventInfoBundle.get("eventId");
+        Map<String, Object> eventMap = LoginedAccount.getEventsManager().getEventById(eid.toString());
+        if (eventMap.get("title") != null)
+            titleView.setText(eventMap.get("title").toString());
         TextView descripView = (TextView) findViewById(R.id.DescriptionDisplayText);
-        descripView.setText("Demo");
+        if (eventMap.get("description") != null)
+            descripView.setText(eventMap.get("description").toString());
         TextView  locationView = (TextView) findViewById(R.id.LocationDisplayText);
-        locationView.setText("Savery Hall");
+        if (eventMap.get("location") != null) {
+            Map<String, String> add = new HashMap<>();
+            Map<String,String> map = (Map<String, String>) eventMap.get("location");
+            locationView.setText(map.get("address"));
+        }
         TextView startView = (TextView) findViewById(R.id.startTimeDisplayText);
-        startView.setText("11/14/16 9:00");
+        if (eventMap.get("startTime") != null) {
+            Date startTime = new Date(((Double)eventMap.get("startTime")).longValue());
+            Format format = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+            startView.setText(format.format(startTime).toString());
+        }
         TextView endView = (TextView) findViewById(R.id.endTimeDisplayText);
-        endView.setText("11/14/16 10:00");
+        if (eventMap.get("endTime") != null) {
+            Date endTime = new Date(((Double)eventMap.get("endTime")).longValue());
+            Format format = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+            endView.setText(format.format(endTime).toString());
+        }
     }
 
     @Override

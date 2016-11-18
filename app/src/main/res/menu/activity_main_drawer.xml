@@ -29,7 +29,7 @@
                 android:id="@+id/nav_new_event"
                 android:title="Event Invitation" />
             <item
-                android:id="@+id/nav_new_friend"
+                android:id="@+id/nav_invite_friend"
                 android:title="Friend Invitation" />
         </menu>
     </item>

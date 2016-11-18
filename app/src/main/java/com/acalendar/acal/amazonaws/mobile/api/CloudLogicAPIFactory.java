@@ -36,6 +36,7 @@ public class CloudLogicAPIFactory {
                                                   "/getFriends",
                                                   "/acceptFriend",
                                                   "/createEvent",
+                                                  "/getEvents",
                                               },
                                               com.acalendar.acal.amazonaws.mobile.api.id84kwqa3pde.LambdaMicroserviceClient.class),
         };
