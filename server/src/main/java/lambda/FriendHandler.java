@@ -13,10 +13,8 @@ public class FriendHandler {
     /*
     public static void main(String[] args) {
         Map<String, String> input = new HashMap<String, String>();
-        input.put("userId_1", "acdb4fe0-5945-442c-9252-fdceb9682820");
-        input.put("userId_2", "");
-        input.put("username", "myfriend");
-        input.put("email", "");
+        input.put("userId_1", "7d9943f4-4326-44a6-9f39-50f890140b26");
+        input.put("username", "shenz");
 
         //List<Map<String, String>> res = new FriendHandler().getFriend(input, null);
 
@@ -26,8 +24,7 @@ public class FriendHandler {
 
         //System.out.println(res.size());
 
-        boolean add = new FriendHandler().addFriend(input, null);
-        System.out.println(add);
+        System.out.println(new FriendHandler().addFriend(input, null));
 
     }
     */
