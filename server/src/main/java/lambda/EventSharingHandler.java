@@ -23,15 +23,24 @@ public class EventSharingHandler {
         return EventSharingService.editEventAttendees(eventId, userId, invited, removed);
     }
 
-    public boolean handleEventInvitation(Map<String, String> input, Context context) {
+    public boolean acceptEventInvitation(Map<String, String> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
         }
         String userId = input.get("userId");
         String eventId = input.get("eventId");
-        String action = input.get("action");
 
-        return EventSharingService.handleEventInvitation(userId, eventId, action.equals("ACCEPT")? true: false);
+        return EventSharingService.handleEventInvitation(userId, eventId, true);
+    }
+
+    public boolean declineEventInvitation(Map<String, String> input, Context context) {
+        if (input == null) {
+            throw new IllegalArgumentException();
+        }
+        String userId = input.get("userId");
+        String eventId = input.get("eventId");
+
+        return EventSharingService.handleEventInvitation(userId, eventId, false);
     }
 
     public List<Map<String, Object>> getPendingEventsByUserId(Map<String, String> input, Context context) {
