@@ -29,7 +29,7 @@ public class EventSharingHandler {
         }
         String userId = input.get("userId");
         String eventId = input.get("eventId");
-        String accept = input.get("accept");
+        String action = input.get("action");
 
         return new ArrayList<>();
     }
