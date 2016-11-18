@@ -31,6 +31,10 @@ public class CreateMessageResponse {
      * @param messageId
      * */
     public void setMessageId(String messageId) {
+        if (messageId == null) {
+            throw new IllegalArgumentException("Message id passed in should not be null!");
+        }
+
         this.messageId = messageId;
     }
 
