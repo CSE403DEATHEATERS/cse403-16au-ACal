@@ -22,7 +22,7 @@ public class MessageHandlerTest {
 
     @Mock
     MessageHandler mockMessageHandler;
-
+    
 
     private final String MESSAGE_CONTENT = "This is a message content.";
     private final String EVENT_ID = "This is an event id.";
