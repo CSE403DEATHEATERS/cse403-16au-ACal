@@ -20,9 +20,19 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.acalendar.acal.Friend.Friend;
 import com.acalendar.acal.Login.LoginedAccount;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -34,7 +44,7 @@ public class FriendsFragment extends Fragment {
     ArrayAdapter adapter;
 
     //replace this local friends list to the db friends list
-    ArrayList<String> friends;
+    ArrayList<Friend> friends;
 
     public FriendsFragment() {
         // Required empty public constructor
@@ -47,9 +57,9 @@ public class FriendsFragment extends Fragment {
 
 
         view = inflater.inflate(R.layout.fragment_friends, container, false);
-        friends =  getFriendListFromServer(LoginedAccount.getUserId());
+        getFriendListFromServer(LoginedAccount.getUserId());
 
-        adapter = new ArrayAdapter<String>(getActivity(), R.layout.da_item, friends);
+        adapter = new ArrayAdapter<Friend>(getActivity(), R.layout.da_item, friends);
 
         friendListView();
         addNewFriend();
@@ -57,11 +67,12 @@ public class FriendsFragment extends Fragment {
         return view;
     }
 
-    private ArrayList<String> getFriendListFromServer(String userId) {
-        ArrayList<String> res = new ArrayList<>();
-        // TODO: 11/15/2016  copy the list of friends from datebase to res by userId
-        res.add("momo");
-        res.add("Lisa");
+    private void getFriendListFromServer(String userId) {
+        friends = new ArrayList<Friend>();
+        Map<String, String> query = new HashMap<>();
+        query.put("userId", userId);
+        Map<String, Object> apiResponse = ApiResource.submitRequest(query, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_GET_FRIENDS);
+        List<Map<String, String>> friendsResponse = (List) apiResponse.get("friends");
 //        Map<String, String> query = new HashMap<>();
 //        query.put("userId", userId);
 //        String apiResponse = InvokeAPISample.invokeAPI("GET", "/login", null, query);
@@ -71,7 +82,13 @@ public class FriendsFragment extends Fragment {
 //            String fullName = friendAccount.get("firstname") + " "+ friendAccount.get("lastname");
 //            res.add(fullName);
 //        }
-        return res;
+        if (!friendsResponse.isEmpty()) {
+            friends.clear();
+            for (Map<String, String> friend : friendsResponse) {
+                Friend thisFriend = new Friend(friend.get("firstname") + " " + friend.get("lastname"), friend.get("email"), friend.get("username"), friend.get("userId"));
+                friends.add(thisFriend);
+            }
+        }
     }
 
     private void addNewFriend() {
@@ -79,7 +96,7 @@ public class FriendsFragment extends Fragment {
         final TextView userinputtext = (TextView) view.findViewById(R.id.friends_add_input);
         String userId = userinputtext.toString();
 
-        // TODO: 11/15/2016 add friend by query by userId
+
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,17 +105,34 @@ public class FriendsFragment extends Fragment {
                 AlertDialog.Builder altdial = new AlertDialog.Builder(getActivity());
                 altdial.setView(v);
 
-                final EditText userInput = (EditText) v.findViewById(R.id.dialog_friend_add_input);
+                final EditText userInputView = (EditText) v.findViewById(R.id.dialog_friend_add_input);
+                final String userInput = userInputView.getText().toString();
+                Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
+                Matcher m = p.matcher(userInput);
+                Map<String, String> bodyMap = new HashMap<String, String>();
+                bodyMap.put("userId_1", LoginedAccount.getUserId());
+                if (m.matches()) {
+                    bodyMap.put("email", userInput);
+                } else {
+                    bodyMap.put("username", userInput);
+                }
+                JSONObject jsonBody = new JSONObject(bodyMap);
+                String body = jsonBody.toString();
+                Map<String, Object> apiResponse = ApiResource.submitRequest(new HashMap<String, String>(), body, ApiResource.POST_REQUEST, ApiResource.REQUEST_ADD_FRIEND);
+                if (apiResponse.get("result") != null) {
+                    if (apiResponse.get("result").equals("true")) {
 
+                    }
+                }
                 altdial.setCancelable(true)
                         .setPositiveButton("Enter", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                userinputtext.setText(userInput.getText());
+                                userinputtext.setText(userInput);
                             }
                         });
                 Dialog dialog = altdial.create();
-                dialog.setTitle("Enter the name of the person you want to add");
+                dialog.setTitle("Enter the username or email of the person you want to add");
                 dialog.show();
             }
         });

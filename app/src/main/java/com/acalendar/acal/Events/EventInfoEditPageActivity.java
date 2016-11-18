@@ -148,6 +148,7 @@ public class EventInfoEditPageActivity  extends Activity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                saveButton.setClickable(false);
                 // TODO: alert any invalid inputs
                 if (eventid == null) {
                     // get all info of user input and call backend create event.
@@ -165,6 +166,7 @@ public class EventInfoEditPageActivity  extends Activity {
                             location, description, isPublic);
 
                     LoginedAccount.getEventsManager().addEvent(event);
+                    saveButton.setClickable(true);
                 } else {
 
                     // TODO: update the event which has eventid in DB

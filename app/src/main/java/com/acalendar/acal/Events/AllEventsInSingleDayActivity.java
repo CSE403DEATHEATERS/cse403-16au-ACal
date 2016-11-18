@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.acalendar.acal.Email.EmailManager;
 import com.acalendar.acal.Login.LoginedAccount;
 import com.acalendar.acal.R;
 
@@ -20,6 +21,7 @@ public class AllEventsInSingleDayActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LoginedAccount.getEventsManager().refreshAllAcceptedEvents();
         setContentView(R.layout.events_in_single_day_page);
         LinearLayout eventsViewContainer =
                 (LinearLayout) findViewById(R.id.eventsLinearLayoutScroll);
