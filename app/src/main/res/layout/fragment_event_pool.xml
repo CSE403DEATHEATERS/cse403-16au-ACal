@@ -12,9 +12,13 @@
         android:layout_height="112dp">
 
         <Button
-            android:text="add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:text="Add Event"
+            android:textAllCaps="false"
+            android:textSize="18dp"
+            android:textColor="#bcdcd4"
+            android:layout_width="120dp"
+            android:layout_height="38dp"
+            android:background="@drawable/back_button_style"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
@@ -25,7 +29,9 @@
 
     <CalendarView
         android:layout_width="match_parent"
-        android:layout_height="301dp"
+        android:layout_height="356dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/event_pool_calendarView" />
