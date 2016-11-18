@@ -2,6 +2,7 @@ package com.acalendar.acal.Events;
 
 import android.util.Log;
 
+import com.acalendar.acal.ApiResource;
 import com.acalendar.acal.InvokeAPISample;
 import com.acalendar.acal.Login.Account;
 import com.acalendar.acal.Login.LoginedAccount;
@@ -23,13 +24,19 @@ import java.util.Map;
 public class EventsManager {
     private final String userId;
     Map<String, List<Event>> eventMap;
+    Map<String, Map<String, Object>> idToEventMap;
 
     public EventsManager(List<Map<String, Object>> listOfEventMaps) {
         userId = LoginedAccount.getCurrentUser().getUserId();
         eventMap = new HashMap<>();
         parseAllEvents(listOfEventMaps);
+        idToEventMap = new HashMap<>();
+        parseEventsWithId(listOfEventMaps);
     }
 
+    /*
+     * reload all events into local event list
+     */
     private void parseAllEvents(List<Map<String, Object>> listOfEventMaps) {
         for (Map<String, Object> event : listOfEventMaps) {
             if (event.size() == 0) {
@@ -60,10 +67,20 @@ public class EventsManager {
             if (!eventMap.containsKey(key)) {
                 eventMap.put(key, new ArrayList<Event>());
             }
-
+            if (!idToEventMap.containsKey(eid)) {
+                idToEventMap.put(eid, event);
+            }
             Log.v("Test", "key of this event is " + key);
             Log.v("Test", "entry added status : " + eventMap.get(key).add(entry));
             // TODO: sort eventList;
+        }
+    }
+
+    private void parseEventsWithId(List<Map<String, Object>> listOfEventMaps) {
+        for (Map<String, Object> event : listOfEventMaps) {
+            if (event.size() == 0)
+                continue;
+            idToEventMap.put(event.get("eventId").toString(), event);
         }
     }
 
@@ -112,6 +129,9 @@ public class EventsManager {
             eventMap.put(key, new ArrayList<Event>());
         }
         boolean status = eventMap.get(key).add(e);
+        if (!idToEventMap.containsKey(e.getEventId())) {
+            idToEventMap.put(e.getEventId(), responseMap);
+        }
         return status;
     }
 
@@ -139,9 +159,33 @@ public class EventsManager {
         return getEventsInDate(key);
     }
 
+    public Map<String, Object> getEventById(String eid) {
+        return this.idToEventMap.get(eid);
+    }
     public static String dateToString(Date startTime) {
         return startTime.getYear() + " "
                 + startTime.getMonth() + " " + startTime.getDate();
+    }
+
+    public void refreshAllEvents() {
+        Map<String, String> query = new HashMap<>();
+        query.put("userId", this.userId);
+        Map<String, Object> apiResponse = ApiResource.submitRequest(query, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_GET_EVENTS);
+        List<Map<String, String>> acceptedEvents = (List)apiResponse.get("ACCEPT");
+        List<Map<String, String>> pendingEvents = (List)apiResponse.get("PENDING");
+
+    }
+
+    public void refreshAllAcceptedEvents() {
+        Map<String, String> query = new HashMap<>();
+        query.put("userId", this.userId);
+        query.put("status", "ACCEPT");
+        Map<String, Object> apiResponse = ApiResource.submitRequest(query, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_GET_EVENTS);
+        List<Map<String, Object>> acceptedEvents = (List)apiResponse.get("ACCEPT");
+        eventMap.clear();
+        idToEventMap.clear();
+        parseAllEvents(acceptedEvents);
+
     }
 
     /***
@@ -164,4 +208,5 @@ public class EventsManager {
 
         return results;
     }
+
 }
