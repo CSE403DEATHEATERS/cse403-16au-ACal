@@ -151,7 +151,7 @@ public class EventsManager {
         if (ret == null) {
             return new ArrayList<>();
         }
-        return ret;
+        return new ArrayList<Event>(ret);
     }
 
     public List<Event> getEventsInDate(Date eventDate) {
@@ -196,7 +196,7 @@ public class EventsManager {
     public List<Date> getAllDates() {
         List<Date> results = new ArrayList<Date>();
 
-        for (String date : eventMap.keySet()) {
+        for (String date : this.eventMap.keySet()) {
             String[] splited = date.split(" ");
             int year = Integer.parseInt(splited[0]) - 100 + 2000;
             int month = Integer.parseInt(splited[1]);
