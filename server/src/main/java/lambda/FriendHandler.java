@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 public class FriendHandler {
-    private FriendManager fm;
 
     /*
     public static void main(String[] args) {
@@ -33,28 +32,25 @@ public class FriendHandler {
     }
     */
 
-
-    public FriendHandler() {
-        fm = new FriendManager();
-    }
-
     /**
      * Get friend list lambda
      *
-     * @param input userId as key in a Map<String, String> indicating the user
+     * @param input userId as key in a Map<String, Object> indicating the user
      * @param context
      * @return a list of account info who is friend with the userId
      */
-    public List<Map<String, Object>> getFriends(Map<String, String> input, Context context) {
+    public Map<String, Object> getFriends(Map<String, String> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
         }
         String userId = input.get("userId");
         if ((userId == null || userId.isEmpty())) {
-            return new ArrayList<Map<String, Object>>();
+            return new HashMap<String, Object>();
         }
         System.out.println("(getFriends)" + userId);
-        return fm.getFriendList(userId);
+        Map<String, Object> result = new HashMap<>();
+        result.put("friends", FriendManager.getFriendList(userId));
+        return result;
     }
 
     /**
@@ -66,7 +62,7 @@ public class FriendHandler {
      * @param context
      * @return true if request is sent, false if other user doesn't exist or already friends
      */
-    public boolean addFriend(Map<String, String> input, Context context) {
+    public Map<String, Object> addFriend(Map<String, String> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
         }
@@ -76,10 +72,12 @@ public class FriendHandler {
         String email = input.get("email");
         if ((userId_1 == null || userId_1.isEmpty()) || ((userId_2 == null || userId_2.isEmpty()) &&
                 (username == null || username.isEmpty()) && (email == null || email.isEmpty()))) {
-            return false;
+            return new HashMap<String, Object>();
         }
         System.out.println("(addFriend)" + userId_1 + ":" + userId_2 + ":" + username + ":" + email);
-        return fm.sendFriendRequest(userId_1, userId_2, username, email);
+        Map<String, Object> result = new HashMap<>();
+        result.put("result", FriendManager.sendFriendRequest(userId_1, userId_2, username, email));
+        return result;
     }
 
     /**
@@ -91,16 +89,18 @@ public class FriendHandler {
      * @param context
      * @return true if request is rejected, false if other user doesn't exist or no request between them
      */
-    public boolean rejectFriend(Map<String, String> input, Context context) {
+    public Map<String, Object> rejectFriend(Map<String, String> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
         }
         String userId_1 = input.get("userId_1");
         String userId_2 = input.get("userId_2");
         if ((userId_1 == null || userId_1.isEmpty()) || (userId_2 == null || userId_2.isEmpty())) {
-            return false;
+            return new HashMap<String, Object>();
         }
-        return fm.processFriendRequest(userId_1, userId_2, false);
+        Map<String, Object> result = new HashMap<>();
+        result.put("result", FriendManager.processFriendRequest(userId_1, userId_2, false));
+        return result;
     }
 
     /**
@@ -112,15 +112,17 @@ public class FriendHandler {
      * @param context
      * @return true if request is accepted, false if other user doesn't exist or no request between them
      */
-    public boolean acceptFriend(Map<String, String> input, Context context) {
+    public Map<String, Object> acceptFriend(Map<String, String> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
         }
         String userId_1 = input.get("userId_1");
         String userId_2 = input.get("userId_2");
         if ((userId_1 == null || userId_1.isEmpty()) || (userId_2 == null || userId_2.isEmpty())) {
-            return false;
+            return new HashMap<String, Object>();
         }
-        return fm.processFriendRequest(userId_1, userId_2, true);
+        Map<String, Object> result = new HashMap<>();
+        result.put("result", FriendManager.processFriendRequest(userId_1, userId_2, true));
+        return result;
     }
 }

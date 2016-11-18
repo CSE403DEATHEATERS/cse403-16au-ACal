@@ -3,23 +3,22 @@ package lambda;
 import com.amazonaws.services.lambda.runtime.Context;
 import model.Account;
 import model.Event;
+import model.FriendManager;
 
 import java.util.*;
 
 public class AccountHandler {
 
-    /*
 	public static void main(String[] args) {
-		Map<String, Object> test = new HashMap<String, Object>();
-		test.put("username", "hehe");
+		Map<String, String> test = new HashMap<String, String>();
+		test.put("username", "rettymoo");
 		test.put("password", "hehe");
         test.put("email", "hehe");
         test.put("firstname", "hehe");
         test.put("lastname", "hehe");
 		//System.out.println(test.get("heh"));
-		System.out.println(new AccountHandler().signup(test, null));
+		System.out.println(new AccountHandler().login(test, null));
 	}
-	*/
 
 	/**
 	 * Login lambda
@@ -43,6 +42,7 @@ public class AccountHandler {
 		if (!loginInfo.isEmpty()) {
 			res.put("account", new Account(username, password).isLogin());
 			res.put("event", Event.getEventsByUserId((String)loginInfo.get("userId"), "ACCEPT"));
+			res.put("friend", FriendManager.getFriendList((String)loginInfo.get("userId")));
 		}
         return res;
 	}
