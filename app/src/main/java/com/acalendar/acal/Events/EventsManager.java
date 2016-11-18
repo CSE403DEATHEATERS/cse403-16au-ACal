@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -141,5 +142,26 @@ public class EventsManager {
     public static String dateToString(Date startTime) {
         return startTime.getYear() + " "
                 + startTime.getMonth() + " " + startTime.getDate();
+    }
+
+    /***
+     * Get all the dates on which this user has events scheduled.
+     *
+     * @return a list of Date objects
+     */
+    public List<Date> getAllDates() {
+        List<Date> results = new ArrayList<Date>();
+
+        for (String date : eventMap.keySet()) {
+            String[] splited = date.split(" ");
+            int year = Integer.parseInt(splited[0]) - 100 + 2000;
+            int month = Integer.parseInt(splited[1]);
+            int day = Integer.parseInt(splited[2]);
+
+            Date coolDate = new GregorianCalendar(year, month, day).getTime();
+            results.add(coolDate);
+        }
+
+        return results;
     }
 }
