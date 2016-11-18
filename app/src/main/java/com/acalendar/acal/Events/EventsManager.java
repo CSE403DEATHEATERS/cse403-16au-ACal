@@ -62,7 +62,8 @@ public class EventsManager {
             }
 
             Log.v("Test", "key of this event is " + key);
-            Log.v("Test", "entry added status : " + eventMap.get(key).add(entry));
+            //Log.v("Test", "entry added status : " + eventMap.get(key).add(entry));
+            eventMap.get(key).add(entry);
             // TODO: sort eventList;
         }
     }
@@ -131,7 +132,7 @@ public class EventsManager {
         if (ret == null) {
             return new ArrayList<>();
         }
-        return ret;
+        return new ArrayList<>(ret);
     }
 
     public List<Event> getEventsInDate(Date eventDate) {
@@ -150,18 +151,20 @@ public class EventsManager {
      * @return a list of Date objects
      */
     public List<Date> getAllDates() {
-        List<Date> results = new ArrayList<Date>();
+        List<Date> datesToMark = new ArrayList<Date>();
 
-        for (String date : eventMap.keySet()) {
+        for (String date : this.eventMap.keySet()) {
             String[] splited = date.split(" ");
             int year = Integer.parseInt(splited[0]) - 100 + 2000;
             int month = Integer.parseInt(splited[1]);
             int day = Integer.parseInt(splited[2]);
 
+            System.out.println("SIZE " + this.eventMap.keySet().size());
+
             Date coolDate = new GregorianCalendar(year, month, day).getTime();
-            results.add(coolDate);
+            datesToMark.add(coolDate);
         }
 
-        return results;
+        return datesToMark;
     }
 }

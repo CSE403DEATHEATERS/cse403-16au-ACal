@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
-        System.out.println("LoginedAccount.getEventsManager " + LoginedAccount.getEventsManager());
-        System.out.println("LoginedAccount.isLoggedIn " + LoginedAccount.isLogedIn());
+        System.out.println("In MainActivity.onCreate: LoginedAccount.getEventsManager " + LoginedAccount.getEventsManager());
+        System.out.println("In MainActivity.onCreate: LoginedAccount.isLoggedIn " + LoginedAccount.isLogedIn());
         EventPoolFragment fragment = new EventPoolFragment();
         android.support.v4.app.FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
@@ -183,7 +183,6 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-        System.out.println("Hello??????????????????");
         CaldroidFragment caldroidFragment = new CaldroidFragment();
         Bundle args = new Bundle();
         Calendar cal = Calendar.getInstance();
@@ -196,9 +195,13 @@ public class MainActivity extends AppCompatActivity
         t.replace(R.id.event_pool_calendarView, caldroidFragment);
         t.commit();
 
+        System.out.println("In MainActivity.onActivityResult: LoginedAccount.getEventsManager " + LoginedAccount.getEventsManager());
+        System.out.println("In MainActivity.onActivityResult: LoginedAccount.isLoggedIn " + LoginedAccount.isLogedIn());
+
         // TODO:
         // for every date that contains event, change its background as done above
         List<Date> datesToMark = LoginedAccount.getEventsManager().getAllDates();
+        System.out.println("DatesToMark SIZE " + datesToMark.size());
         for (Date date : datesToMark) {
             System.out.println("LALALALALALALA " + date);
             ColorDrawable blue = new ColorDrawable();
