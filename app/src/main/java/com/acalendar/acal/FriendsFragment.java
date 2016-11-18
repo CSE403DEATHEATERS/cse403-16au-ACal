@@ -2,6 +2,7 @@ package com.acalendar.acal;
 
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -121,7 +123,9 @@ public class FriendsFragment extends Fragment {
                 Map<String, Object> apiResponse = ApiResource.submitRequest(new HashMap<String, String>(), body, ApiResource.POST_REQUEST, ApiResource.REQUEST_ADD_FRIEND);
                 if (apiResponse.get("result") != null) {
                     if (apiResponse.get("result").equals("true")) {
-
+                        //TODO: give feedback message
+                    } else {
+                        //TODO: ask for input again
                     }
                 }
                 altdial.setCancelable(true)
