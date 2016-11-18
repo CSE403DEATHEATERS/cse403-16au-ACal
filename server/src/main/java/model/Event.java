@@ -103,19 +103,19 @@ public class Event {
                 item.withString("description", this.description);
             }
             EVENT_TABLE.putItem(item);
-            TableWriteItems attendeeList = new TableWriteItems(EVENT_SHARING_TABLE_NAME);
-            attendeeList.addItemToPut(new Item().withPrimaryKey("eventId", this.eventId, "recipientId", ownerId)
-                    .withString("inviteStatus",  "ACCEPT")
-                    .withNumber("sentTime", new Date().getTime()));
-            if (attendees != null) {
-                for (String attendee : attendees) {
-                    attendeeList.addItemToPut(new Item().withPrimaryKey("eventId", this.eventId, "recipientId", attendee)
-                            .withString("inviteStatus", "PENDING")
-                            .withNumber("sentTime", new Date().getTime()));
-                }
-            }
-            BatchWriteItemSpec batch = new BatchWriteItemSpec().withTableWriteItems(attendeeList);
-            dynamoDB.batchWriteItem(batch);
+//            TableWriteItems attendeeList = new TableWriteItems(EVENT_SHARING_TABLE_NAME);
+//            attendeeList.addItemToPut(new Item().withPrimaryKey("eventId", this.eventId, "recipientId", ownerId)
+//                    .withString("inviteStatus",  "ACCEPT")
+//                    .withNumber("sentTime", new Date().getTime()));
+//            if (attendees != null) {
+//                for (String attendee : attendees) {
+//                    attendeeList.addItemToPut(new Item().withPrimaryKey("eventId", this.eventId, "recipientId", attendee)
+//                            .withString("inviteStatus", "PENDING")
+//                            .withNumber("sentTime", new Date().getTime()));
+//                }
+//            }
+//            BatchWriteItemSpec batch = new BatchWriteItemSpec().withTableWriteItems(attendeeList);
+//            dynamoDB.batchWriteItem(batch);
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
