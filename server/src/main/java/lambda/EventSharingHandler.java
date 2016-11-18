@@ -1,9 +1,9 @@
 package lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
+import model.Event;
 import model.EventSharingService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +23,7 @@ public class EventSharingHandler {
         return EventSharingService.editEventAttendees(eventId, userId, invited, removed);
     }
 
-    public List<String> handleEventInvitation(Map<String, String> input, Context context) {
+    public boolean handleEventInvitation(Map<String, String> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
         }
@@ -31,7 +31,14 @@ public class EventSharingHandler {
         String eventId = input.get("eventId");
         String action = input.get("action");
 
-        return new ArrayList<>();
+        return EventSharingService.handleEventInvitation(userId, eventId, action.equals("ACCEPT")? true: false);
     }
 
+    public List<Map<String, Object>> getPendingEventsByUserId(Map<String, String> input, Context context) {
+        if (input == null) {
+            throw new IllegalArgumentException();
+        }
+        String userId = input.get("userId");
+        return Event.getEventsByUserId(userId, "PENDING");
+    }
 }

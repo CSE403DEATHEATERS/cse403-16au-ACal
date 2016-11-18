@@ -1,9 +1,11 @@
 package model;
 
 import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.dynamodbv2.document.PrimaryKey;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.TableWriteItems;
 import com.amazonaws.services.dynamodbv2.document.spec.BatchWriteItemSpec;
+import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,4 +51,25 @@ public class EventSharingService {
 
         return (List<String>) Event.getInfoByEventId(eventId).get("attendees");
     }
+
+    public static boolean handleEventInvitation(String userId, String eventId, boolean accept) {
+        GetItemSpec getItem = new GetItemSpec().withPrimaryKey(new PrimaryKey("eventId", eventId, "recipientId", userId));
+        Item item = EVENT_SHARING_TABLE.getItem(getItem);
+        if (item == null || item.getString("inviteStatus") == null) {
+            return false;
+        }
+        if (!item.getString("inviteStatus").equals("PENDING")) {
+            return false;
+        }
+
+        if (accept) {
+            item = new Item().withPrimaryKey(new PrimaryKey("eventId", eventId, "recipientId", userId));
+            EVENT_SHARING_TABLE.putItem(item);
+        } else {
+            EVENT_SHARING_TABLE.deleteItem(new PrimaryKey("eventId", eventId, "recipientId", userId));
+        }
+
+        return true;
+    }
+
 }
