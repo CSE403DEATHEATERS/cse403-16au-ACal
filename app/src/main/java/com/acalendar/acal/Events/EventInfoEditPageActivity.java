@@ -48,8 +48,6 @@ public class EventInfoEditPageActivity  extends Activity {
     private String eventid;
 
     private Date dateSelected;
-    private Date startTimeSelected;
-    private Date endTimeSelected;
 
 
     @Override
@@ -61,8 +59,6 @@ public class EventInfoEditPageActivity  extends Activity {
         startCalendar = Calendar.getInstance();
         endCalendar = Calendar.getInstance();
         sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
-        startTimeSelected = startCalendar.getTime();
-        endTimeSelected = endCalendar.getTime();
 
         // get the widgets
         datePickerViewButton = (Button) findViewById(R.id.datePickerButton);
@@ -105,10 +101,11 @@ public class EventInfoEditPageActivity  extends Activity {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 startCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 startCalendar.set(Calendar.MINUTE, minute);
-                startTimeSelected = startCalendar.getTime();
+                //startTimeSelected = startCalendar.getTime();
                 startTimeViewButton.setText(String.valueOf(hourOfDay) + ":" + String.valueOf(minute));
             }
         }, startCalendar.get(Calendar.HOUR_OF_DAY), startCalendar.get(Calendar.MINUTE), false);
+
         startTimeViewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,13 +113,14 @@ public class EventInfoEditPageActivity  extends Activity {
             }
         });
         endCalendar = (Calendar) startCalendar.clone();
-        // set up start time picker dialogs
+
+        // set up end time picker dialogs
         etpDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 endCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 endCalendar.set(Calendar.MINUTE, minute);
-                endTimeSelected = endCalendar.getTime();
+                // endTimeSelected = endCalendar.getTime();
                 endTimeViewButton.setText(String.valueOf(hourOfDay) + ":" + String.valueOf(minute));
             }
         }, endCalendar.get(Calendar.HOUR_OF_DAY), endCalendar.get(Calendar.MINUTE), false);
@@ -162,10 +160,11 @@ public class EventInfoEditPageActivity  extends Activity {
 
                     boolean isPublic = !((CheckBox) findViewById(R.id.privateCheckbox)).isChecked();
 
-                    Event event = new Event(eventTitle, startTimeSelected, endTimeSelected,
+                    Event event = new Event(eventTitle, startCalendar.getTime(), endCalendar.getTime(),
                             location, description, isPublic);
 
                     LoginedAccount.getEventsManager().addEvent(event);
+                    Log.v("EventInfoEditPage", "Save button clicked, start time is" + startCalendar.getTime());
                     saveButton.setClickable(true);
                 } else {
 
