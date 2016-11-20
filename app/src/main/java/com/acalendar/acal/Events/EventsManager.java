@@ -26,12 +26,12 @@ public class EventsManager {
     Map<String, List<Event>> eventMap;
     Map<String, Map<String, Object>> idToEventMap;
 
-    public EventsManager(List<Map<String, Object>> listOfEventMaps) {
+    public EventsManager(Map<String, List<Map<String, Object>>> mapOfListofEventMaps) {
         userId = LoginedAccount.getCurrentUser().getUserId();
         eventMap = new HashMap<>();
-        parseAllEvents(listOfEventMaps);
         idToEventMap = new HashMap<>();
-        parseEventsWithId(listOfEventMaps);
+        parseAllEvents(mapOfListofEventMaps.get("ACCEPT"));
+        parseEventsWithId(mapOfListofEventMaps.get("ACCEPT"));
     }
 
     /*
@@ -69,6 +69,7 @@ public class EventsManager {
             if (!eventMap.containsKey(key)) {
                 eventMap.put(key, new ArrayList<Event>());
             }
+            
             if (!idToEventMap.containsKey(eid)) {
                 idToEventMap.put(eid, event);
             }
