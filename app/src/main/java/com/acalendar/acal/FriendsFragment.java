@@ -75,15 +75,6 @@ public class FriendsFragment extends Fragment {
         query.put("userId", userId);
         Map<String, Object> apiResponse = ApiResource.submitRequest(query, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_GET_FRIENDS);
         List<Map<String, String>> friendsResponse = (List) apiResponse.get("friends");
-//        Map<String, String> query = new HashMap<>();
-//        query.put("userId", userId);
-//        String apiResponse = InvokeAPISample.invokeAPI("GET", "/login", null, query);
-//        Log.v("testApi", "response: " + apiResponse);
-//        List<Map<String, Object>> list = new Gson().fromJson(apiResponse, new TypeToken<List<HashMap<String, Object>>>(){}.getType());
-//        for (Map<String, Object> friendAccount: list) {
-//            String fullName = friendAccount.get("firstname") + " "+ friendAccount.get("lastname");
-//            res.add(fullName);
-//        }
         if (!friendsResponse.isEmpty()) {
             friends.clear();
             for (Map<String, String> friend : friendsResponse) {
@@ -111,7 +102,7 @@ public class FriendsFragment extends Fragment {
                 final String userInput = userInputView.getText().toString();
                 Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
                 Matcher m = p.matcher(userInput);
-                Map<String, String> bodyMap = new HashMap<String, String>();
+                Map<String, String> bodyMap = new HashMap<>();
                 bodyMap.put("userId_1", LoginedAccount.getUserId());
                 if (m.matches()) {
                     bodyMap.put("email", userInput);

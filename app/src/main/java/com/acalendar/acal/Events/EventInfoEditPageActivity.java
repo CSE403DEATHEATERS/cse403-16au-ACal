@@ -21,7 +21,6 @@ import com.acalendar.acal.R;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -41,14 +40,17 @@ public class EventInfoEditPageActivity  extends Activity {
     private Button datePickerViewButton;
     private DatePickerDialog dpDialog;
 
-    private SimpleDateFormat sdf;
+    private SimpleDateFormat dateFormat;
+    private SimpleDateFormat timeFormat;
 
     private Button manageParticipantButton;
     private Button saveButton;
-    private String eventid;
+    private Event eventObjectToEdit;  // a copy of the event to be edit
 
-    private Date dateSelected;
-
+    private EditText titleView;
+    private EditText locationView;
+    private AutoCompleteTextView descriptionView;
+    private CheckBox privateCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +60,8 @@ public class EventInfoEditPageActivity  extends Activity {
         // initialize fields
         startCalendar = Calendar.getInstance();
         endCalendar = Calendar.getInstance();
-        sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+        dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+        timeFormat = new SimpleDateFormat("HH:mm", Locale.US);
 
         // get the widgets
         datePickerViewButton = (Button) findViewById(R.id.datePickerButton);
@@ -66,15 +69,27 @@ public class EventInfoEditPageActivity  extends Activity {
         endTimeViewButton = (Button) findViewById(R.id.endTimeViewButton);
         saveButton = (Button) findViewById(R.id.saveEditButton);
         manageParticipantButton = (Button) findViewById(R.id.manageParticipantButton);
+        titleView = (EditText) findViewById(R.id.EventTitleEditText);
+        locationView = (EditText) findViewById(R.id.locationEditText);
+        descriptionView = (AutoCompleteTextView) findViewById(R.id.multiAutoCompleteTextView);
+        privateCheckBox = (CheckBox) findViewById(R.id.privateCheckbox);
 
-        if (false) {  // TODO: if previous page gives event info
-            // TODO: set eventid
+        // get intent
+        Intent intentRecieved = getIntent();
+        boolean addNew = intentRecieved.getExtras().getBoolean("AddNew");
+        Log.v("EventEditActivity", "is adding new event? :" + addNew);
+        if (!addNew) {
+            // editing old events -> display old values
+            eventObjectToEdit = intentRecieved.getParcelableExtra("eventObjectToEdit");
+            Log.v("EventEditActivity", "eventObjectToEdit is" + eventObjectToEdit);
+            displayOldValues(this.eventObjectToEdit);
+            // disable sharing button since we decided to remove the share function from edit
+            manageParticipantButton.setVisibility(View.GONE);
         } else {
-            datePickerViewButton.setText(sdf.format(startCalendar.getTime()));
-            startTimeViewButton.setText(startCalendar.get(Calendar.HOUR_OF_DAY)
-                    + " : " + startCalendar.get(Calendar.MINUTE));
-            endTimeViewButton.setText(startCalendar.get(Calendar.HOUR_OF_DAY)
-                    + " : " + startCalendar.get(Calendar.MINUTE));
+            // adding new event, set default text, eventToBeEdit is null
+            datePickerViewButton.setText(dateFormat.format(startCalendar.getTime()));
+            startTimeViewButton.setText(timeFormat.format(startCalendar.getTime()));
+            endTimeViewButton.setText(timeFormat.format(startCalendar.getTime()));
         }
         // set up date picker dialog
         dpDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -83,8 +98,7 @@ public class EventInfoEditPageActivity  extends Activity {
                 startCalendar.set(Calendar.YEAR, year);
                 startCalendar.set(Calendar.MONTH, monthOfYear);
                 startCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                dateSelected = startCalendar.getTime();
-                datePickerViewButton.setText(sdf.format(startCalendar.getTime())); // only prints out the date
+                datePickerViewButton.setText(dateFormat.format(startCalendar.getTime())); // only prints out the date
             }
         }, startCalendar.get(Calendar.YEAR),
                 startCalendar.get(Calendar.MONTH), startCalendar.get(Calendar.DAY_OF_MONTH));
@@ -101,8 +115,7 @@ public class EventInfoEditPageActivity  extends Activity {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 startCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 startCalendar.set(Calendar.MINUTE, minute);
-                //startTimeSelected = startCalendar.getTime();
-                startTimeViewButton.setText(String.valueOf(hourOfDay) + ":" + String.valueOf(minute));
+                startTimeViewButton.setText(timeFormat.format(startCalendar.getTime()));
             }
         }, startCalendar.get(Calendar.HOUR_OF_DAY), startCalendar.get(Calendar.MINUTE), false);
 
@@ -121,7 +134,7 @@ public class EventInfoEditPageActivity  extends Activity {
                 endCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 endCalendar.set(Calendar.MINUTE, minute);
                 // endTimeSelected = endCalendar.getTime();
-                endTimeViewButton.setText(String.valueOf(hourOfDay) + ":" + String.valueOf(minute));
+                endTimeViewButton.setText(timeFormat.format(endCalendar.getTime()));
             }
         }, endCalendar.get(Calendar.HOUR_OF_DAY), endCalendar.get(Calendar.MINUTE), false);
         endTimeViewButton.setOnClickListener(new View.OnClickListener() {
@@ -131,9 +144,7 @@ public class EventInfoEditPageActivity  extends Activity {
             }
         });
 
-        // location picker is just a editText for now; may be changed later
-
-        // share with friends -> goes to select participatting Friends Page
+        // share with friends -> goes to select participating Friends Page, only visible when add new
         manageParticipantButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,36 +159,39 @@ public class EventInfoEditPageActivity  extends Activity {
             public void onClick(View v) {
                 saveButton.setClickable(false);
                 // TODO: alert any invalid inputs
-                if (eventid == null) {
-                    // get all info of user input and call backend create event.
-                    EditText titleView = (EditText) findViewById(R.id.EventTitleEditText);
-                    EditText locationView = (EditText) findViewById(R.id.locationEditText);
-                    AutoCompleteTextView descriptionView = (AutoCompleteTextView) findViewById(R.id.multiAutoCompleteTextView);
-                    String eventTitle = titleView.getText().toString();
-                    String location = locationView.getText().toString();
-                    String description = descriptionView.getText().toString();
-
-
-                    boolean isPublic = !((CheckBox) findViewById(R.id.privateCheckbox)).isChecked();
-
-                    Event event = new Event(eventTitle, startCalendar.getTime(), endCalendar.getTime(),
-                            location, description, isPublic);
-
-                    LoginedAccount.getEventsManager().addEvent(event);
-                    Log.v("EventInfoEditPage", "Save button clicked, start time is" + startCalendar.getTime());
-                    saveButton.setClickable(true);
+                String eventTitle = titleView.getText().toString();
+                String location = locationView.getText().toString();
+                String description = descriptionView.getText().toString();
+                boolean isPublic = !(privateCheckBox.isChecked());
+                Event newEvent = new Event(eventTitle, startCalendar.getTime(), endCalendar.getTime(),
+                        location, description, isPublic);
+                if (eventObjectToEdit == null) {
+                    // create new
+                    LoginedAccount.getEventsManager().addEvent(newEvent);
+                    saveButton.setClickable(true);  // TODO: why??
                 } else {
-
-                    // TODO: update the event which has eventid in DB
+                    // edit
+                    LoginedAccount.getEventsManager().editEvent(eventObjectToEdit, newEvent);
                 }
                 finish();
             }
         });
     }
 
+    private void displayOldValues(Event event) {
+        titleView.setText(event.getEventTitle());
+        datePickerViewButton.setText(dateFormat.format(event.getStartTime()));
+        startTimeViewButton.setText(timeFormat.format(event.getStartTime()));
+        endTimeViewButton.setText(timeFormat.format(event.getEndTime()));
+        locationView.setText(event.getLocation().getAddress());
+        descriptionView.setText(event.getDescription());
+        privateCheckBox.setChecked(!event.isPublic());
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+        // TODO: this should be called when user is returned from manage participants page.
         Log.v("Test", "onActivityResult is called; result is returned");
         if (resultCode == RESULT_CANCELED) {
             // TODO: nothing for now.

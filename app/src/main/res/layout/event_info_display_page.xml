@@ -131,8 +131,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/DeleteButton"
                     android:layout_weight="1"
-                    style="@style/Widget.AppCompat.Button.Borderless" />1
-
+                    style="@style/Widget.AppCompat.Button.Borderless" />
             </LinearLayout>
 
             <Button
