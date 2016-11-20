@@ -10,13 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.acalendar.acal.Events.AllEventsInSingleDayActivity;
 import com.acalendar.acal.Events.EventInfoEditPageActivity;
-import com.acalendar.acal.Events.EventsManager;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 
 /**
@@ -40,24 +36,7 @@ public class EventPoolFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_event_pool, container, false);
 
-        Button detail = (Button) view.findViewById((R.id.calendar_button));
         Button add = (Button) view.findViewById((R.id.event_add));
-
-        detail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intentToViewAll = new Intent(getActivity(),
-                        AllEventsInSingleDayActivity.class);
-
-                Calendar tempCal = Calendar.getInstance();
-                tempCal.set(Calendar.YEAR, year_x);
-                tempCal.set(Calendar.MONTH, month_x);
-                tempCal.set(Calendar.DAY_OF_MONTH, day_x);
-                Date date = tempCal.getTime();
-                intentToViewAll.putExtra("dateSelected", EventsManager.dateToString(date));
-                startActivity(intentToViewAll);
-            }
-        });
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -4,10 +4,6 @@ import android.util.Log;
 
 import com.acalendar.acal.ApiResource;
 import com.acalendar.acal.Events.EventsManager;
-import com.acalendar.acal.InvokeAPISample;
-import com.google.android.gms.common.api.Api;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +32,8 @@ public class LoginedAccount {
         if (!map.isEmpty()) {
             Map<String, String> account = (Map<String, String>) map.get("account");
             user = new Account(account.get("userId"), account.get("username"), account.get("email"), account.get("lastname"), account.get("firstname"));
-            eventsManager = new EventsManager((List<Map<String, Object>>) map.get("event"));
+            //eventsManager = new EventsManager((List<Map<String, Object>>) map.get("event"));
+            eventsManager = new EventsManager((Map<String, List<Map<String, Object>>>) map.get("event"));
         }
     }
 
