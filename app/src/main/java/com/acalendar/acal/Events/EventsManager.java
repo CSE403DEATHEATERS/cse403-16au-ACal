@@ -69,7 +69,7 @@ public class EventsManager {
             if (!eventMap.containsKey(key)) {
                 eventMap.put(key, new ArrayList<Event>());
             }
-            
+
             if (!idToEventMap.containsKey(eid)) {
                 idToEventMap.put(eid, event);
             }
