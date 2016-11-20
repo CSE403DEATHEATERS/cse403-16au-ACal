@@ -73,12 +73,14 @@ public class FriendsFragment extends Fragment {
         friends = new ArrayList<Friend>();
         Map<String, String> query = new HashMap<>();
         query.put("userId", userId);
-        Map<String, Object> apiResponse = ApiResource.submitRequest(query, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_GET_FRIENDS);
+        Map<String, Object> apiResponse = ApiResource.submitRequest(query, null,
+                ApiResource.GET_REQUEST, ApiResource.REQUEST_GET_FRIENDS);
         List<Map<String, String>> friendsResponse = (List) apiResponse.get("friends");
         if (!friendsResponse.isEmpty()) {
             friends.clear();
             for (Map<String, String> friend : friendsResponse) {
-                Friend thisFriend = new Friend(friend.get("firstname") + " " + friend.get("lastname"), friend.get("email"), friend.get("username"), friend.get("userId"));
+                Friend thisFriend = new Friend(friend.get("lastname"), friend.get("firstname"),
+                        friend.get("email"), friend.get("username"), friend.get("userId"));
                 friends.add(thisFriend);
             }
         }
@@ -111,7 +113,9 @@ public class FriendsFragment extends Fragment {
                 }
                 JSONObject jsonBody = new JSONObject(bodyMap);
                 String body = jsonBody.toString();
-                Map<String, Object> apiResponse = ApiResource.submitRequest(new HashMap<String, String>(), body, ApiResource.POST_REQUEST, ApiResource.REQUEST_ADD_FRIEND);
+                Map<String, Object> apiResponse = ApiResource.submitRequest(
+                        new HashMap<String, String>(), body,
+                        ApiResource.POST_REQUEST, ApiResource.REQUEST_ADD_FRIEND);
                 if (apiResponse.get("result") != null) {
                     if (apiResponse.get("result").equals("true")) {
                         //TODO: give feedback message

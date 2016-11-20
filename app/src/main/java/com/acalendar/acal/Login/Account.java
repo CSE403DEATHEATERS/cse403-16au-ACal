@@ -3,11 +3,11 @@ package com.acalendar.acal.Login;
 import java.io.Serializable;
 
 public class Account implements Serializable {
-    private String userId;
-    private String username;
-    private String email;
-    private String lastname;
-    private String firstname;
+    protected String userId;
+    protected String username;
+    protected String email;
+    protected String lastname;
+    protected String firstname;
 
     public Account(String userId, String username, String email, String lastname, String firstname) {
         this.userId = userId;
