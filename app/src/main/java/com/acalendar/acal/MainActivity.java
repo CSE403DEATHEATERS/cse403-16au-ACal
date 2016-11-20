@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity
                 // on select start a new activity that displays all events on that day
                 Intent intentToViewAll = new Intent(MainActivity.this,
                         AllEventsInSingleDayActivity.class);
-                intentToViewAll.putExtra("dateSelected", EventsManager.dateToString(date));
+                intentToViewAll.putExtra("dateLongSelected", date.getTime());
                 startActivity(intentToViewAll);
             }
 
