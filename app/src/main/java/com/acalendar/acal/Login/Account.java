@@ -1,6 +1,8 @@
 package com.acalendar.acal.Login;
 
-public class Account {
+import java.io.Serializable;
+
+public class Account implements Serializable {
     private String userId;
     private String username;
     private String email;
