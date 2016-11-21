@@ -7,7 +7,6 @@ import com.amazonaws.services.dynamodbv2.document.TableWriteItems;
 import com.amazonaws.services.dynamodbv2.document.spec.BatchWriteItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +19,18 @@ public class EventSharingService {
     public static final Table EVENT_TABLE = dynamoDB.getTable(EVENT_TABLE_NAME);
     public static final Table EVENT_SHARING_TABLE = dynamoDB.getTable(EVENT_SHARING_TABLE_NAME);
 
+    /**
+     * Edit attendees of a particular event.
+     * @param eventId
+     * @param userId id of user requesting this editing
+     * @param invited list of users to be invited to this event
+     * @param removed list of users to be removed from this event
+     * @return list of attendees of this event after editing, both accepted and pending
+     */
     public static List<String> editEventAttendees(String eventId, String userId, List<String> invited, List<String> removed) {
+        if (eventId == null || userId == null || (invited == null && removed == null)) {
+            throw new IllegalArgumentException("Insufficient information");
+        }
         Event event = new Event(eventId);
         Map<String, Object> eventInfo = event.getInfo();
         String eventOwner = (String) eventInfo.get("ownerId");
@@ -52,7 +62,17 @@ public class EventSharingService {
         return (List<String>) Event.getInfoByEventId(eventId).get("attendees");
     }
 
+    /**
+     * Handle an event invitation by a user.
+     * @param userId
+     * @param eventId
+     * @param accept user's decision whether to accpet this invitation
+     * @return true if this handling success, false otherwise
+     */
     public static boolean handleEventInvitation(String userId, String eventId, boolean accept) {
+        if (userId == null || eventId == null) {
+            throw new IllegalArgumentException("Insufficient information");
+        }
         GetItemSpec getItem = new GetItemSpec().withPrimaryKey(new PrimaryKey("eventId", eventId, "recipientId", userId));
         Item item = EVENT_SHARING_TABLE.getItem(getItem);
         if (item == null || item.getString("inviteStatus") == null) {

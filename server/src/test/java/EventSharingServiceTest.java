@@ -1,33 +1,58 @@
+import model.EventSharingService;
 import org.hibernate.cfg.NotYetImplementedException;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Created by Yaozi on 11/18/16.
+ * Test cases for EventSharingService.java
  */
 public class EventSharingServiceTest {
 
-    @Ignore("not ready yet")
-    @Test
-    public void TestEditAttendees() {
-        throw new NotYetImplementedException();
+    private final String eventId = "This is an eventId";
+    private final String userId = "This is a userId";
+    private List<String> invited;
+    private List<String> removed;
+
+    @Before
+    public void setup() {
+        invited = new ArrayList<>();
+        removed = new ArrayList<>();
     }
 
-    @Ignore("not ready yet")
-    @Test
-    public void testAcceptEventInvitation() {
-        throw new NotYetImplementedException();
+    /////////////////////////////////////////////////////////////////////
+    //////                    editAttendees()                       /////
+    /////////////////////////////////////////////////////////////////////
+
+    @Test(expected = IllegalArgumentException.class)
+    public void TestEditAttendees_nullEventId() {
+        EventSharingService.editEventAttendees(null, userId, invited, removed);
     }
 
-    @Ignore("not ready yet")
-    @Test
-    public void testDeclineEventInvitation() {
-        throw new NotYetImplementedException();
+    @Test(expected = IllegalArgumentException.class)
+    public void TestEditAttendees_nullUserId() {
+        EventSharingService.editEventAttendees(eventId, null, invited, removed);
     }
 
-    @Ignore("not ready yet")
-    @Test
-    public void testGetPendingEventsByUserId() {
-        throw new NotYetImplementedException();
+    @Test(expected = IllegalArgumentException.class)
+    public void TestEditAttendees_nullLists() {
+        EventSharingService.editEventAttendees(eventId, userId, null, null);
+    }
+
+    /////////////////////////////////////////////////////////////////////
+    //////                handleEventInvitation()                   /////
+    /////////////////////////////////////////////////////////////////////
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testHandleEventInvitation_nullEventId() {
+        EventSharingService.handleEventInvitation(null, userId, true);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testHandleEventInvitation_nullUserId() {
+        EventSharingService.handleEventInvitation(eventId, null, true);
     }
 }
