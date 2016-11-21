@@ -167,12 +167,13 @@ public class EventInfoEditPageActivity  extends Activity {
                         location, description, isPublic);
                 if (eventObjectToEdit == null) {
                     // create new
+                    // TODO: also get all participants that were selected.
                     LoginedAccount.getEventsManager().addEvent(newEvent);
-                    saveButton.setClickable(true);  // TODO: why??
                 } else {
                     // edit
                     LoginedAccount.getEventsManager().editEvent(eventObjectToEdit, newEvent);
                 }
+                saveButton.setClickable(false);
                 finish();
             }
         });

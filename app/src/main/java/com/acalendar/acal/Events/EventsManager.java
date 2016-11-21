@@ -3,11 +3,8 @@ package com.acalendar.acal.Events;
 import android.util.Log;
 
 import com.acalendar.acal.ApiResource;
-import com.acalendar.acal.InvokeAPISample;
 import com.acalendar.acal.Login.Account;
 import com.acalendar.acal.Login.LoginedAccount;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
 
@@ -24,14 +21,14 @@ import java.util.Map;
 public class EventsManager {
     private final String userId;
     Map<String, List<Event>> eventMap;
-    Map<String, Map<String, Object>> idToEventMap;
+    Map<String, Event> idToEventMap;
 
     public EventsManager(Map<String, List<Map<String, Object>>> mapOfListofEventMaps) {
         userId = LoginedAccount.getCurrentUser().getUserId();
         eventMap = new HashMap<>();
         idToEventMap = new HashMap<>();
         parseAllEvents(mapOfListofEventMaps.get("ACCEPT"));
-        parseEventsWithId(mapOfListofEventMaps.get("ACCEPT"));
+        //parseEventsWithId(mapOfListofEventMaps.get("ACCEPT")); included to parseAllEvents
     }
 
     /*
@@ -44,47 +41,44 @@ public class EventsManager {
                 Log.v("Test", "this object map is empty.");
                 continue;
             }
-            String eid = (String) event.get("eventId");
-            String ownerId = (String) event.get("ownerId");
-            Date createTime = new Date(((Double)event.get("createTime")).longValue());
-            String eventTitle = (String) event.get("title");
-            Date startTime = new Date(((Double)event.get("startTime")).longValue());
-            Date endTime = new Date(((Double)event.get("endTime")).longValue());
-            String description = (String) event.get("description");
-            Boolean isPublic = (Boolean) event.get("isPublic");
-            Map<String, Object> locationMap = (Map<String, Object>) event.get("location");
-            Location location = Location.parseLocation(locationMap);
-
-            Event entry = new Event(eid, ownerId, createTime,
-                    eventTitle, startTime, endTime, null, description, isPublic);
-            // set parsed locations
-            entry.setLocation(location);
-            // TODO: set list of participants uids
-            List<String> listOfParticipantsUids = (List<String>) event.get("attendees");
-            for (String uid : listOfParticipantsUids) {
-                entry.addParticipant(new Account(uid, null,null,null,null));
-            }
+            Event entry = parseEventFromMap(event);
             // put into map
-            String key = dateToString(startTime);
+            String key = dateToString(entry.getStartTime());
             if (!eventMap.containsKey(key)) {
                 eventMap.put(key, new ArrayList<Event>());
             }
-
-            if (!idToEventMap.containsKey(eid)) {
-                idToEventMap.put(eid, event);
+            // add to eventId to event Map
+            if (!idToEventMap.containsKey(entry.getEventId())) {
+                idToEventMap.put(entry.getEventId(), entry);
             }
             Log.v("Test", "parsing this object map, key parsed is " + key);
             Log.v("Test", "parsed entry is being added, status : " + eventMap.get(key).add(entry));
-            // TODO: sort eventList;
         }
     }
 
-    private void parseEventsWithId(List<Map<String, Object>> listOfEventMaps) {
-        for (Map<String, Object> event : listOfEventMaps) {
-            if (event.size() == 0)
-                continue;
-            idToEventMap.put(event.get("eventId").toString(), event);
+    private Event parseEventFromMap(Map<String, Object> event) {
+        String eid = (String) event.get("eventId");
+        String ownerId = (String) event.get("ownerId");
+        Date createTime = new Date(((Double)event.get("createTime")).longValue());
+        String eventTitle = (String) event.get("title");
+        Date startTime = new Date(((Double)event.get("startTime")).longValue());
+        Date endTime = new Date(((Double)event.get("endTime")).longValue());
+        String description = (String) event.get("description");
+        Boolean isPublic = (Boolean) event.get("isPublic");
+        Map<String, Object> locationMap = (Map<String, Object>) event.get("location");
+        Location location = Location.parseLocation(locationMap);
+
+        Event entry = new Event(eid, ownerId, createTime,
+                eventTitle, startTime, endTime, null, description, isPublic);
+        // set parsed locations
+        entry.setLocation(location);
+        // TODO: set list of participants uids
+        List<String> listOfParticipantsUids = (List<String>) event.get("attendees");
+        for (String uid : listOfParticipantsUids) {
+            // TODO: find
+            entry.addParticipant(new Account(uid, null,null,null,null));
         }
+        return entry;
     }
 
     public boolean addEvent(Event e) {
@@ -101,6 +95,7 @@ public class EventsManager {
             queryData.put("description", e.getDescription());
         }
         queryData.put("isPublic", e.isPublic());
+        // TODO: remove editing participants from edit right after yaozi finished corresponding server code
         if (e.getListOfParticipantsUids() != null && e.getListOfParticipantsUids().size() != 0) {
             queryData.put("attendees", e.getListOfParticipantsUids());
         }
@@ -109,19 +104,15 @@ public class EventsManager {
         }
         String jsonObjectBody = (new JSONObject(queryData)).toString();
         // submit request
-        // Log.v("Adding event", "create new event query: " + jsonObjectBody);
         Map<String, String> query = new HashMap<>();
-        String apiResponse = InvokeAPISample.invokeAPI("POST", "/createEvent", jsonObjectBody, query);
-
-        Map<String, Object> responseMap = new Gson().fromJson(apiResponse,
-                new TypeToken<HashMap<String, Object>>(){}.getType());
+        Map<String, Object> responseMap = ApiResource.submitRequest(query, jsonObjectBody,
+                ApiResource.POST_REQUEST,
+                ApiResource.REQUEST_CREATE_EVENT);
 
         if (responseMap.isEmpty()) {
             Log.v("Adding event", "responseMap is empty, failed to add new event");
             return false;
         }
-        // Log.v("Adding event", "responce map is " + responseMap.toString());
-
         String eid = (String) responseMap.get("eventId");
         Date createTime = new Date(((Double)responseMap.get("createTime")).longValue());
         e.setEventId(eid);
@@ -133,20 +124,59 @@ public class EventsManager {
         }
         boolean status = eventMap.get(key).add(e);
         if (!idToEventMap.containsKey(e.getEventId())) {
-            idToEventMap.put(e.getEventId(), responseMap);
+            idToEventMap.put(e.getEventId(), e);
         }
         return status;
     }
 
     public boolean editEvent(Event originalEvent, Event newEvent) {
         // TODO: diff 2 events, if different add the corresponding attribute to queryData
+        Map<String, String> queryData = new HashMap<>();
+        if (!originalEvent.getEventTitle().equals(newEvent.getEventTitle())) {
+            queryData.put("title", newEvent.getEventTitle());
+        }
+        if (!originalEvent.getStartTime().equals(newEvent.getStartTime())) {
+
+        }
+        if (!originalEvent.getEndTime().equals(newEvent.getEndTime())) {
+
+        }
+        if (!originalEvent.getLocation().getAddress().equals(newEvent.getLocation().getAddress())) {
+
+        }
+        if (!originalEvent.getDescription().equals(newEvent.getDescription())) {
+
+        }
+        Map<String, Object> responceMap = ApiResource.submitRequest(queryData, null,
+                ApiResource.GET_REQUEST,
+                ApiResource.REQUEST_DELETE_EVENT);
+
+        boolean success = (boolean)responceMap.get("result");
+        if (!success) {
+            return false;
+        }
         return false;
     }
 
     public boolean deleteEvent(String eventId) {
-        // TODO: remove event in local
-        // TODO: post request to server for deleting the event
-        return false;
+        // TODO: fix bug
+        if (eventId == null) {
+            Log.v("EventManager", "eventId passed in to delete is null.");
+            return false;
+        }
+        Map<String, String> queryData = new HashMap<>();
+        queryData.put("eventId", eventId);
+        Map<String, Object> responceMap = ApiResource.submitRequest(queryData, null,
+                ApiResource.GET_REQUEST,
+                ApiResource.REQUEST_DELETE_EVENT);
+        boolean success = (boolean)(responceMap.get("result"));
+        Event eventToDelete = idToEventMap.get(eventId);
+        if (!success) {
+            return false;
+        }
+        this.idToEventMap.remove(eventId);
+        this.eventMap.get(dateToString(eventToDelete.getStartTime())).remove(eventToDelete);
+        return true;
     }
 
     public List<Event> getEventsInDate(String key) {
@@ -154,7 +184,7 @@ public class EventsManager {
         if (ret == null) {
             return new ArrayList<>();
         }
-        return new ArrayList<Event>(ret);
+        return new ArrayList<>(ret);
     }
 
     public List<Event> getEventsInDate(Date eventDate) {
@@ -162,7 +192,7 @@ public class EventsManager {
         return getEventsInDate(key);
     }
 
-    public Map<String, Object> getEventById(String eid) {
+    public Event getEventById(String eid) {
         return this.idToEventMap.get(eid);
     }
     public static String dateToString(Date startTime) {
@@ -170,19 +200,23 @@ public class EventsManager {
                 + startTime.getMonth() + " " + startTime.getDate();
     }
 
+    // TODO: remove if not needed
     public void refreshAllEvents() {
         Map<String, String> query = new HashMap<>();
         query.put("userId", this.userId);
-        Map<String, Object> apiResponse = ApiResource.submitRequest(query, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_GET_EVENTS);
+        Map<String, Object> apiResponse = ApiResource.submitRequest(query, null,
+                ApiResource.GET_REQUEST, ApiResource.REQUEST_GET_EVENTS);
         List<Map<String, String>> acceptedEvents = (List)apiResponse.get("ACCEPT");
         List<Map<String, String>> pendingEvents = (List)apiResponse.get("PENDING");
     }
 
+    // TODO: remove if not needed
     public void refreshAllAcceptedEvents() {
         Map<String, String> query = new HashMap<>();
         query.put("userId", this.userId);
         query.put("status", "ACCEPT");
-        Map<String, Object> apiResponse = ApiResource.submitRequest(query, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_GET_EVENTS);
+        Map<String, Object> apiResponse = ApiResource.submitRequest(query, null,
+                ApiResource.GET_REQUEST, ApiResource.REQUEST_GET_EVENTS);
         List<Map<String, Object>> acceptedEvents = (List)apiResponse.get("ACCEPT");
         eventMap.clear();
         idToEventMap.clear();
@@ -196,18 +230,18 @@ public class EventsManager {
      */
     public List<Date> getAllDates() {
         List<Date> results = new ArrayList<Date>();
-
         for (String date : this.eventMap.keySet()) {
-            String[] splited = date.split(" ");
-            int year = Integer.parseInt(splited[0]) - 100 + 2000;
-            int month = Integer.parseInt(splited[1]);
-            int day = Integer.parseInt(splited[2]);
-
-            Date coolDate = new GregorianCalendar(year, month, day).getTime();
+            Date coolDate = stringToDate(date);
             results.add(coolDate);
         }
-
         return results;
     }
 
+    private static Date stringToDate(String date) {
+        String[] splited = date.split(" ");
+        int year = Integer.parseInt(splited[0]) - 100 + 2000;
+        int month = Integer.parseInt(splited[1]);
+        int day = Integer.parseInt(splited[2]);
+        return new GregorianCalendar(year, month, day).getTime();
+    }
 }

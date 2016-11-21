@@ -13,6 +13,7 @@ import com.acalendar.acal.R;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 
 /**
@@ -60,7 +61,14 @@ public class EventInfoDisplayPageActivity extends Activity {
                 public void onClick(View v) {
                     // TODO: call back end to delete event id from local and aws DATABASE
                     // TODO: notify status of deletion: success/failed.
-                    LoginedAccount.getEventsManager().deleteEvent(event.getEventId());
+                    boolean deleteStatus =
+                            LoginedAccount.getEventsManager().deleteEvent(event.getEventId());
+                    // TODO: if false, alert.
+                    // return to the previous activity to removed event.
+                    Intent intentGoBackToAllEvents = new Intent();
+                    intentGoBackToAllEvents.putExtra("eventIdDeleted", event.getEventId());
+                    setResult(RESULT_OK, intentGoBackToAllEvents);
+                    finish();
                 }
             }
         );
@@ -85,11 +93,15 @@ public class EventInfoDisplayPageActivity extends Activity {
         descripView.setText(eventObject.getDescription());
 
         TextView  locationView = (TextView) findViewById(R.id.LocationDisplayText);
-        locationView.setText(eventObject.getLocation().getAddress());
+        String locationText = "";
+        if (eventObject.getLocation() != null) {
+            locationText = eventObject.getLocation().getAddress();
+        }
+        locationView.setText(locationText);
 
         TextView startView = (TextView) findViewById(R.id.startTimeDisplayText);
         Date startTime = eventObject.getStartTime();
-        Format format = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        Format format = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.US);
         startView.setText(format.format(startTime));
 
         TextView endView = (TextView) findViewById(R.id.endTimeDisplayText);

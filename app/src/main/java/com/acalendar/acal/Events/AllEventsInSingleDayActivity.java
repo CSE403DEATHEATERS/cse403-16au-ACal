@@ -20,7 +20,6 @@ import java.util.Locale;
 // TODO: may be combined with main activity -> fragment
 public class AllEventsInSingleDayActivity extends Activity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +44,7 @@ public class AllEventsInSingleDayActivity extends Activity {
             final String eid = e.getEventId();
             String eventTitle = e.getEventTitle();
             Button eventDisplay = (Button)getLayoutInflater().inflate(R.layout.event_button, null);
+            eventDisplay.setId(eid.hashCode());
             eventDisplay.setText(eventTitle);
             eventDisplay.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -52,11 +52,24 @@ public class AllEventsInSingleDayActivity extends Activity {
                     Intent intentToViewSingleEvent = new Intent(AllEventsInSingleDayActivity.this,
                             EventInfoDisplayPageActivity.class);
                     intentToViewSingleEvent.putExtra("eventId", eid);
-                    startActivity(intentToViewSingleEvent);
+                    startActivityForResult(intentToViewSingleEvent, 79);
                 }
             });
             eventsViewContainer.addView(eventDisplay);
         }
         // TODO: add button -> goes to edit page
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 999) {
+            if (resultCode == RESULT_OK) {
+                int eventIdDeletedHashcode = data.getStringExtra("eventIdDeleted").hashCode();
+                Button eventView = (Button) findViewById(eventIdDeletedHashcode);
+                eventView.setVisibility(View.GONE);
+            }
+        }
+
     }
 }
