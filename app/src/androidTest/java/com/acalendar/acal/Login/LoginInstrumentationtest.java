@@ -1,5 +1,6 @@
 package com.acalendar.acal.Login;
 
+import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
@@ -11,9 +12,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
@@ -29,15 +30,17 @@ public class LoginInstrumentationtest {
             LoginActivity.class);
 
     @Test
-    public void checkLogin(){
+    public void checkUserInputTypeable(){
         onView(withId(R.id.login_username_input)).perform(typeText(USERNAME), closeSoftKeyboard());
         onView(withId(R.id.login_password_input)).perform(typeText(PASSWORD), closeSoftKeyboard());
-        onView(withText("LOGIN")).perform(click());
     }
 
     @Test
-    public void resetPassword(){
-        onView(withText("forget password")).perform(click());
-    }
+    public void CheckTextViewInScreen(){
+        onView(withText("User name")).check(ViewAssertions.matches(isDisplayed()));
+        onView(withText("Password")).check(ViewAssertions.matches(isDisplayed()));
+        onView(withText("LOGIN")).check(ViewAssertions.matches(isDisplayed()));
+        onView(withText("Forgot password?")).check(ViewAssertions.matches(isDisplayed()));
 
+    }
 }

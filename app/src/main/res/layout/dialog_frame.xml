@@ -8,7 +8,7 @@
     android:weightSum="1">
 
     <EditText
-        android:id="@+id/frined_usr_inpt"
+        android:id="@+id/dialog_friend_add_input"
         android:text=""
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

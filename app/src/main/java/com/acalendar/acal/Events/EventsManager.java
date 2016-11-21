@@ -2,6 +2,7 @@ package com.acalendar.acal.Events;
 
 import android.util.Log;
 
+import com.acalendar.acal.ApiResource;
 import com.acalendar.acal.InvokeAPISample;
 import com.acalendar.acal.Login.Account;
 import com.acalendar.acal.Login.LoginedAccount;
@@ -12,6 +13,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,16 +24,24 @@ import java.util.Map;
 public class EventsManager {
     private final String userId;
     Map<String, List<Event>> eventMap;
+    Map<String, Map<String, Object>> idToEventMap;
 
-    public EventsManager(List<Map<String, Object>> listOfEventMaps) {
+    public EventsManager(Map<String, List<Map<String, Object>>> mapOfListofEventMaps) {
         userId = LoginedAccount.getCurrentUser().getUserId();
         eventMap = new HashMap<>();
-        parseAllEvents(listOfEventMaps);
+        idToEventMap = new HashMap<>();
+        parseAllEvents(mapOfListofEventMaps.get("ACCEPT"));
+        parseEventsWithId(mapOfListofEventMaps.get("ACCEPT"));
     }
 
+    /*
+     * reload all events into local event list
+     */
     private void parseAllEvents(List<Map<String, Object>> listOfEventMaps) {
+        Log.v("Test", "starting to parse all events got from db. size = " + listOfEventMaps.size());
         for (Map<String, Object> event : listOfEventMaps) {
             if (event.size() == 0) {
+                Log.v("Test", "this object map is empty.");
                 continue;
             }
             String eid = (String) event.get("eventId");
@@ -60,9 +70,20 @@ public class EventsManager {
                 eventMap.put(key, new ArrayList<Event>());
             }
 
-            Log.v("Test", "key of this event is " + key);
-            Log.v("Test", "entry added status : " + eventMap.get(key).add(entry));
+            if (!idToEventMap.containsKey(eid)) {
+                idToEventMap.put(eid, event);
+            }
+            Log.v("Test", "parsing this object map, key parsed is " + key);
+            Log.v("Test", "parsed entry is being added, status : " + eventMap.get(key).add(entry));
             // TODO: sort eventList;
+        }
+    }
+
+    private void parseEventsWithId(List<Map<String, Object>> listOfEventMaps) {
+        for (Map<String, Object> event : listOfEventMaps) {
+            if (event.size() == 0)
+                continue;
+            idToEventMap.put(event.get("eventId").toString(), event);
         }
     }
 
@@ -74,7 +95,7 @@ public class EventsManager {
             queryData.put("title", e.getEventTitle());
         }
         queryData.put("startTime", e.getStartTime().getTime());
-        Log.v("Test", "start of this event is " + e.getStartTime().toString());
+        Log.v("Adding event", "start of this event is " + e.getStartTime().toString());
         queryData.put("endTime", e.getEndTime().getTime());
         if (e.getDescription() != null && !e.getDescription().isEmpty()) {
             queryData.put("description", e.getDescription());
@@ -88,7 +109,7 @@ public class EventsManager {
         }
         String jsonObjectBody = (new JSONObject(queryData)).toString();
         // submit request
-        Log.v("Test", "create new event query: " + jsonObjectBody);
+        // Log.v("Adding event", "create new event query: " + jsonObjectBody);
         Map<String, String> query = new HashMap<>();
         String apiResponse = InvokeAPISample.invokeAPI("POST", "/createEvent", jsonObjectBody, query);
 
@@ -96,21 +117,24 @@ public class EventsManager {
                 new TypeToken<HashMap<String, Object>>(){}.getType());
 
         if (responseMap.isEmpty()) {
-            Log.v("Test", "responseMap is empty, failed to add new event");
+            Log.v("Adding event", "responseMap is empty, failed to add new event");
             return false;
         }
-        Log.v("Test", "responce map is " + responseMap.toString());
+        // Log.v("Adding event", "responce map is " + responseMap.toString());
 
         String eid = (String) responseMap.get("eventId");
         Date createTime = new Date(((Double)responseMap.get("createTime")).longValue());
         e.setEventId(eid);
         e.setCreateTime(createTime);
         String key = dateToString(e.getStartTime());
-        Log.v("Test", "************************key gonna be added is " + key);
+        Log.v("Adding event", "*** this event entry will be added to key " + key);
         if (!eventMap.containsKey(key)) {
             eventMap.put(key, new ArrayList<Event>());
         }
         boolean status = eventMap.get(key).add(e);
+        if (!idToEventMap.containsKey(e.getEventId())) {
+            idToEventMap.put(e.getEventId(), responseMap);
+        }
         return status;
     }
 
@@ -130,7 +154,7 @@ public class EventsManager {
         if (ret == null) {
             return new ArrayList<>();
         }
-        return ret;
+        return new ArrayList<Event>(ret);
     }
 
     public List<Event> getEventsInDate(Date eventDate) {
@@ -138,8 +162,52 @@ public class EventsManager {
         return getEventsInDate(key);
     }
 
+    public Map<String, Object> getEventById(String eid) {
+        return this.idToEventMap.get(eid);
+    }
     public static String dateToString(Date startTime) {
         return startTime.getYear() + " "
                 + startTime.getMonth() + " " + startTime.getDate();
     }
+
+    public void refreshAllEvents() {
+        Map<String, String> query = new HashMap<>();
+        query.put("userId", this.userId);
+        Map<String, Object> apiResponse = ApiResource.submitRequest(query, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_GET_EVENTS);
+        List<Map<String, String>> acceptedEvents = (List)apiResponse.get("ACCEPT");
+        List<Map<String, String>> pendingEvents = (List)apiResponse.get("PENDING");
+    }
+
+    public void refreshAllAcceptedEvents() {
+        Map<String, String> query = new HashMap<>();
+        query.put("userId", this.userId);
+        query.put("status", "ACCEPT");
+        Map<String, Object> apiResponse = ApiResource.submitRequest(query, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_GET_EVENTS);
+        List<Map<String, Object>> acceptedEvents = (List)apiResponse.get("ACCEPT");
+        eventMap.clear();
+        idToEventMap.clear();
+        parseAllEvents(acceptedEvents);
+    }
+
+    /***
+     * Get all the dates on which this user has events scheduled.
+     *
+     * @return a list of Date objects
+     */
+    public List<Date> getAllDates() {
+        List<Date> results = new ArrayList<Date>();
+
+        for (String date : this.eventMap.keySet()) {
+            String[] splited = date.split(" ");
+            int year = Integer.parseInt(splited[0]) - 100 + 2000;
+            int month = Integer.parseInt(splited[1]);
+            int day = Integer.parseInt(splited[2]);
+
+            Date coolDate = new GregorianCalendar(year, month, day).getTime();
+            results.add(coolDate);
+        }
+
+        return results;
+    }
+
 }

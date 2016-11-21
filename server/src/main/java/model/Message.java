@@ -52,6 +52,10 @@ public class Message {
     }
 
     public void setMessageId(String messageId) {
+        if (messageId == null) {
+            throw new IllegalArgumentException("Message id passed in should not be null!");
+        }
+
         this.messageId = messageId;
     }
 
@@ -72,6 +76,10 @@ public class Message {
     }
 
     public void setCreatedBy(String createdBy) {
+        if (createdBy == null) {
+            throw new IllegalArgumentException("Who created this message??");
+        }
+
         this.createdBy = createdBy;
     }
 
@@ -92,6 +100,10 @@ public class Message {
     }
 
     public void setEventId(String eventId) {
+        if (eventId == null) {
+            throw new IllegalArgumentException("Event id passed in should not be null.");
+        }
+
         this.eventId = eventId;
     }
 
@@ -100,6 +112,10 @@ public class Message {
     }
 
     public void setMessageContent(String messageContent) {
+        if (messageContent == null) {
+            throw new IllegalArgumentException("Message content passed in should not be null.");
+        }
+
         this.messageContent = messageContent;
     }
 

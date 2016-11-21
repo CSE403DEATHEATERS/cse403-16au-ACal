@@ -33,7 +33,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:text="@string/default_text"
                 android:ems="10"
                 android:id="@+id/EventTitleEditText" />
 
@@ -93,7 +92,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:text="@string/default_text"
                 android:ems="10"
                 android:id="@+id/locationEditText" />
 
@@ -105,7 +103,6 @@
                 android:textSize="18sp"/>
 
             <MultiAutoCompleteTextView
-                android:text="MultiAutoCompleteTextView"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:background="@drawable/border_style"
