@@ -31,7 +31,7 @@ public class EditEventParticipantsActivity extends Activity {
     private View view;
     private ArrayAdapter adapter;
 
-    // Replace this local friends list to the db friends list
+    // TODO: Replace this local friends list to the db friends list
     private Button inviteButton;
     private ArrayList<Map<String, String>> friendsMapList;
     private ArrayList<String> friendsUidSelectedList;
@@ -78,7 +78,6 @@ public class EditEventParticipantsActivity extends Activity {
     private void getFriendsData() {
         // TODO: hard code now since the back end is not ready. Call backend when ready
         // TODO: get all friends, in String format.
-        // TODO: call some string parser to parse String into data structure: List<Map> each Map represents a single user(friends)
         friendsMapList = new ArrayList<>();
         HashMap<String, String> f1 = new HashMap<>();
         f1.put(USERID, "001");
@@ -104,6 +103,8 @@ public class EditEventParticipantsActivity extends Activity {
         listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listview.setAdapter(adapter);
         listview.setItemsCanFocus(true);
+        // TODO: each item in the list should have a index/position, needed for a map.
+
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {

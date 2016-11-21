@@ -20,9 +20,6 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
-
-
-
         buttonSetUP();
     }
 
@@ -37,7 +34,7 @@ public class LoginActivity extends Activity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               finish();
+                finish();
             }
         });
     }
@@ -82,7 +79,6 @@ public class LoginActivity extends Activity {
                     Toast missmatch = Toast.makeText(LoginActivity.this, "Invalid username/password", Toast.LENGTH_SHORT);
                     missmatch.show();
                 }
-
             }
         });
     }

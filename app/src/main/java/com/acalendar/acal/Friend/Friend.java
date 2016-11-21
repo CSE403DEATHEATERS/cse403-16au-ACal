@@ -1,31 +1,22 @@
 package com.acalendar.acal.Friend;
 
 
-public class Friend {
-    String name;
-    String email;
-    String username;
-    String userId;
-    boolean selected = false;
+import com.acalendar.acal.Login.Account;
 
-    public Friend(String name, boolean selected) {
-        super();
-        this.name = name;
+public class Friend extends Account {
+
+    private boolean selected = false;
+
+    public Friend(String fname, boolean selected) {
+        super(null, null, null, null, fname);
         this.selected = selected;
     }
 
-    public Friend(String name, String email, String username, String userId) {
-        super();
-        this.name = name;
-        this.email = email;
-        this.username = username;
-        this.userId = userId;
+    public Friend(String lastName, String firstName, String email, String username, String userId) {
+        super(userId, username, email, lastName, firstName);
     }
     public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
+        return this.firstname + this.lastname;
     }
 
     public boolean isSelected() {
@@ -35,31 +26,8 @@ public class Friend {
         this.selected = selected;
     }
 
-    public String getEmail() {
-        return this.email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getUserId() {
-        return this.userId;
-    }
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public String toString() {
-        return this.name;
+        return getName();
     }
 
 }

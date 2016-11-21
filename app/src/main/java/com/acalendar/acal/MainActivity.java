@@ -1,6 +1,7 @@
 package com.acalendar.acal;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -8,12 +9,22 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
+import com.acalendar.acal.Events.AllEventsInSingleDayActivity;
+import com.acalendar.acal.Events.EventsManager;
 import com.acalendar.acal.Login.LoginedAccount;
 import com.acalendar.acal.amazonaws.mobile.AWSMobileClient;
+import com.roomorama.caldroid.CaldroidFragment;
+import com.roomorama.caldroid.CaldroidListener;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -34,17 +45,15 @@ public class MainActivity extends AppCompatActivity
         Intent FrontPageActivity = new Intent(this, com.acalendar.acal.Login.FrontPageActivity.class);
         startActivityForResult(FrontPageActivity, 1);
 
-
-
         setContentView(R.layout.activity_main);
 
-
+        Log.v("MainActivity.java", "onCreate(): LoginedAccount.getEventsManager " + LoginedAccount.getEventsManager());
+        Log.v("MainActivity.java", "onCreate(): LoginedAccount.isLoggedIn " + LoginedAccount.isLogedIn());
         EventPoolFragment fragment = new EventPoolFragment();
         android.support.v4.app.FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
-
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,7 +68,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -69,7 +77,6 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -84,7 +91,6 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
 
         return super.onOptionsItemSelected(item);
     }
@@ -166,7 +172,52 @@ public class MainActivity extends AppCompatActivity
                 profileView.setText(LoginedAccount.getUserFullName());
                 TextView emailView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.AccountInfo);
                 emailView.setText(LoginedAccount.getEmail());
+
+
+
             }
         }
+
+        CaldroidFragment caldroidFragment = new CaldroidFragment();
+        Bundle args = new Bundle();
+        Calendar cal = Calendar.getInstance();
+        args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
+        args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
+        args.putBoolean(CaldroidFragment.ENABLE_SWIPE, true);
+        args.putBoolean(CaldroidFragment.SIX_WEEKS_IN_CALENDAR, true);
+        caldroidFragment.setArguments(args);
+        android.support.v4.app.FragmentTransaction t = MainActivity.this.getSupportFragmentManager().beginTransaction();
+        t.replace(R.id.event_pool_calendarView, caldroidFragment);
+        t.commit();
+
+        Log.v("MainActivity.java", "onActivityResult(): LoginedAccount.getEventsManager " + LoginedAccount.getEventsManager());
+        Log.v("MainActivity.java", "onActivityResult(): LoginedAccount.isLoggedIn " + LoginedAccount.isLogedIn());
+
+        // TODO:
+        // for every date that contains event, change its background as done above
+        List<Date> datesToMark = LoginedAccount.getEventsManager().getAllDates();
+        System.out.println("DatesToMark SIZE " + datesToMark.size());
+        for (Date date : datesToMark) {
+            Log.v("Mark date on calendar", "Date to mark is " + date);
+
+            ColorDrawable blue = new ColorDrawable();
+            blue.setColor(0xdd1565C0);
+            caldroidFragment.setBackgroundDrawableForDate(blue, date);
+        }
+
+        final CaldroidListener listener = new CaldroidListener() {
+
+            @Override
+            public void onSelectDate(Date date, View view) {
+                // on select start a new activity that displays all events on that day
+                Intent intentToViewAll = new Intent(MainActivity.this,
+                        AllEventsInSingleDayActivity.class);
+                intentToViewAll.putExtra("dateLongSelected", date.getTime());
+                startActivity(intentToViewAll);
+            }
+
+        };
+
+        caldroidFragment.setCaldroidListener(listener);
     }
 }

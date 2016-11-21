@@ -24,7 +24,7 @@ public class FriendManager {
      * @param userId userId of the user
      * @return list of account info which is the user's friend, empty list if no friend
      */
-    public List<Map<String, Object>> getFriendList(String userId) {
+    public static List<Map<String, Object>> getFriendList(String userId) {
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
         QuerySpec query = new QuerySpec().withHashKey("userId_1", userId);
         ItemCollection<QueryOutcome> items = TABLE.query(query);
@@ -63,7 +63,7 @@ public class FriendManager {
      * @required userId_1 must be in Account table
      * @return true if request is sent, false if request is already sent before or receiver doesn't exist
      */
-    public boolean sendFriendRequest(String userId_1, String userId_2, String username, String email) {
+    public static boolean sendFriendRequest(String userId_1, String userId_2, String username, String email) {
         if (userId_2 == null || userId_2.isEmpty()) {
             userId_2 = Account.getUserIdByUsernameOrEmail(username, email);
         }
@@ -89,7 +89,7 @@ public class FriendManager {
      * @param accept true when receiver accepts the request, or false when reject
      * @return true if request is accepted or rejected, false if no request
      */
-    public boolean processFriendRequest(String userId_1, String userId_2, boolean accept) {
+    public static boolean processFriendRequest(String userId_1, String userId_2, boolean accept) {
         GetItemSpec getItem = new GetItemSpec().withPrimaryKey(new PrimaryKey("userId_1", userId_2, "userId_2", userId_1));
         Item item = TABLE.getItem(getItem);
         if (item == null) {

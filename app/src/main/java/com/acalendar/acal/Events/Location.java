@@ -1,12 +1,13 @@
 package com.acalendar.acal.Events;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Frontend model for Location
+ * Frontend model for Location, maynot be needed at all
  */
-public class Location {
+public class Location implements Serializable {
     private double lat;
     private double lng;
     private String address;

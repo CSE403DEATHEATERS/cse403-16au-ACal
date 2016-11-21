@@ -3,12 +3,8 @@ package model;
 import com.amazonaws.services.dynamodbv2.document.*;
 import com.amazonaws.services.dynamodbv2.document.spec.*;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static dbManager.DynamoDBManager.dynamoDB;
@@ -31,7 +27,7 @@ public class Event {
 
     /**
      * Constructor for searching event
-     * @param eventId
+     * @param eventId a String stores eventId
      */
     public Event(String eventId) {
         GetItemSpec getItem = new GetItemSpec().withPrimaryKey("eventId", eventId);
@@ -65,14 +61,14 @@ public class Event {
 
     /**
      * Constructor for creating event
-     * @param ownerId
-     * @param startTime
-     * @param endTime
-     * @param title
-     * @param description
-     * @param location
-     * @param isPublic
-     * @param attendees
+     * @param ownerId a String stores ownerId of the event
+     * @param startTime a Long stores startTime of the event
+     * @param endTime a Long stores endTime of the event
+     * @param title a String stores title of the event
+     * @param description a String stores description of the event
+     * @param location a Map stores location of the event
+     * @param isPublic a Boolean whether the event is public
+     * @param attendees a List of String stores the userId of the attendees
      */
     public Event(String ownerId, Long startTime, Long endTime, String title, String description,
                  Location location, boolean isPublic, List<String> attendees) {
@@ -108,6 +104,7 @@ public class Event {
                     .withString("inviteStatus",  "ACCEPT")
                     .withNumber("sentTime", new Date().getTime()));
             if (attendees != null) {
+                // TODO: move to event sharing, and send messages
                 for (String attendee : attendees) {
                     attendeeList.addItemToPut(new Item().withPrimaryKey("eventId", this.eventId, "recipientId", attendee)
                             .withString("inviteStatus", "PENDING")
@@ -122,47 +119,56 @@ public class Event {
     }
 
     /**
-     * Update event with information provided by parameters. null means no update for this field
-     * @param ownerId
-     * @param title
-     * @param startTime
-     * @param endTime
-     * @param description
-     * @param isPublic
-     * @param location
-     * @param attendees
-     * @return
+     * Update event with information provided
+     * @param ownerId a String stores ownerId of the event
+     * @param startTime a Long stores startTime of the event
+     * @param endTime a Long stores endTime of the event
+     * @param title a String stores title of the event
+     * @param description a String stores description of the event
+     * @param location a Map stores location of the event
+     * @param isPublic a Boolean whether the event is public
+     * @param attendees a List of String stores the userId of the attendees by parameters. null means no update for this field
+     * @return the event object itself with updated information
      */
     public Event update(String ownerId, String title, Long startTime,
                                       Long endTime, String description, Boolean isPublic,
-                                      Map<String, Object> location, List<String> attendees) {
+                                      Map<String, Object> location, List<String> attendees, List<String> delete) {
         // TODO: call message handler
-        if (this.eventId != null || this.eventId.isEmpty()) {
+        if (this.eventId == null || this.eventId.isEmpty()) {
+            System.out.println("Wrong eventId");
             return this;
         }
         UpdateItemSpec update = new UpdateItemSpec().withPrimaryKey("eventId", this.eventId);
         if (ownerId != null) {
             update.addAttributeUpdate(new AttributeUpdate("ownerId").put(ownerId));
+            this.ownerId = ownerId;
         }
         if (title != null) {
             update.addAttributeUpdate(new AttributeUpdate("title").put(title));
+            this.title = title;
         }
         if (startTime != null) {
             update.addAttributeUpdate(new AttributeUpdate("startTime").put(startTime));
+            this.startTime = new Date(startTime);
         }
         if (endTime != null) {
             update.addAttributeUpdate(new AttributeUpdate("endTime").put(endTime));
+            this.endTime = new Date(endTime);
         }
         if (description != null) {
             update.addAttributeUpdate(new AttributeUpdate("description").put(description));
+            this.description = description;
         }
         if (isPublic != null) {
             update.addAttributeUpdate(new AttributeUpdate("isPublic").put(isPublic));
+            this.isPublic = isPublic;
         }
-        if (description != null) {
-            update.addAttributeUpdate(new AttributeUpdate("description").put(description));
+        if (location != null) {
+            update.addAttributeUpdate(new AttributeUpdate("location").put(location));
+            System.out.println(location);
+            this.location = new Location(location);
         }
-        //EVENT_TABLE.updateItem();
+        EVENT_TABLE.updateItem(update);
         return this;
     }
 
@@ -197,6 +203,26 @@ public class Event {
         return info;
     }
 
+    /**
+     * Delete this event and its related information from database
+     *
+     * @return a Map stores the result of deleting this event from database
+     */
+    public Map<String, Object> delete() {
+        Map<String, Object> result = new HashMap<String, Object>();
+        if (this.eventId == null || this.eventId.isEmpty()) {
+            result.put("result", false);
+        } else {
+            // TODO: remove event from db
+            // TODO: remove event sharing tuple, call message handler
+            DeleteItemSpec delete = new DeleteItemSpec().withPrimaryKey(new PrimaryKey("eventId", this.eventId));
+            EVENT_TABLE.deleteItem(delete);
+            EVENT_SHARING_TABLE.deleteItem(delete);
+            result.put("result", true);
+        }
+        return result;
+    }
+
     public static Map<String, Object> createEvent(String ownerId, Long startTime, Long endTime, String title,
                                       String description, Map<String, Object>location, boolean isPublic, List<String> attendees) {
         Event event = new Event(ownerId, startTime, endTime, title, description,
@@ -206,23 +232,48 @@ public class Event {
 
     public static Map<String, Object> updateEvent(String eventId, String ownerId, String title, Long startTime,
                                                   Long endTime, String description, Boolean isPublic,
-                                                  Map<String, Object> location, List<String> attendees) {
+                                                  Map<String, Object> location, List<String> attendees, List<String> delete) {
         return new Event(eventId)
-                .update(ownerId, title, startTime, endTime, description, isPublic, location, attendees).getInfo();
+                .update(ownerId, title, startTime, endTime, description, isPublic, location, attendees, delete).getInfo();
+    }
+
+    public static Map<String, Object> deleteEvent(String eventId) {
+        return new Event(eventId).delete();
     }
 
     public static Map<String, Object> getInfoByEventId(String eventId) {
         return new Event(eventId).getInfo();
     }
 
-    public static List<Map<String, Object>> getEventsByUserId(String userId, String status) {
-        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-        ScanSpec scan = new ScanSpec().withFilterExpression("recipientId=:v_recipientId AND inviteStatus =:v_status")
-                                            .withValueMap(new ValueMap().withString(":v_recipientId", userId)
-                                                                        .withString(":v_status", status));
-        Iterator<Item> items = EVENT_SHARING_TABLE.scan(scan).iterator();
-        while (items.hasNext()) {
-            result.add(Event.getInfoByEventId(items.next().getString("eventId")));
+    public static Map<String, Object> getEventsByUserId(String userId, String status) {
+        Map<String, Object> result = new HashMap<>();
+        if (status == null || status.isEmpty()) {
+            ScanSpec scan = new ScanSpec().withFilterExpression("recipientId=:v_recipientId")
+                    .withValueMap(new ValueMap().withString(":v_recipientId", userId));
+
+            Iterator<Item> items = EVENT_SHARING_TABLE.scan(scan).iterator();
+            while (items.hasNext()) {
+                Item tuple = items.next();
+                String eventId = tuple.getString("eventId");
+                System.out.println(eventId);
+                Map<String, Object> event = Event.getInfoByEventId(eventId);
+                if (!result.containsKey(tuple.getString("inviteStatus"))) {
+                    result.put(tuple.getString("inviteStatus"), new ArrayList<Map<String, Object>>());
+                }
+                ((List<Map<String, Object>>)result.get(tuple.getString("inviteStatus"))).add(event);
+            }
+        } else {
+            ScanSpec scan = new ScanSpec().withFilterExpression("recipientId=:v_recipientId AND inviteStatus =:v_status")
+                    .withValueMap(new ValueMap().withString(":v_recipientId", userId)
+                            .withString(":v_status", status));
+            Iterator<Item> items = EVENT_SHARING_TABLE.scan(scan).iterator();
+            List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+            while (items.hasNext()) {
+                String eventId = items.next().getString("eventId");
+                System.out.println(eventId);
+                list.add(Event.getInfoByEventId(eventId));
+            }
+            result.put(status, list);
         }
         return result;
     }
@@ -276,9 +327,9 @@ public class Event {
 
         public Map<String, Object> getInfo() {
             Map<String, Object> info = new HashMap<String, Object>();
-            info.put("lat", new Double(this.lat));
-            info.put("lng", new Double(this.lng));
-            info.put("postal", new Integer(this.postal));
+            info.put("lat", this.lat);
+            info.put("lng", this.lng);
+            info.put("postal", this.postal);
             info.put("address", this.address);
             info.put("state", this.state);
             info.put("streetName", this.streetName);
