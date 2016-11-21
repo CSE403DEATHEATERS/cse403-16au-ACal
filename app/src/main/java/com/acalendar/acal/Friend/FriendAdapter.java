@@ -16,13 +16,14 @@ import java.util.ArrayList;
 
 public class FriendAdapter extends ArrayAdapter<Friend> {
 
-    private ArrayList<Friend> FriendList;
+    private final ArrayList<Friend> FriendList;
 
     public FriendAdapter(Context context, int textViewResourceLayout,
-                         int textViewResourceId ,ArrayList<Friend> FriendList) {
-        super(context,textViewResourceLayout, textViewResourceId, FriendList);
-        this.FriendList = new ArrayList<Friend>();
-        this.FriendList.addAll(FriendList);
+                         int textViewResourceId ,ArrayList<Friend> friendList) {
+        super(context,textViewResourceLayout, textViewResourceId, friendList);
+        this.FriendList = friendList;
+                //new ArrayList<Friend>();
+        //this.FriendList.addAll(FriendList);
     }
 
     public ArrayList<Friend> getFriendList() {
@@ -67,6 +68,7 @@ public class FriendAdapter extends ArrayAdapter<Friend> {
         holder.name.setTag(friend);
 
         return convertView;
+
 
     }
 

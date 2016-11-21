@@ -13,31 +13,28 @@ import java.util.Map;
  */
 public class EventHandler {
 
-
     public static void main(String[] args) {
         Map<String, Object> input = new HashMap<String, Object>();
-        input.put("ownerId", "7d9943f4-4326-44a6-9f39-50f890140b26");
-        input.put("startTime", 1478914319677L);
-        input.put("endTime", 1478914319677L);
-        input.put("isPublic", new Boolean(false));
+        input.put("eventId", "3f19c206-357c-4856-a193-056c70f8aeee");
+        input.put("isPublic", new Boolean(true));
+        input.put("title", "test");
         List<String> list = new ArrayList<String>();
         Map<String, Object> location = new HashMap<>();
         location.put("lat", 0.01);
         location.put("lng", 0.01);
-        location.put("postal", 98105);
-        location.put("address", "902 NE 43rd St Apt 214");
+        location.put("postal", 98100);
+        location.put("address", "123");
         location.put("state", "WA");
-        location.put("streetName", "902");
-        location.put("streetNumber", 902);
+        location.put("streetName", "-901");
+        location.put("streetNumber", -901);
         input.put("location", location);
         //list.add("abc");
         //list.add("hahah");
-        input.put("attendees", null);
         //new EventHandler().createEvent(input, null);
         Map<String, String> input2 = new HashMap<>();
-        input2.put("eventId", "fa6f6d78-0795-41d7-994c-56b6f987c0fb");
-        input2.put("userId", "abc");
-        System.out.println(new EventHandler().createEvent(input, null));
+        input2.put("eventId", "3f19c206-357c-4856-a193-056c70f8aeee");
+        input2.put("userId", "7d9943f4-4326-44a6-9f39-50f890140b26");
+        System.out.println(new EventHandler().getEvents(input2, null));
         // System.out.println(new EventHandler().getAttendingEvents(input2, null));
     }
 
@@ -86,11 +83,29 @@ public class EventHandler {
         Boolean isPublic = (Boolean)input.get("isPublic");
         Map<String, Object> location = (Map<String, Object>)input.get("location");
         List<String> attendees = (List<String>)input.get("attendees");
+        List<String> delete = (List<String>)input.get("delete");
         if (eventId == null || eventId.isEmpty()) {
             return new HashMap<String, Object>();
         }
         System.out.println("(editEvent) " + eventId);
-        return Event.updateEvent(eventId, ownerId, title, startTime, endTime, description, isPublic, location, attendees);
+        return Event.updateEvent(eventId, ownerId, title, startTime, endTime, description, isPublic, location, attendees, delete);
+    }
+
+    /**
+     * Delete event lambda. eventId is required to delete event
+     * @param input eventId as keys in a Map<String, String>
+     * @return a Map stores result of deleting an Event
+     */
+    public Map<String, Object> deleteEvent(Map<String, String> input, Context context) {
+        if (input == null) {
+            throw new IllegalArgumentException();
+        }
+        String eventId = (String)input.get("eventId");
+        if (eventId == null || eventId.isEmpty()) {
+            return new HashMap<String, Object>();
+        }
+        System.out.println("(deleteEvent) " + eventId);
+        return Event.deleteEvent(eventId);
     }
 
     /**
@@ -117,14 +132,14 @@ public class EventHandler {
      * @param context
      * @return a List of Map stores event info, that the user attends/invited to the event
      */
-    public List<Map<String, Object>> getAttendingEvents(Map<String, String> input, Context context) {
+    public Map<String, Object> getEvents(Map<String, String> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
         }
         String userId = input.get("userId");
         String status = input.get("status");
-        if ((userId == null || userId.isEmpty()) || (status == null || status.isEmpty())) {
-            return new ArrayList<Map<String, Object>>();
+        if (userId == null || userId.isEmpty()) {
+            return new HashMap<String, Object>();
         }
         System.out.println("(getEvents)" + userId);
         return Event.getEventsByUserId(userId, status);

@@ -118,7 +118,7 @@
                 android:id="@+id/buttonLayout">
 
                 <Button
-                    android:text="Edit"
+                    android:text="Edit Info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/EditButton"
@@ -131,15 +131,22 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/DeleteButton"
                     android:layout_weight="1"
-                    style="@style/Widget.AppCompat.Button.Borderless" />1
-
+                    style="@style/Widget.AppCompat.Button.Borderless" />
             </LinearLayout>
+
+            <Button
+                android:text="manage participants"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/manageParticipantButton"
+                style="@style/Widget.AppCompat.Button.Borderless" />
 
             <Button
                 android:text="see event comments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/SeeCommentsButton" />
+                android:id="@+id/SeeCommentsButton"
+                style="@style/Widget.AppCompat.Button.Borderless" />
 
         </LinearLayout>
 

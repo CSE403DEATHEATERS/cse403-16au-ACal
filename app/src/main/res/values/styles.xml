@@ -30,5 +30,4 @@
         <item name="android:theme">@style/StyledTilEditTextTheme</item>
         <item name="android:paddingTop">4dp</item>
     </style>
-
 </resources>

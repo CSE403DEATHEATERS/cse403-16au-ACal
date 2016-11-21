@@ -181,8 +181,8 @@ public class Account {
      * @return
      */
 	public static String getUserIdByUsernameOrEmail(String username, String email) {
-        username = username.isEmpty() ? null : username;
-        email = email.isEmpty() ? null : email;
+        username = username == null || username.isEmpty() ? null : username;
+        email = email == null || email.isEmpty() ? null : email;
         ScanSpec scan = new ScanSpec().withFilterExpression("username=:v_username OR email=:v_email")
                 .withValueMap(new ValueMap().withString(":v_username", username)
                         .withString(":v_email", email));

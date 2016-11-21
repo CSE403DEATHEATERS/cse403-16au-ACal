@@ -1,11 +1,7 @@
 package com.acalendar.acal;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +23,7 @@ public class ApiResource {
     public static final String REQUEST_ADD_FRIEND = "/addFriend";
     public static final String REQUEST_REJECT_FRIEND = "/rejectFriend";
     public static final String REQUEST_ACEEPT_FRIEND = "/acceptFriend";
+    public static final String REQUEST_DELETE_EVENT = "/deleteEvent";
 
     public static final String GET_REQUEST = "GET";
     public static final String POST_REQUEST = "POST";
@@ -34,8 +31,9 @@ public class ApiResource {
     /**
      * This method send the given request to server side.
      *
-     * @param queryData Map<String, Object>; key represents the database attribute, value is
-     *                  the data you want to query.
+     * @param queryData for GET_REQUEST, it contains the data of the request; otherwise it's a empty map
+     * @param requestBody for POST_REQUEST, it contains the JSONObject.toString to the query data;
+     *                    otherwise it's null
      * @param requestMethod a String represents the type of this request. can be either GET_REQUEST or
      *                    POST_REQUEST. Method of this API call
      * @param requestName A String that is part of the request path, can be either one of the above
@@ -45,9 +43,9 @@ public class ApiResource {
      */
     public static Map<String, Object> submitRequest(Map<String, String> queryData, String requestBody,
                                                     String requestMethod, String requestName) {
-        String jsonObjectBody = new JSONObject(queryData).toString();
+        // String jsonObjectBody = new JSONObject(queryData).toString();
         // submit request
-        Log.v("Test", requestMethod + " : " + jsonObjectBody);
+        // Log.v("Test", requestMethod + " : " + jsonObjectBody);
         String apiResponse = InvokeAPISample.invokeAPI(requestMethod, requestName, requestBody, queryData);
         HashMap<String, Object> responseMap = new Gson().fromJson(apiResponse,
                 new TypeToken<HashMap<String, Object>>(){}.getType());

@@ -2,7 +2,6 @@ package com.acalendar.acal;
 
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,7 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -31,8 +29,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -73,21 +69,14 @@ public class FriendsFragment extends Fragment {
         friends = new ArrayList<Friend>();
         Map<String, String> query = new HashMap<>();
         query.put("userId", userId);
-        Map<String, Object> apiResponse = ApiResource.submitRequest(query, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_GET_FRIENDS);
+        Map<String, Object> apiResponse = ApiResource.submitRequest(query, null,
+                ApiResource.GET_REQUEST, ApiResource.REQUEST_GET_FRIENDS);
         List<Map<String, String>> friendsResponse = (List) apiResponse.get("friends");
-//        Map<String, String> query = new HashMap<>();
-//        query.put("userId", userId);
-//        String apiResponse = InvokeAPISample.invokeAPI("GET", "/login", null, query);
-//        Log.v("testApi", "response: " + apiResponse);
-//        List<Map<String, Object>> list = new Gson().fromJson(apiResponse, new TypeToken<List<HashMap<String, Object>>>(){}.getType());
-//        for (Map<String, Object> friendAccount: list) {
-//            String fullName = friendAccount.get("firstname") + " "+ friendAccount.get("lastname");
-//            res.add(fullName);
-//        }
         if (!friendsResponse.isEmpty()) {
             friends.clear();
             for (Map<String, String> friend : friendsResponse) {
-                Friend thisFriend = new Friend(friend.get("firstname") + " " + friend.get("lastname"), friend.get("email"), friend.get("username"), friend.get("userId"));
+                Friend thisFriend = new Friend(friend.get("lastname"), friend.get("firstname"),
+                        friend.get("email"), friend.get("username"), friend.get("userId"));
                 friends.add(thisFriend);
             }
         }
@@ -111,7 +100,7 @@ public class FriendsFragment extends Fragment {
                 final String userInput = userInputView.getText().toString();
                 Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
                 Matcher m = p.matcher(userInput);
-                Map<String, String> bodyMap = new HashMap<String, String>();
+                Map<String, String> bodyMap = new HashMap<>();
                 bodyMap.put("userId_1", LoginedAccount.getUserId());
                 if (m.matches()) {
                     bodyMap.put("email", userInput);
@@ -120,7 +109,9 @@ public class FriendsFragment extends Fragment {
                 }
                 JSONObject jsonBody = new JSONObject(bodyMap);
                 String body = jsonBody.toString();
-                Map<String, Object> apiResponse = ApiResource.submitRequest(new HashMap<String, String>(), body, ApiResource.POST_REQUEST, ApiResource.REQUEST_ADD_FRIEND);
+                Map<String, Object> apiResponse = ApiResource.submitRequest(
+                        new HashMap<String, String>(), body,
+                        ApiResource.POST_REQUEST, ApiResource.REQUEST_ADD_FRIEND);
                 if (apiResponse.get("result") != null) {
                     if (apiResponse.get("result").equals("true")) {
                         //TODO: give feedback message
