@@ -1,0 +1,38 @@
+<LinearLayout android:id="@+id/LinearLayout01"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/noti_events_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+    </TextView>
+
+    <Button
+        android:text="Accept"
+        android:id="@+id/noti_events_accept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/noti_events_delete"
+        android:layout_toStartOf="@+id/noti_events_delete"
+        android:layout_marginRight="13dp"
+        android:layout_marginEnd="13dp">
+    </Button>
+
+    <Button
+        android:text="Delete"
+        android:id="@+id/noti_events_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+    </Button>
+
+</LinearLayout>
