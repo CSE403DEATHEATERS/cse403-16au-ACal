@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -71,7 +72,7 @@ public class FriendsFragment extends Fragment {
         query.put("userId", userId);
         Map<String, Object> apiResponse = ApiResource.submitRequest(query, null,
                 ApiResource.GET_REQUEST, ApiResource.REQUEST_GET_FRIENDS);
-        List<Map<String, String>> friendsResponse = (List) apiResponse.get("friends");
+        List<Map<String, String>> friendsResponse = (List) apiResponse.get("ACCEPT");
         if (!friendsResponse.isEmpty()) {
             friends.clear();
             for (Map<String, String> friend : friendsResponse) {
@@ -85,7 +86,7 @@ public class FriendsFragment extends Fragment {
     private void addNewFriend() {
         Button add = (Button) view.findViewById(R.id.friends_add);
         final TextView userinputtext = (TextView) view.findViewById(R.id.friends_add_input);
-        String userId = userinputtext.toString();
+//        EditText dialogInputView = (EditText) view.findViewById(R.id.dialog_friend_add_input);
 
 
 
@@ -96,34 +97,35 @@ public class FriendsFragment extends Fragment {
                 AlertDialog.Builder altdial = new AlertDialog.Builder(getActivity());
                 altdial.setView(v);
 
-                final EditText userInputView = (EditText) v.findViewById(R.id.dialog_friend_add_input);
-                final String userInput = userInputView.getText().toString();
-                Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
-                Matcher m = p.matcher(userInput);
-                Map<String, String> bodyMap = new HashMap<>();
-                bodyMap.put("userId_1", LoginedAccount.getUserId());
-                if (m.matches()) {
-                    bodyMap.put("email", userInput);
-                } else {
-                    bodyMap.put("username", userInput);
-                }
-                JSONObject jsonBody = new JSONObject(bodyMap);
-                String body = jsonBody.toString();
-                Map<String, Object> apiResponse = ApiResource.submitRequest(
-                        new HashMap<String, String>(), body,
-                        ApiResource.POST_REQUEST, ApiResource.REQUEST_ADD_FRIEND);
-                if (apiResponse.get("result") != null) {
-                    if (apiResponse.get("result").equals("true")) {
-                        //TODO: give feedback message
-                    } else {
-                        //TODO: ask for input again
-                    }
-                }
+                final EditText dialogInputView = (EditText) v.findViewById(R.id.dialog_friend_add_input);
                 altdial.setCancelable(true)
                         .setPositiveButton("Enter", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                userinputtext.setText(userInput);
+                                String userInput = dialogInputView.getText().toString();
+                                Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
+                                Matcher m = p.matcher(userInput);
+                                Map<String, String> bodyMap = new HashMap<>();
+                                bodyMap.put("userId_1", LoginedAccount.getUserId());
+                                if (m.matches()) {
+                                    bodyMap.put("email", userInput);
+                                } else {
+                                    bodyMap.put("username", userInput);
+                                }
+                                JSONObject jsonBody = new JSONObject(bodyMap);
+                                String body = jsonBody.toString();
+                                Map<String, Object> apiResponse = ApiResource.submitRequest(
+                                        new HashMap<String, String>(), body,
+                                        ApiResource.POST_REQUEST, ApiResource.REQUEST_ADD_FRIEND);
+                                Log.v("Test", "add friend body" + body);
+                                if (apiResponse.get("result") != null) {
+                                    if (apiResponse.get("result").equals("true")) {
+                                        //TODO: give feedback message
+                                    } else {
+                                        //TODO: ask for input again
+                                    }
+                                }
+//                                userinputtext.setText(userInput);
                             }
                         });
                 Dialog dialog = altdial.create();
