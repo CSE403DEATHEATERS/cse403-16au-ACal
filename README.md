@@ -28,7 +28,10 @@ Features that are working for our Feature-Complete Release:
 * User signup      
 * User signin   
 * Create events        
-* Edit events     
+* Edit events    
+
+Most-Recent coverage tool result:     
+63%     
 
 
 
