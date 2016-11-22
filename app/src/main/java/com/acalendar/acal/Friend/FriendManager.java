@@ -8,7 +8,6 @@ import com.acalendar.acal.Login.LoginedAccount;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,9 +22,11 @@ import java.util.regex.Pattern;
 
 public class FriendManager {
     private static List<Friend> listOfFriend;
+    private static Map<String, Friend> uidToFriend;
 
     public FriendManager() {
         listOfFriend = new ArrayList<>();
+        uidToFriend = new HashMap<>();
         // call get all friends list, parse responce map
         Map<String, String> query = new HashMap<>();
         query.put("userId", LoginedAccount.getUserId());
@@ -35,7 +36,8 @@ public class FriendManager {
                 ApiResource.REQUEST_GET_FRIENDS);
         List<Map<String, String>> friendsResponse =
                 (List) apiResponse.get("ACCEPT");
-        if (!friendsResponse.isEmpty()) {
+
+        if (friendsResponse != null && !friendsResponse.isEmpty()) {
             for (Map<String, String> friend : friendsResponse) {
                 Friend thisFriend = new Friend(
                         friend.get("lastname"),
@@ -44,13 +46,18 @@ public class FriendManager {
                         friend.get("username"),
                         friend.get("userId"));
                 listOfFriend.add(thisFriend);
+                uidToFriend.put(friend.get("userId"), thisFriend);
             }
         }
         // accept. pending(to be accepted), sent(to others)
     }
 
     public List<Friend> getListOfFriend() {
-        return Collections.unmodifiableList(listOfFriend);
+        return new ArrayList<>(listOfFriend);
+    }
+
+    public Friend getFriendbyUserId(String uid) {
+        return this.uidToFriend.get(uid);
     }
 
     public boolean addFriend(String userInput) {

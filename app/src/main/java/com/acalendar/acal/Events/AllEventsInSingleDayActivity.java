@@ -63,7 +63,7 @@ public class AllEventsInSingleDayActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 999) {
+        if (requestCode == 79) {
             if (resultCode == RESULT_OK) {
                 int eventIdDeletedHashcode = data.getStringExtra("eventIdDeleted").hashCode();
                 Button eventView = (Button) findViewById(eventIdDeletedHashcode);

@@ -35,8 +35,8 @@ public class LoginedAccount {
             Map<String, String> account = (Map<String, String>) map.get("account");
             user = new Account(account.get("userId"), account.get("username"), account.get("email"), account.get("lastname"), account.get("firstname"));
             //eventsManager = new EventsManager((List<Map<String, Object>>) map.get("event"));
+            friendManager = new FriendManager(); // must preceds eventManager
             eventsManager = new EventsManager((Map<String, List<Map<String, Object>>>) map.get("event"));
-            friendManager = new FriendManager();
         }
     }
 
@@ -56,6 +56,7 @@ public class LoginedAccount {
     public static void logOut() {
         user = null;
         eventsManager = null;
+        friendManager = null;
     }
 
     public static boolean isLogedIn() {
@@ -76,6 +77,10 @@ public class LoginedAccount {
 
     public static EventsManager getEventsManager() {
         return eventsManager;
+    }
+
+    public static FriendManager getFriendManager() {
+        return friendManager;
     }
 
     public static String getUserId() {

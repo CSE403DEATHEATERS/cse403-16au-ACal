@@ -3,15 +3,19 @@ package com.acalendar.acal.Events;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.acalendar.acal.Friend.Friend;
 import com.acalendar.acal.Login.LoginedAccount;
 import com.acalendar.acal.R;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -31,7 +35,7 @@ public class EventInfoDisplayPageActivity extends Activity {
         // create layout, UI here
         setContentView(R.layout.event_info_display_page);
         // extract everything from Bundle and display
-        Intent intentRecieved = getIntent();
+        final Intent intentRecieved = getIntent();
         String eid = intentRecieved.getStringExtra("eventId");
         this.event = LoginedAccount.getEventsManager().getEventById(eid);
         UpdateTextViews(this.event);
@@ -41,7 +45,7 @@ public class EventInfoDisplayPageActivity extends Activity {
         Button editButton = (Button) findViewById(R.id.EditButton);
         Button deleteButton = (Button) findViewById(R.id.DeleteButton);
         Button seeCommentButton = (Button) findViewById(R.id.SeeCommentsButton);
-
+        Button manageParticipantsButton = (Button) findViewById(R.id.manageParticipantButton);
         editButton.setOnClickListener(
             new Button.OnClickListener(){
                 @Override
@@ -69,6 +73,21 @@ public class EventInfoDisplayPageActivity extends Activity {
                     intentGoBackToAllEvents.putExtra("eventIdDeleted", event.getEventId());
                     setResult(RESULT_OK, intentGoBackToAllEvents);
                     finish();
+                }
+            }
+        );
+
+        manageParticipantsButton.setOnClickListener(
+            new Button.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    Intent intentToFriendCheckBoxPage = new Intent(
+                            EventInfoDisplayPageActivity.this, EditEventParticipantsActivity.class);
+                    intentToFriendCheckBoxPage.putParcelableArrayListExtra(
+                            "originalParticipantsList",
+                            (ArrayList<? extends Parcelable>) event.getListOfParticipantingFriends());
+                    startActivityForResult(intentToFriendCheckBoxPage, 998);
                 }
             }
         );
@@ -107,6 +126,25 @@ public class EventInfoDisplayPageActivity extends Activity {
         TextView endView = (TextView) findViewById(R.id.endTimeDisplayText);
         Date endTime = eventObject.getEndTime();
         endView.setText(format.format(endTime));
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.v("Test", "onActivityResult is called; result is returned");
+        if (requestCode == 998) {
+            if (resultCode == RESULT_OK) {
+                ArrayList<Friend> newAddList = data.getParcelableArrayListExtra("listOfNewlyAddedFriends");
+                ArrayList<Friend> deleteList = data.getParcelableArrayListExtra("listOfDeletedFriends");
+                boolean result =
+                        LoginedAccount.getEventsManager().editParticipants(newAddList, deleteList);
+                // TODO: display current List
+//                currentlySelectedParticipants.addAll(newAddList);
+//                currentlySelectedParticipants.removeAll(deleteList);
+                Log.v("InfoDisplay", "a list of " + newAddList.size() + " is newly add to the event");
+                Log.v("InfoDisplay", "a list of " + deleteList.size() + " is removed from the event");
+            }
+        }
     }
 
     @Override

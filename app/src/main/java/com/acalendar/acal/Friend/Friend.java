@@ -19,7 +19,7 @@ public class Friend extends Account implements Parcelable {
         super(userId, username, email, lastName, firstName);
     }
     public String getName() {
-        return this.firstname + this.lastname;
+        return this.firstname + " " + this.lastname;
     }
 
     public boolean isSelected() {
@@ -40,6 +40,7 @@ public class Friend extends Account implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
         dest.writeByte(this.selected ? (byte) 1 : (byte) 0);
     }
 
@@ -48,7 +49,7 @@ public class Friend extends Account implements Parcelable {
         this.selected = in.readByte() != 0;
     }
 
-    public static final Parcelable.Creator<Friend> CREATOR = new Parcelable.Creator<Friend>() {
+    public static final Creator<Friend> CREATOR = new Creator<Friend>() {
         @Override
         public Friend createFromParcel(Parcel source) {
             return new Friend(source);

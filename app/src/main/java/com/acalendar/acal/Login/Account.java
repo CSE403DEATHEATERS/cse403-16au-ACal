@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 
-public class Account implements Serializable, Parcelable {
+public class Account implements Parcelable {
     protected String userId;
     protected String username;
     protected String email;
@@ -92,7 +92,7 @@ public class Account implements Serializable, Parcelable {
         this.firstname = in.readString();
     }
 
-    public static final Parcelable.Creator<Account> CREATOR = new Parcelable.Creator<Account>() {
+    public static final Creator<Account> CREATOR = new Creator<Account>() {
         @Override
         public Account createFromParcel(Parcel source) {
             return new Account(source);
@@ -103,4 +103,19 @@ public class Account implements Serializable, Parcelable {
             return new Account[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return userId + username + email + lastname + firstname;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.userId.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return ((Account)o).userId.equals(this.userId);
+    }
 }

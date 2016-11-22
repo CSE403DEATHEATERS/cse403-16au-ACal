@@ -15,6 +15,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.acalendar.acal.Friend.Friend;
 import com.acalendar.acal.Login.LoginedAccount;
 import com.acalendar.acal.R;
 
@@ -52,6 +53,8 @@ public class EventInfoEditPageActivity  extends Activity {
     private AutoCompleteTextView descriptionView;
     private CheckBox privateCheckBox;
 
+    private ArrayList<Friend> currentlySelectedParticipants;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +65,7 @@ public class EventInfoEditPageActivity  extends Activity {
         endCalendar = Calendar.getInstance();
         dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
         timeFormat = new SimpleDateFormat("HH:mm", Locale.US);
+        currentlySelectedParticipants = new ArrayList<>();
 
         // get the widgets
         datePickerViewButton = (Button) findViewById(R.id.datePickerButton);
@@ -144,13 +148,15 @@ public class EventInfoEditPageActivity  extends Activity {
             }
         });
 
-        // share with friends -> goes to select participating Friends Page, only visible when add new
         manageParticipantButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(EventInfoEditPageActivity.this,
                         EditEventParticipantsActivity.class);
-                startActivityForResult(i, 0); // results returned are handled in OnActicityResult
+                i.putParcelableArrayListExtra("originalParticipantsList",
+                        currentlySelectedParticipants);
+                // if user can click this, then it means he's creating new event.
+                startActivityForResult(i, 995); // results returned are handled in OnActicityResult
             }
         });
 
@@ -165,6 +171,7 @@ public class EventInfoEditPageActivity  extends Activity {
                 boolean isPublic = !(privateCheckBox.isChecked());
                 Event newEvent = new Event(eventTitle, startCalendar.getTime(), endCalendar.getTime(),
                         location, description, isPublic);
+                newEvent.setListOfParticipants(currentlySelectedParticipants);
                 if (eventObjectToEdit == null) {
                     // create new
                     // TODO: also get all participants that were selected.
@@ -190,22 +197,26 @@ public class EventInfoEditPageActivity  extends Activity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        // TODO: save the data entered: all textEdits, Times.
+    }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // TODO: this should be called when user is returned from manage participants page.
         Log.v("Test", "onActivityResult is called; result is returned");
-        if (resultCode == RESULT_CANCELED) {
-            // TODO: nothing for now.
-        } else if (requestCode == 0 && resultCode == RESULT_OK) {
-            // TODO: get from the intent the data.
-            ArrayList<String> lst = data.getStringArrayListExtra("listOfSelectedUid");
-            Log.v("Test", "list that was return is" + lst.toString());
-        }
-    }
+        if (requestCode == 995) {
+            if (resultCode == RESULT_OK) {
+                // TODO: after getting the lst of friends selected back, maybe for display use.
+                ArrayList<Friend> newAddList = data.getParcelableArrayListExtra("listOfNewlyAddedFriends");
+                ArrayList<Friend> deleteList = data.getParcelableArrayListExtra("listOfDeletedFriends");
+                currentlySelectedParticipants.addAll(newAddList);
+                currentlySelectedParticipants.removeAll(deleteList);
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        // TODO: save the data entered: all textEdits, Times.
+                Log.v("InfoEdit", "after modification, the event now has "
+                        + currentlySelectedParticipants.size() + " participants");
+            }
+        }
     }
 }
