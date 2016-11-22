@@ -4,14 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.acalendar.acal.Login.LoginedAccount;
 import com.acalendar.acal.R;
-import com.google.android.gms.drive.realtime.internal.event.ObjectChangedDetails;
-import com.google.android.gms.vision.text.Text;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -71,6 +68,8 @@ public class EventInfoDisplayPageActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     // TODO: go to eventCommentPage where user can view and add comments
+                    Intent posts = new Intent(EventInfoDisplayPageActivity.this, PostsActivity.class);
+                    EventInfoDisplayPageActivity.this.startActivity(posts);
                 }
             }
         );

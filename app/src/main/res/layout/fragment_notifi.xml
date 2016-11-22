@@ -1,17 +1,67 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.acalendar.acal.NotifiFragment">
+    tools:context="com.acalendar.acal.NotifiFragment"
+    android:orientation="vertical"
+    android:weightSum="1">
 
     <!-- TODO: Update blank fragment layout -->
 
     <TextView
-        android:text="notification will draw out "
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:id="@+id/textView2"
+        android:textSize="30sp"
+        android:textAlignment="center"
+        android:textStyle="normal|bold"
+        android:layout_weight="0.83" />
+
+    <TextView
+        android:text="Friends"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="198dp"
-        android:id="@+id/textView11" />
-</RelativeLayout>
+        android:id="@+id/textView3"
+        android:textSize="24sp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="206dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="202dp"
+                android:id="@+id/noti_friends_listview" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:text="Events"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView16"
+        android:textSize="24sp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="176dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="174dp"
+                android:id="@+id/noti_events_listview" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
