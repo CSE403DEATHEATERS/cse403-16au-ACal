@@ -190,6 +190,14 @@
     <p>All unit tests on the server side will be run with the command <br />
     <pre><code>mvn test</code></pre>
     <p>Note that the above command should be run in the <code>server</code> folder.</p>
+
+    <h5>How To Run A Coverage Tool On The Server</h5>
+    <p>Maven provides a nice built-in coverage tool. To run the coverage tool, type <br />
+	<pre><code>mvn cobertura:cobertura</code></pre>
+	in the <code>server/</code> directory. <br />
+	Maven will generate the Cobertura code coverage report at <code>/target/site/cobertura/index.html</code>. <br />
+	You can then open the <code>html</code> file above with you choice of browser.
+    </p>
 		
       <h4>How To Release A New Version</h4>
 
