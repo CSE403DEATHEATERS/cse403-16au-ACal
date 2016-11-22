@@ -12,7 +12,7 @@ public class FriendHandler {
 
     public static void main(String[] args) {
         Map<String, String> input = new HashMap<String, String>();
-        input.put("userId_1", "b6e7b094-4c5a-47d2-8d22-348f24d8a4c4");
+        input.put("userId_1", "def89946-3689-4fdc-bada-7c919526473b");
         input.put("userId_2", "7d9943f4-4326-44a6-9f39-50f890140b26");
         input.put("requestStatus", "PENDING");
 
@@ -24,7 +24,7 @@ public class FriendHandler {
 
         //System.out.println(res.size());
 
-        System.out.println(new FriendHandler().acceptFriend(input, null));
+        System.out.println(new FriendHandler().addFriend(input, null));
     }
 
     /**
