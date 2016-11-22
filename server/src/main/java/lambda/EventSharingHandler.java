@@ -4,6 +4,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import model.Event;
 import model.EventSharingService;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,9 +20,9 @@ public class EventSharingHandler {
      *              "invited" => List<String>: list of userIds to be invited into this event
      *              "removed" => List<String>: list of userIds to be reomved from this event
      * @param context
-     * @return list of userIds within in this event after editing, both pending and accepted
+     * @return map containing one KVPair: "attendees" => list of userIds within in this event after editing, both pending and accepted
      */
-    public List<String> editAttendees(Map<String, Object> input, Context context) {
+    public Map<String, List<String>> editAttendees(Map<String, Object> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
         }
@@ -30,7 +31,9 @@ public class EventSharingHandler {
         List<String> removed = (List<String>) input.get("removed");
         List<String> invited = (List<String>) input.get("invited");
 
-        return EventSharingService.editEventAttendees(eventId, userId, invited, removed);
+        Map<String, List<String>> res = new HashMap<>();
+        res.put("attendees", EventSharingService.editEventAttendees(eventId, userId, invited, removed));
+        return res;
     }
 
     /**
@@ -38,16 +41,18 @@ public class EventSharingHandler {
      * @param input "userId" => String: id of user accepting invitation
      *              "eventId" => String: id of event under concern
      * @param context
-     * @return true if this action succeed, false otherwise
+     * @return map containing one KVPair: "res" => true if this action succeed, false otherwise
      */
-    public boolean acceptEventInvitation(Map<String, String> input, Context context) {
+    public Map<String, Boolean> acceptEventInvitation(Map<String, String> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
         }
         String userId = input.get("userId");
         String eventId = input.get("eventId");
 
-        return EventSharingService.handleEventInvitation(userId, eventId, true);
+        Map<String, Boolean> result = new HashMap<>();
+        result.put("res", EventSharingService.handleEventInvitation(userId, eventId, true));
+        return result;
     }
 
     /**
@@ -55,29 +60,34 @@ public class EventSharingHandler {
      * @param input "userId" => String: id of user declining invitation
      *              "eventId" => String: id of event under concern
      * @param context
-     * @return true if this action succeed, false otherwise
+     * @return map containing one KVPair: "res" => true if this action succeed, false otherwise
      */
-    public boolean declineEventInvitation(Map<String, String> input, Context context) {
+    public Map<String, Boolean> declineEventInvitation(Map<String, String> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
         }
         String userId = input.get("userId");
         String eventId = input.get("eventId");
 
-        return EventSharingService.handleEventInvitation(userId, eventId, false);
+        Map<String, Boolean> result = new HashMap<>();
+        result.put("res", EventSharingService.handleEventInvitation(userId, eventId, false));
+        return result;
     }
 
     /**
      * Get all events that are pending under a userId.
      * @param input "userId" => String: id of user requesting eventIds
      * @param context
-     * @return list of all matching events, each event's information is stored in a map
+     * @return Map containing one KVPair: "events" => list of all matching events, each event's information is stored in a map
      */
-    public List<Map<String, Object>> getPendingEventsByUserId(Map<String, String> input, Context context) {
+    public Map<String, List<Map<String, Object>>> getPendingEventsByUserId(Map<String, String> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
         }
         String userId = input.get("userId");
-        return Event.getEventsByUserId(userId, "PENDING");
+        List<Map<String, Object>> events = Event.getEventsByUserId(userId, "PENDING");
+        Map<String, List<Map<String, Object>>> res = new HashMap<>();
+        res.put("events", events);
+        return res;
     }
 }
