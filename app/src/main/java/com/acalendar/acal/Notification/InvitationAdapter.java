@@ -28,7 +28,7 @@ public class InvitationAdapter extends ArrayAdapter<Invitation> {
     }
 
     public ArrayList<Invitation> getInvitationList() {
-        return new ArrayList<Invitation>(invitationList);
+        return invitationList;
     }
 
     private class ViewHolder {

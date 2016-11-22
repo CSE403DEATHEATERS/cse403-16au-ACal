@@ -27,7 +27,7 @@ public class FriendAdapter extends ArrayAdapter<Friend> {
     }
 
     public ArrayList<Friend> getFriendList() {
-        return new ArrayList<Friend>(friendList);
+        return friendList;
     }
 
     private class ViewHolder {

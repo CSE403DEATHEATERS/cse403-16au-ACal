@@ -23,7 +23,8 @@ public class ApiResource {
     public static final String REQUEST_REJECT_FRIEND = "/rejectFriend";
     public static final String REQUEST_ACEEPT_FRIEND = "/acceptFriend";
     public static final String REQUEST_DELETE_EVENT = "/deleteEvent";
-    public static final String REQUEST_DECLINE_FRIEND = "declineFriend";
+    public static final String REQUEST_JOIN_EVENT = "/acceptEventInvitation";
+    public static final String REQUEST_DECLINE_EVENT = "/declineEventInvitation";
 
     public static final String GET_REQUEST = "GET";
     public static final String POST_REQUEST = "POST";
