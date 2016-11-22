@@ -3,6 +3,9 @@ package com.acalendar.acal.Login;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.acalendar.acal.Events.Event;
+import com.acalendar.acal.Friend.Friend;
+
 import java.io.Serializable;
 
 public class Account implements Parcelable {
@@ -71,6 +74,26 @@ public class Account implements Parcelable {
     }
 
     @Override
+    public String toString() {
+        return userId + username + email + lastname + firstname;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.userId.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Account)) {
+            return false;
+        }
+        if (o == null)
+            return false;
+        return ((Account)o).userId.equals(this.userId);
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }
@@ -103,19 +126,4 @@ public class Account implements Parcelable {
             return new Account[size];
         }
     };
-
-    @Override
-    public String toString() {
-        return userId + username + email + lastname + firstname;
-    }
-
-    @Override
-    public int hashCode() {
-        return this.userId.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return ((Account)o).userId.equals(this.userId);
-    }
 }

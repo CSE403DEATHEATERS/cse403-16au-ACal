@@ -57,8 +57,9 @@ public class EditEventParticipantsActivity extends Activity {
                 ArrayList<Friend> newAddList = new ArrayList<>();
                 ArrayList<Friend> deleteList = new ArrayList<>();
 
-                for(int i=0;i<friendList.size();i++){
-                    Friend friend = friendList.get(i);
+                for(Friend friend : friendList){
+
+                    Log.v("sharing", friend.getUserId() + " " + friend.getName());
                     if(friend.isSelected()){
                         if (!originalList.contains(friend)) {
                             newAddList.add(friend);
