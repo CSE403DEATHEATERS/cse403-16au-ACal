@@ -64,13 +64,13 @@ public class Event implements Parcelable {
     }
 
     public void setEventId(String eid) {
-        if (this.eid != null) {
+        if (this.eid == null) {
             this.eid = eid;
         }
     }
 
     public void setCreateTime(Date time) {
-        if (this.createTime != null) {
+        if (this.createTime == null) {
             this.createTime = time;
         }
     }
@@ -232,4 +232,15 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        Event e = (Event)o;
+        return this.eid.equals(e.eid);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.eid.hashCode();
+    }
 }

@@ -120,7 +120,8 @@ public class EventsManager {
         e.setEventId(eid);
         e.setCreateTime(createTime);
         String key = dateToString(e.getStartTime());
-        Log.v("Adding event", "*** this event entry will be added to key " + key);
+        Log.v("Adding event", "*** this event entry will be added to key " +
+                key + " event id is " + e.getEventId());
         if (!eventMap.containsKey(key)) {
             eventMap.put(key, new ArrayList<Event>());
         }
@@ -163,8 +164,11 @@ public class EventsManager {
         if (!success) {
             return false;
         }
+        newEvent.setEventId(originalEvent.getEventId());
+        Log.v("EditEvent", "new eventid is set to be old event" + newEvent.getEventId());
         List<Event> list = this.eventMap.get(dateToString(newEvent.getStartTime()));
         list.remove(originalEvent);
+        list.add(newEvent);
         this.idToEventMap.put(newEvent.getEventId(), newEvent);
         return true;
     }
