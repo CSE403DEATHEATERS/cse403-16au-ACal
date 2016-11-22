@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.acalendar.acal.ApiResource;
 import com.acalendar.acal.Events.EventsManager;
+import com.acalendar.acal.Friend.FriendManager;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Map;
 public class LoginedAccount {
     private static Account user;
     private static EventsManager eventsManager;
+    private static FriendManager friendManager;
 
     public static Account getCurrentUser() {
         if (user == null) {
@@ -34,6 +36,7 @@ public class LoginedAccount {
             user = new Account(account.get("userId"), account.get("username"), account.get("email"), account.get("lastname"), account.get("firstname"));
             //eventsManager = new EventsManager((List<Map<String, Object>>) map.get("event"));
             eventsManager = new EventsManager((Map<String, List<Map<String, Object>>>) map.get("event"));
+            friendManager = new FriendManager();
         }
     }
 
