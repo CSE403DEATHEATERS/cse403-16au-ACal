@@ -3,7 +3,7 @@ package com.acalendar.acal.Events;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.acalendar.acal.Login.Account;
+import com.acalendar.acal.Friend.Friend;
 import com.acalendar.acal.Login.LoginedAccount;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class Event implements Parcelable {
     private Location location;
     private String description;
     private Boolean isPublic;
-    private List<Account> listOfParticipantUsers;
+    private List<Friend> listOfParticipantUsers;
 
 
     /**
@@ -64,32 +64,37 @@ public class Event implements Parcelable {
     }
 
     public void setEventId(String eid) {
-        if (this.eid != null) {
+        if (this.eid == null) {
             this.eid = eid;
         }
     }
 
     public void setCreateTime(Date time) {
-        if (this.createTime != null) {
+        if (this.createTime == null) {
             this.createTime = time;
         }
     }
 
-    public void addParticipant(Account friend) {
+    public void addParticipant(Friend friend) {
         listOfParticipantUsers.add(friend);
     }
 
-    public void setListOfParticipantsUids(List<String> listOfUserids) {
-        //this.listOfParticipantUsers = new ArrayList<>(listOfUserids);
+    public void setListOfParticipants(List<Friend> listOfFriend) {
+        this.listOfParticipantUsers = listOfFriend;
     }
 
-    public List<String> getListOfParticipantsUids() {
-        List<String> listOfUserids = new ArrayList<>();
-        for (Account u : listOfParticipantUsers) {
-            listOfUserids.add(u.getUserId());
-        }
-        return listOfUserids;
+    public List<Friend> getListOfParticipantingFriends() {
+        return this.listOfParticipantUsers;
     }
+
+    public List<String> getListOfParticipantingFriendsUserIds() {
+        List<String> uids = new ArrayList<>();
+        for (Friend f : listOfParticipantUsers) {
+            uids.add(f.getUserId());
+        }
+        return uids;
+    }
+
 
     public String getEventTitle() {
         return eventTitle;
@@ -213,7 +218,7 @@ public class Event implements Parcelable {
         this.description = in.readString();
         this.isPublic = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.listOfParticipantUsers = new ArrayList<>();
-        in.readList(this.listOfParticipantUsers, Account.class.getClassLoader());
+        in.readList(this.listOfParticipantUsers, Friend.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
@@ -227,4 +232,15 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        Event e = (Event)o;
+        return this.eid.equals(e.eid);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.eid.hashCode();
+    }
 }

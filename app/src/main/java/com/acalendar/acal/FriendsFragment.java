@@ -52,41 +52,18 @@ public class FriendsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         view = inflater.inflate(R.layout.fragment_friends, container, false);
-        getFriendListFromServer(LoginedAccount.getUserId());
-
-        adapter = new ArrayAdapter<Friend>(getActivity(), R.layout.da_item, friends);
-
+        friends = (ArrayList<Friend>) LoginedAccount.getFriendManager().getListOfFriend();
+        adapter = new ArrayAdapter<>(getActivity(), R.layout.da_item, friends);
         friendListView();
         addNewFriend();
-
         return view;
     }
 
-    private void getFriendListFromServer(String userId) {
-        friends = new ArrayList<Friend>();
-        Map<String, String> query = new HashMap<>();
-        query.put("userId", userId);
-        Map<String, Object> apiResponse = ApiResource.submitRequest(query, null,
-                ApiResource.GET_REQUEST, ApiResource.REQUEST_GET_FRIENDS);
-        List<Map<String, String>> friendsResponse = (List) apiResponse.get("friends");
-        if (!friendsResponse.isEmpty()) {
-            friends.clear();
-            for (Map<String, String> friend : friendsResponse) {
-                Friend thisFriend = new Friend(friend.get("lastname"), friend.get("firstname"),
-                        friend.get("email"), friend.get("username"), friend.get("userId"));
-                friends.add(thisFriend);
-            }
-        }
-    }
-
     private void addNewFriend() {
-        Button add = (Button) view.findViewById(R.id.friends_add);
+        final Button add = (Button) view.findViewById(R.id.friends_add);
         final TextView userinputtext = (TextView) view.findViewById(R.id.friends_add_input);
         String userId = userinputtext.toString();
-
 
 
         add.setOnClickListener(new View.OnClickListener() {
@@ -98,26 +75,9 @@ public class FriendsFragment extends Fragment {
 
                 final EditText userInputView = (EditText) v.findViewById(R.id.dialog_friend_add_input);
                 final String userInput = userInputView.getText().toString();
-                Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
-                Matcher m = p.matcher(userInput);
-                Map<String, String> bodyMap = new HashMap<>();
-                bodyMap.put("userId_1", LoginedAccount.getUserId());
-                if (m.matches()) {
-                    bodyMap.put("email", userInput);
-                } else {
-                    bodyMap.put("username", userInput);
-                }
-                JSONObject jsonBody = new JSONObject(bodyMap);
-                String body = jsonBody.toString();
-                Map<String, Object> apiResponse = ApiResource.submitRequest(
-                        new HashMap<String, String>(), body,
-                        ApiResource.POST_REQUEST, ApiResource.REQUEST_ADD_FRIEND);
-                if (apiResponse.get("result") != null) {
-                    if (apiResponse.get("result").equals("true")) {
-                        //TODO: give feedback message
-                    } else {
-                        //TODO: ask for input again
-                    }
+                boolean addedFriend = LoginedAccount.getFriendManager().addFriend(userInput);
+                if (!addedFriend) {
+                    // TODO: alert some message
                 }
                 altdial.setCancelable(true)
                         .setPositiveButton("Enter", new DialogInterface.OnClickListener() {
