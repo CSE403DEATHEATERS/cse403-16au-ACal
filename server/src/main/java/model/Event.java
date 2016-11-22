@@ -215,10 +215,18 @@ public class Event {
         } else {
             // TODO: remove event from db
             // TODO: remove event sharing tuple, call message handler
-            DeleteItemSpec delete = new DeleteItemSpec().withPrimaryKey(new PrimaryKey("eventId", this.eventId));
-            EVENT_TABLE.deleteItem(delete);
-            EVENT_SHARING_TABLE.deleteItem(delete);
-            result.put("result", true);
+            try {
+                DeleteItemSpec delete = new DeleteItemSpec().withPrimaryKey(new PrimaryKey("eventId", this.eventId));
+                EVENT_TABLE.deleteItem(delete);
+                QuerySpec query = new QuerySpec().withHashKey("eventId", this.eventId);
+                Iterator<Item> itemIterator = EVENT_SHARING_TABLE.query(query).iterator();
+                while (itemIterator.hasNext()) {
+                    EVENT_SHARING_TABLE.deleteItem("eventId", this.eventId, "recipientId", itemIterator.next().getString("recipientId"));
+                }
+                result.put("result", true);
+            } catch (Exception e) {
+                result.put("result", false);
+            }
         }
         return result;
     }

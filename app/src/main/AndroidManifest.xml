@@ -49,6 +49,7 @@
         </activity>
         android:label="Login" />
         <activity android:name=".Login.FrontPageActivity" />
+        <activity android:name=".Events.PostsActivity" />
         <activity
             android:name=".Login.SignUPActivity"
             android:label="Sign Up" />

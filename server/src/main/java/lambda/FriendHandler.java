@@ -10,11 +10,11 @@ import java.util.Map;
 
 public class FriendHandler {
 
-    /*
     public static void main(String[] args) {
         Map<String, String> input = new HashMap<String, String>();
+        input.put("userId_2", "6b16c70c-9111-434b-b1a2-163f783163f3");
         input.put("userId_1", "7d9943f4-4326-44a6-9f39-50f890140b26");
-        input.put("username", "shenz");
+        input.put("requestStatus", "PENDING");
 
         //List<Map<String, String>> res = new FriendHandler().getFriend(input, null);
 
@@ -25,14 +25,12 @@ public class FriendHandler {
         //System.out.println(res.size());
 
         System.out.println(new FriendHandler().addFriend(input, null));
-
     }
-    */
 
     /**
      * Get friend list lambda
      *
-     * @param input userId as key in a Map<String, Object> indicating the user
+     * @param input userId, requestStatus as key in a Map<String, Object> indicating the user and friend request status
      * @param context
      * @return a list of account info who is friend with the userId
      */
@@ -41,13 +39,12 @@ public class FriendHandler {
             throw new IllegalArgumentException();
         }
         String userId = input.get("userId");
+        String status = input.get("requestStatus");
         if ((userId == null || userId.isEmpty())) {
             return new HashMap<String, Object>();
         }
         System.out.println("(getFriends)" + userId);
-        Map<String, Object> result = new HashMap<>();
-        result.put("friends", FriendManager.getFriendList(userId));
-        return result;
+        return FriendManager.getFriendList(userId, status);
     }
 
     /**
@@ -95,6 +92,7 @@ public class FriendHandler {
         if ((userId_1 == null || userId_1.isEmpty()) || (userId_2 == null || userId_2.isEmpty())) {
             return new HashMap<String, Object>();
         }
+        System.out.println("(rejectFriend)" + userId_1 + ":" + userId_2);
         Map<String, Object> result = new HashMap<>();
         result.put("result", FriendManager.processFriendRequest(userId_1, userId_2, false));
         return result;
@@ -118,6 +116,7 @@ public class FriendHandler {
         if ((userId_1 == null || userId_1.isEmpty()) || (userId_2 == null || userId_2.isEmpty())) {
             return new HashMap<String, Object>();
         }
+        System.out.println("(acceptFriend)" + userId_1 + ":" + userId_2);
         Map<String, Object> result = new HashMap<>();
         result.put("result", FriendManager.processFriendRequest(userId_1, userId_2, true));
         return result;

@@ -14,9 +14,9 @@ import java.util.Map;
 public class EventHandler {
 
     public static void main(String[] args) {
-        Map<String, Object> input = new HashMap<String, Object>();
-        input.put("eventId", "3f19c206-357c-4856-a193-056c70f8aeee");
-        input.put("isPublic", new Boolean(true));
+        Map<String, String> input = new HashMap<>();
+        input.put("eventId", "3cd8d3ce-73db-4997-9caf-b1f3b30f5e05");
+        //input.put("isPublic", new Boolean(true));
         input.put("title", "test");
         List<String> list = new ArrayList<String>();
         Map<String, Object> location = new HashMap<>();
@@ -27,14 +27,14 @@ public class EventHandler {
         location.put("state", "WA");
         location.put("streetName", "-901");
         location.put("streetNumber", -901);
-        input.put("location", location);
+        //input.put("location", location);
         //list.add("abc");
         //list.add("hahah");
         //new EventHandler().createEvent(input, null);
         Map<String, String> input2 = new HashMap<>();
         input2.put("eventId", "3f19c206-357c-4856-a193-056c70f8aeee");
         input2.put("userId", "7d9943f4-4326-44a6-9f39-50f890140b26");
-        System.out.println(new EventHandler().getEvents(input2, null));
+        System.out.println(new EventHandler().deleteEvent(input, null));
         // System.out.println(new EventHandler().getAttendingEvents(input2, null));
     }
 
@@ -70,7 +70,7 @@ public class EventHandler {
      * @param input event updated fieilds as keys in a Map<String, Object>
      * @return a Map stores event info if the event is updated, or empty map
      */
-    public Map<String, Object> editEvent(Map<String,  Object> input, Context context) {
+    public Map<String, Object> editEvent(Map<String, Object> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
         }

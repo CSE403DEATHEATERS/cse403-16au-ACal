@@ -12,7 +12,6 @@ import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.spec.ScanSpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.amazonaws.services.dynamodbv2.model.ConditionalOperator;
-import com.amazonaws.services.ec2.model.Address;
 
 import javax.mail.internet.InternetAddress;
 

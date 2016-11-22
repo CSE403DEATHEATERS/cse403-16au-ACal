@@ -14,24 +14,20 @@
             android:id="@+id/nav_event_pool"
             android:title="Event Pool" />
         <item
+            android:id="@+id/nav_public_events_pool"
+            android:title="Public Events Pool" />
+        <item
             android:id="@+id/nav_settings"
             android:title="Settings" />
 
+        <item android:title="Notifications"
+            android:id="@+id/nav_notification"></item>
         <item
-            android:id="@+id/nav_public_events_pool"
-            android:title="Public Events Pool" />
+            android:id="@+id/nav_new_event"
+            android:title="Event Invitation" />
+        <item
+            android:id="@+id/nav_invite_friend"
+            android:title="Friend Invitation" />
     </group>
-
-    <item android:title="Notifications"
-        android:id="@+id/nav_notification">
-        <menu>
-            <item
-                android:id="@+id/nav_new_event"
-                android:title="Event Invitation" />
-            <item
-                android:id="@+id/nav_invite_friend"
-                android:title="Friend Invitation" />
-        </menu>
-    </item>
 
 </menu>
