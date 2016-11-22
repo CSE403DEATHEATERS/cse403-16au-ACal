@@ -191,6 +191,9 @@ public class EventsManager {
         }
         this.idToEventMap.remove(eventId);
         this.eventMap.get(dateToString(eventToDelete.getStartTime())).remove(eventToDelete);
+        if (eventMap.get(dateToString(eventToDelete.getStartTime())).size() == 0) {
+            eventMap.remove(dateToString(eventToDelete.getStartTime()));
+        }
         return true;
     }
 
@@ -198,7 +201,7 @@ public class EventsManager {
         // take evenid, userid, listOfUserIdAdded, listOfUserIdDeleted(empty for now).
         // remove temporarily not available in front end but work in backend.
 
-        return false;
+        return true;
     }
 
     public List<Event> getEventsInDate(String key) {
