@@ -97,7 +97,9 @@ public class EventInfoDisplayPageActivity extends Activity {
 
                 @Override
                 public void onClick(View v) {
-                    // TODO: go to eventCommentPage where user can view and add comments, stretch feature
+                    // TODO: go to eventCommentPage where user can view and add comments
+                    Intent posts = new Intent(EventInfoDisplayPageActivity.this, PostsActivity.class);
+                    EventInfoDisplayPageActivity.this.startActivity(posts);
                 }
             }
         );

@@ -59,7 +59,6 @@ public class FriendManager {
     public Friend getFriendbyUserId(String uid) {
         return this.uidToFriend.get(uid);
     }
-
     public boolean addFriend(String userInput) {
         Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
         Matcher m = p.matcher(userInput);
@@ -93,7 +92,7 @@ public class FriendManager {
         Map<String, Object> apiResponse = ApiResource.submitRequest(
                 addFriendQuery, null,
                 ApiResource.GET_REQUEST,
-        ApiResource.REQUEST_ACEEPT_FRIEND);
+                ApiResource.REQUEST_ACEEPT_FRIEND);
         if (apiResponse.get("result") == null) {
             return false;
         }
