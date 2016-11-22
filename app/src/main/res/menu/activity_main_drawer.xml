@@ -20,8 +20,6 @@
             android:id="@+id/nav_settings"
             android:title="Settings" />
 
-        <item android:title="Notifications"
-            android:id="@+id/nav_notification"></item>
         <item
             android:id="@+id/nav_new_event"
             android:title="Event Invitation" />

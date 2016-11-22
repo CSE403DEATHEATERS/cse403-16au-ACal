@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity
             toolbar.setTitle("New Events");
             Intent NewEventActivity = new Intent(this, com.acalendar.acal.Notification.NewEventActivity.class);
             startActivityForResult(NewEventActivity, 2);
-        } else if (id == R.id.nav_notification) {
+//        } else if (id == R.id.nav_notification) {
 //            toolbar.setTitle("Notifications");
 //            NotifiFragment fragment = new NotifiFragment();
 //            android.support.v4.app.FragmentTransaction fragmentTransaction =
