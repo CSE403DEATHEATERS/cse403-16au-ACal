@@ -27,9 +27,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/event_invitation_title"
         android:textSize="28sp"
-        android:layout_toRightOf="@+id/scrollView2"
-        android:layout_toEndOf="@+id/scrollView2"
-        android:layout_below="@+id/toolbar1" />
+        android:layout_marginTop="95dp"
+        android:layout_below="@+id/toolbar1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <ListView
         android:layout_width="wrap_content"
@@ -41,5 +42,23 @@
         android:layout_alignParentStart="true">
 
     </ListView>
+
+    <Button
+        android:id="@+id/join_event_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Join"
+        android:layout_below="@+id/toolbar1"
+        android:layout_toRightOf="@+id/scrollView2"
+        android:layout_toEndOf="@+id/scrollView2" />
+
+    <Button
+        android:id="@+id/decline_event_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Decline"
+        android:layout_below="@+id/join_event_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

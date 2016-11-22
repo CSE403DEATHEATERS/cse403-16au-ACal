@@ -4,10 +4,15 @@ package com.acalendar.acal.Notification;
 import com.acalendar.acal.ApiResource;
 import com.acalendar.acal.Friend.Friend;
 import com.acalendar.acal.Login.LoginedAccount;
+import com.amazonaws.mobileconnectors.amazonmobileanalytics.InitializationException;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class NotificationManager {
@@ -26,7 +31,9 @@ public class NotificationManager {
         query.put("status", "PENDING");
         Map<String, Object> apiResponse = ApiResource.submitRequest(query, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_GET_EVENTS);
         if (apiResponse.get("PENDING") != null)
-            this.pendingEvents = ((List)apiResponse.get("PENDING"));
+            this.pendingEvents = parseInvitation((List)apiResponse.get("PENDING"));
+        else
+            this.pendingEvents = new ArrayList<>();
     }
 
     public void refreshPendingFriends() {
@@ -68,6 +75,45 @@ public class NotificationManager {
             friendList.add(friend);
         }
         return friendList;
+    }
+
+    private List<Invitation> parseInvitation(List<Map<String, Object>> mapList) {
+        List<Invitation> invitationList = new ArrayList<>();
+        for (Map<String, Object> eventMap : mapList) {
+            if (eventMap.isEmpty()) {
+                continue;
+            }
+            String title = "";
+            if (eventMap.get("title") != null) {
+                title = eventMap.get("title").toString();
+            }
+            String eventId = "";
+            if (eventMap.get("eventId") != null) {
+                eventId = eventMap.get("eventId").toString();
+            }
+            String startTime = "";
+            if (eventMap.get("startTime") != null) {
+                String start = eventMap.get("startTime").toString();
+                double startDouble = Double.parseDouble(start);
+                Long startLong = (long)startDouble;
+                Date startDate = new Date(startLong);
+                Format format = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.US);
+                startTime = format.format(startDate);
+            }
+            String ownerName = "";
+            if (eventMap.get("ownerName") != null) {
+                ownerName = eventMap.get("ownerName").toString();
+//                ownerName = "Ruoyu Mo";
+            }
+            String location = "";
+            if (eventMap.get("location") != null) {
+                Map<String, String> locationMap = (Map<String, String>)eventMap.get("location");
+                location = locationMap.get("address");
+            }
+            Invitation invitation = new Invitation(title, ownerName, startTime, location, eventId, false);
+            invitationList.add(invitation);
+        }
+        return invitationList;
     }
 
 }

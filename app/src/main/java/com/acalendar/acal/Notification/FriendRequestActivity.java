@@ -81,18 +81,35 @@ public class FriendRequestActivity extends Activity {
                     responseText.append("You accepted friend requests from:\n");
                 }
 
+//
+//                for(int i=0;i<friendList.size();i++){
+//                    Friend friend = friendList.get(i);
+//                    if(friend.isSelected()) {
+//                        responseText.append(friend.getName() + "\n");
+//                        Map<String, String> addFriendQuery = new HashMap<String, String>();
+//                        addFriendQuery.put("userId_1", LoginedAccount.getUserId());
+//                        addFriendQuery.put("username", friend.getUsername());
+//                        Map<String, Object> apiResponse = ApiResource.submitRequest(addFriendQuery, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_ACEEPT_FRIEND);
+//                        if (apiResponse.get("result") != null && apiResponse.get("result").equals("true")) {
+//                            Log.v("Test", "accepted friend" + friend.getName());
+//                            //TODO: remove friend from list
+//                        }
+//                    }
+//                }
 
-                for(int i=0;i<friendList.size();i++){
-                    Friend friend = friendList.get(i);
-                    if(friend.isSelected()) {
-                        responseText.append(friend.getName() + "\n");
+                Iterator<Friend> iterator = friendList.iterator();
+                while (iterator.hasNext()) {
+                    Friend friend = iterator.next();
+                    if (friend.isSelected()) {
                         Map<String, String> addFriendQuery = new HashMap<String, String>();
                         addFriendQuery.put("userId_1", LoginedAccount.getUserId());
-                        addFriendQuery.put("username", friend.getUsername());
+                        addFriendQuery.put("userId_2", friend.getUserId());
                         Map<String, Object> apiResponse = ApiResource.submitRequest(addFriendQuery, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_ACEEPT_FRIEND);
-                        if (apiResponse.get("result") != null && apiResponse.get("result").equals("true")) {
+                        if (apiResponse.get("result") != null && (boolean)apiResponse.get("result")) {
                             Log.v("Test", "accepted friend" + friend.getName());
                             //TODO: remove friend from list
+                            responseText.append(friend.getName() + "\n");
+                            iterator.remove();
                         }
                     }
                 }
@@ -100,10 +117,10 @@ public class FriendRequestActivity extends Activity {
 
                 Toast.makeText(getApplicationContext(),
                         responseText, Toast.LENGTH_LONG).show();
+                adapter.notifyDataSetChanged();
 
             }
         });
-        adapter.notifyDataSetChanged();
     }
 
     private void declineSelected() {
@@ -126,8 +143,21 @@ public class FriendRequestActivity extends Activity {
                 Iterator<Friend> iterator = friendList.iterator();
                 while (iterator.hasNext()) {
                     Friend friend = iterator.next();
-                    responseText.append(friend.getName() + "\n");
-                    iterator.remove();
+                    if (friend.isSelected()) {
+//                        Map<String, String> addFriendQuery = new HashMap<String, String>();
+//                        addFriendQuery.put("userId_1", LoginedAccount.getUserId());
+//                        addFriendQuery.put("userId_2", friend.getUserId());
+//                        Map<String, Object> apiResponse = ApiResource.submitRequest(addFriendQuery, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_REJECT_FRIEND);
+//                        Log.v("Test", "decline response " + apiResponse);
+//                        if (apiResponse.get("result") != null && (boolean)apiResponse.get("result")) {
+//                            Log.v("Test", "accepted friend" + friend.getName());
+//                            //TODO: remove friend from list
+//                            responseText.append(friend.getName() + "\n");
+//                            iterator.remove();
+//                        }
+                        responseText.append(friend.getName() + "\n");
+                        iterator.remove();
+                    }
                 }
 
                 // TODO: acturally call API for this and uncomment these lines
@@ -150,9 +180,9 @@ public class FriendRequestActivity extends Activity {
 
                 Toast.makeText(getApplicationContext(),
                         responseText, Toast.LENGTH_LONG).show();
+                adapter.notifyDataSetChanged();
             }
         });
-        adapter.notifyDataSetChanged();
     }
 
 }
