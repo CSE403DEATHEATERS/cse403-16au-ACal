@@ -19,11 +19,11 @@ public class ApiResource {
     public static final String REQUEST_EDIT_EVENT = "/editEvent";  // eventId required, no create time
     public static final String REQUEST_GET_EVENTS = "/getEvents";  // userId, status
     public static final String REQUEST_GET_FRIENDS = "getFriends";
-    public static final String REQUEST_GET_FRIEND_REQUESTS = "getFriendRequests";
     public static final String REQUEST_ADD_FRIEND = "/addFriend";
     public static final String REQUEST_REJECT_FRIEND = "/rejectFriend";
     public static final String REQUEST_ACEEPT_FRIEND = "/acceptFriend";
     public static final String REQUEST_DELETE_EVENT = "/deleteEvent";
+    public static final String REQUEST_DECLINE_FRIEND = "declineFriend";
 
     public static final String GET_REQUEST = "GET";
     public static final String POST_REQUEST = "POST";

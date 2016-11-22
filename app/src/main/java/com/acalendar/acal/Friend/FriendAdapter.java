@@ -16,18 +16,18 @@ import java.util.ArrayList;
 
 public class FriendAdapter extends ArrayAdapter<Friend> {
 
-    private final ArrayList<Friend> FriendList;
+    private final ArrayList<Friend> friendList;
 
     public FriendAdapter(Context context, int textViewResourceLayout,
                          int textViewResourceId ,ArrayList<Friend> friendList) {
         super(context,textViewResourceLayout, textViewResourceId, friendList);
-        this.FriendList = friendList;
+        this.friendList = friendList;
                 //new ArrayList<Friend>();
         //this.FriendList.addAll(FriendList);
     }
 
     public ArrayList<Friend> getFriendList() {
-        return new ArrayList<Friend>(FriendList);
+        return new ArrayList<Friend>(friendList);
     }
 
     private class ViewHolder {
@@ -47,6 +47,7 @@ public class FriendAdapter extends ArrayAdapter<Friend> {
             convertView = vi.inflate(R.layout.friend_list_item, null);
 
             holder = new ViewHolder();
+            holder.code = (TextView) convertView.findViewById(R.id.friend_name);
             holder.name = (CheckBox) convertView.findViewById(R.id.checkBox1);
             convertView.setTag(holder);
 
@@ -62,8 +63,8 @@ public class FriendAdapter extends ArrayAdapter<Friend> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Friend friend = FriendList.get(position);
-        holder.name.setText(friend.getName());
+        Friend friend = friendList.get(position);
+        holder.code.setText(friend.getName() + "(" + friend.getEmail()+ ")");
         holder.name.setChecked(friend.isSelected());
         holder.name.setTag(friend);
 

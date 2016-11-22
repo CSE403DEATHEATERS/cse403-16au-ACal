@@ -16,7 +16,7 @@ public class Friend extends Account {
         super(userId, username, email, lastName, firstName);
     }
     public String getName() {
-        return this.firstname + this.lastname;
+        return this.firstname + " " + this.lastname;
     }
 
     public boolean isSelected() {
