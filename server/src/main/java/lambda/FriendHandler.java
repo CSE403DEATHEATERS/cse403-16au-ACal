@@ -10,10 +10,12 @@ import java.util.Map;
 
 public class FriendHandler {
 
+    /*
     public static void main(String[] args) {
         Map<String, String> input = new HashMap<String, String>();
         input.put("userId_2", "6b16c70c-9111-434b-b1a2-163f783163f3");
         input.put("userId", "7d9943f4-4326-44a6-9f39-50f890140b26");
+        input.put("requestStatus", "PENDING");
 
         //List<Map<String, String>> res = new FriendHandler().getFriend(input, null);
 
@@ -26,11 +28,12 @@ public class FriendHandler {
         System.out.println(new FriendHandler().getFriends(input, null));
 
     }
+    */
 
     /**
      * Get friend list lambda
      *
-     * @param input userId as key in a Map<String, Object> indicating the user
+     * @param input userId, requestStatus as key in a Map<String, Object> indicating the user and friend request status
      * @param context
      * @return a list of account info who is friend with the userId
      */
@@ -39,11 +42,12 @@ public class FriendHandler {
             throw new IllegalArgumentException();
         }
         String userId = input.get("userId");
+        String status = input.get("requestStatus");
         if ((userId == null || userId.isEmpty())) {
             return new HashMap<String, Object>();
         }
         System.out.println("(getFriends)" + userId);
-        return FriendManager.getFriendList(userId);
+        return FriendManager.getFriendList(userId, status);
     }
 
     /**

@@ -22,9 +22,12 @@ public class FriendManager {
      * @param userId userId of the user
      * @return list of account info which is the user's friend, empty list if no friend
      */
-    public static Map<String, Object> getFriendList(String userId) {
+    public static Map<String, Object> getFriendList(String userId, String status) {
         Map<String, Object> result = new HashMap<String, Object>();
         QuerySpec query = new QuerySpec().withHashKey("userId_1", userId);
+        if (status != null && !status.isEmpty())
+            query.withFilterExpression("requestStatus=:v_requestStatus")
+                    .withValueMap(new ValueMap().withString(":v_requestStatus", status));
         ItemCollection<QueryOutcome> items = TABLE.query(query);
         Iterator<Item> itemIterator = items.iterator();
         if (!itemIterator.hasNext()) {

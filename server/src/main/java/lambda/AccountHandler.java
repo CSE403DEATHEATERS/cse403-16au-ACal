@@ -42,7 +42,7 @@ public class AccountHandler {
 		if (!loginInfo.isEmpty()) {
 			res.put("account", new Account(username, password).isLogin());
 			res.put("event", Event.getEventsByUserId((String)loginInfo.get("userId"), "ACCEPT"));
-			res.put("friend", FriendManager.getFriendList((String)loginInfo.get("userId")));
+			res.put("friend", FriendManager.getFriendList((String)loginInfo.get("userId"), null));
 		}
         return res;
 	}
