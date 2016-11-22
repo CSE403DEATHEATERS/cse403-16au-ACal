@@ -2,17 +2,25 @@ package com.acalendar.acal;
 
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
+import com.acalendar.acal.Events.AllEventsInSingleDayActivity;
 import com.acalendar.acal.Events.EventInfoEditPageActivity;
+import com.acalendar.acal.Login.LoginedAccount;
+import com.roomorama.caldroid.CaldroidFragment;
+import com.roomorama.caldroid.CaldroidListener;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -20,8 +28,7 @@ import java.text.SimpleDateFormat;
  */
 public class EventPoolFragment extends Fragment {
 
-    TextView textView;
-    int year_x, month_x, day_x;
+    private CaldroidFragment caldroidFragment;
 
     public EventPoolFragment() {
         // Required empty public constructor
@@ -32,6 +39,21 @@ public class EventPoolFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         final SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+        caldroidFragment = new CaldroidFragment();
+        Bundle args = new Bundle();
+        Calendar cal = Calendar.getInstance();
+        args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
+        args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
+        args.putBoolean(CaldroidFragment.ENABLE_SWIPE, true);
+        args.putBoolean(CaldroidFragment.SIX_WEEKS_IN_CALENDAR, true);
+        caldroidFragment.setArguments(args);
+        android.support.v4.app.FragmentTransaction t = getFragmentManager().beginTransaction();
+        t.replace(R.id.event_pool_calendarView, caldroidFragment);
+        t.commit();
+
+        if (LoginedAccount.isLogedIn()) {
+            getEvent();
+        }
 
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_event_pool, container, false);
@@ -42,70 +64,43 @@ public class EventPoolFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // go to edit page
-                Intent intentToEdit = new Intent(getActivity(),
+                Intent intentToAddNew = new Intent(getActivity(),
                         EventInfoEditPageActivity.class);
-                startActivityForResult(intentToEdit, 0);
+                intentToAddNew.putExtra("AddNew", true);
+                startActivityForResult(intentToAddNew, 0);
             }
         });
 
         return view;
     }
 
-    // Version before trying to change calendar provider.
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//
-//        // Inflate the layout for this fragment
-//        View view =  inflater.inflate(R.layout.fragment_event_pool, container, false);
-//
-//        CalendarView calendarView = (CalendarView) view.findViewById(R.id.event_pool_calendarView);
-//        textView = (TextView) view.findViewById(R.id.calendar_text_view);
-//        Button detail = (Button) view.findViewById((R.id.calendar_button));
-//        Button add = (Button) view.findViewById((R.id.event_add));
-//
-//        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-//            @Override
-//            public void onSelectedDayChange(CalendarView calendarView, int year, int month, int day) {
-//                textView.setText(new StringBuilder()
-//                        .append("\nThe event(s) on ")
-//                        .append(year).append("-")
-//                        .append(month + 1).append("-")  // zero based index
-//                        .append(day).append(" :"));
-//                year_x = year;
-//                month_x = month;
-//                day_x = day;
-//            }
-//        });
-//
-//        detail.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intentToViewAll = new Intent(getActivity(),
-//                        AllEventsInSingleDayActivity.class);
-//
-//                Calendar tempCal = Calendar.getInstance();
-//                tempCal.set(Calendar.YEAR, year_x);
-//                tempCal.set(Calendar.MONTH, month_x);
-//                tempCal.set(Calendar.DAY_OF_MONTH, day_x);
-//                Date date = tempCal.getTime();
-//                intentToViewAll.putExtra("dateSelected", EventsManager.dateToString(date));
-//                startActivity(intentToViewAll);
-//            }
-//        });
-//
-//        add.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // go to edit page
-//                Intent intentToEdit = new Intent(getActivity(),
-//                        EventInfoEditPageActivity.class);
-//                startActivityForResult(intentToEdit, 0);
-//            }
-//        });
-//
-//
-//        return view;
-//    }
 
+    public void getEvent() {
+        // TODO:
+        // for every date that contains event, change its background as done above
+        List<Date> datesToMark = LoginedAccount.getEventsManager().getAllDates();
+        System.out.println("DatesToMark SIZE " + datesToMark.size());
+        for (Date date : datesToMark) {
+            Log.v("Mark date on calendar", "Date to mark is " + date);
+
+            ColorDrawable blue = new ColorDrawable();
+            blue.setColor(0xdd1565C0);
+            caldroidFragment.setBackgroundDrawableForDate(blue, date);
+        }
+
+        final CaldroidListener listener = new CaldroidListener() {
+
+            @Override
+            public void onSelectDate(Date date, View view) {
+                // on select start a new activity that displays all events on that day
+                Intent intentToViewAll = new Intent(getActivity(),
+                        AllEventsInSingleDayActivity.class);
+                intentToViewAll.putExtra("dateLongSelected", date.getTime());
+                startActivity(intentToViewAll);
+            }
+
+        };
+
+        caldroidFragment.setCaldroidListener(listener);
+    }
 }

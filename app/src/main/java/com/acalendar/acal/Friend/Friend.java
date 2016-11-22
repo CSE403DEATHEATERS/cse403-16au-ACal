@@ -1,31 +1,25 @@
 package com.acalendar.acal.Friend;
 
 
-public class Friend {
-    String name;
-    String email;
-    String username;
-    String userId;
-    boolean selected = false;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-    public Friend(String name, boolean selected) {
-        super();
-        this.name = name;
+import com.acalendar.acal.Login.Account;
+
+public class Friend extends Account implements Parcelable {
+
+    private boolean selected = false;
+
+    public Friend(String fname, boolean selected) {
+        super(null, null, null, null, fname);
         this.selected = selected;
     }
 
-    public Friend(String name, String email, String username, String userId) {
-        super();
-        this.name = name;
-        this.email = email;
-        this.username = username;
-        this.userId = userId;
+    public Friend(String lastName, String firstName, String email, String username, String userId) {
+        super(userId, username, email, lastName, firstName);
     }
     public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
+        return this.firstname + " " + this.lastname;
     }
 
     public boolean isSelected() {
@@ -35,31 +29,35 @@ public class Friend {
         this.selected = selected;
     }
 
-    public String getEmail() {
-        return this.email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getUserId() {
-        return this.userId;
-    }
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public String toString() {
-        return this.name;
+        return getName();
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeByte(this.selected ? (byte) 1 : (byte) 0);
+    }
+
+    protected Friend(Parcel in) {
+        super(in);
+        this.selected = in.readByte() != 0;
+    }
+
+    public static final Creator<Friend> CREATOR = new Creator<Friend>() {
+        @Override
+        public Friend createFromParcel(Parcel source) {
+            return new Friend(source);
+        }
+
+        @Override
+        public Friend[] newArray(int size) {
+            return new Friend[size];
+        }
+    };
 }

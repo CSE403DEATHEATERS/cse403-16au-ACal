@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.acalendar.acal.ApiResource;
 import com.acalendar.acal.Events.EventsManager;
+import com.acalendar.acal.Notification.NotificationManager;
+import com.acalendar.acal.Friend.FriendManager;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.Map;
 public class LoginedAccount {
     private static Account user;
     private static EventsManager eventsManager;
+    private static FriendManager friendManager;
+    private static NotificationManager notificationManager;
 
     public static Account getCurrentUser() {
         if (user == null) {
@@ -33,7 +37,9 @@ public class LoginedAccount {
             Map<String, String> account = (Map<String, String>) map.get("account");
             user = new Account(account.get("userId"), account.get("username"), account.get("email"), account.get("lastname"), account.get("firstname"));
             //eventsManager = new EventsManager((List<Map<String, Object>>) map.get("event"));
+            friendManager = new FriendManager(); // must preceds eventManager
             eventsManager = new EventsManager((Map<String, List<Map<String, Object>>>) map.get("event"));
+            notificationManager = new NotificationManager();
         }
     }
 
@@ -53,6 +59,7 @@ public class LoginedAccount {
     public static void logOut() {
         user = null;
         eventsManager = null;
+        friendManager = null;
     }
 
     public static boolean isLogedIn() {
@@ -73,6 +80,13 @@ public class LoginedAccount {
 
     public static EventsManager getEventsManager() {
         return eventsManager;
+    }
+
+    public static NotificationManager getNotificationManager() {
+        return notificationManager;
+    }
+    public static FriendManager getFriendManager() {
+        return friendManager;
     }
 
     public static String getUserId() {

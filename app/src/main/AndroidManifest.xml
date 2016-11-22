@@ -74,7 +74,8 @@
             android:label="event edit page" />
         <activity android:name=".Events.EditEventParticipantsActivity" />
         <activity android:name=".Events.AllEventsInSingleDayActivity" />
-        <activity android:name=".Friend.InviteFriendsActivity" />
+        <activity android:name=".Notification.NewEventActivity" />
+        <activity android:name=".Notification.FriendRequestActivity"></activity>
     </application>
 
 </manifest>

@@ -58,4 +58,7 @@
 
     <string name="action_share">Share</string>
     <string name="action_reply">Reply</string>
+    <string name="event_invitations">Event Invitations</string>
+    <string name="doctor_strange_at_amc_seattle_nowner_tong_shen_11_18_2016_11_00am">Doctor Strange at AMC Seattle\nOwner:Tong Shen 11/18/2016 11:00am</string>
+    <string name="join">Join</string>
 </resources>

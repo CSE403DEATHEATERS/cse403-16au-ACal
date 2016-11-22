@@ -16,8 +16,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.acalendar.acal.Events.AllEventsInSingleDayActivity;
-import com.acalendar.acal.Events.EventsManager;
+import com.acalendar.acal.Friend.Friend;
 import com.acalendar.acal.Login.LoginedAccount;
+import com.acalendar.acal.Notification.FriendRequestActivity;
+import com.acalendar.acal.Notification.NewEventActivity;
 import com.acalendar.acal.amazonaws.mobile.AWSMobileClient;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
@@ -47,13 +49,13 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
-        Log.v("MainActivity.java", "onCreate(): LoginedAccount.getEventsManager " + LoginedAccount.getEventsManager());
-        Log.v("MainActivity.java", "onCreate(): LoginedAccount.isLoggedIn " + LoginedAccount.isLogedIn());
-        EventPoolFragment fragment = new EventPoolFragment();
-        android.support.v4.app.FragmentTransaction fragmentTransaction =
-                getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, fragment);
-        fragmentTransaction.commit();
+//        Log.v("MainActivity.java", "onCreate(): LoginedAccount.getEventsManager " + LoginedAccount.getEventsManager());
+//        Log.v("MainActivity.java", "onCreate(): LoginedAccount.isLoggedIn " + LoginedAccount.isLogedIn());
+//        EventPoolFragment fragment = new EventPoolFragment();
+//        android.support.v4.app.FragmentTransaction fragmentTransaction =
+//                getSupportFragmentManager().beginTransaction();
+//        fragmentTransaction.replace(R.id.fragment_container, fragment);
+//        fragmentTransaction.commit();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -115,7 +117,6 @@ public class MainActivity extends AppCompatActivity
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
             fragmentTransaction.commit();
-
         }
         else if (id == R.id.nav_edit_profile) {
             toolbar.setTitle("Edit Profile");
@@ -126,22 +127,19 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.commit();
         } else if (id == R.id.nav_new_event) {
             toolbar.setTitle("New Events");
-            NewEventFragment fragment = new NewEventFragment();
-            android.support.v4.app.FragmentTransaction fragmentTransaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
-            fragmentTransaction.commit();
+            Intent NewEventActivity = new Intent(this, com.acalendar.acal.Notification.NewEventActivity.class);
+            startActivityForResult(NewEventActivity, 2);
         } else if (id == R.id.nav_notification) {
-            toolbar.setTitle("Notifications");
-            NotifiFragment fragment = new NotifiFragment();
-            android.support.v4.app.FragmentTransaction fragmentTransaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
-            fragmentTransaction.commit();
+//            toolbar.setTitle("Notifications");
+//            NotifiFragment fragment = new NotifiFragment();
+//            android.support.v4.app.FragmentTransaction fragmentTransaction =
+//                    getSupportFragmentManager().beginTransaction();
+//            fragmentTransaction.replace(R.id.fragment_container, fragment);
+//            fragmentTransaction.commit();
         } else if (id == R.id.nav_invite_friend) {
             toolbar.setTitle("New CalPals");
-            Intent InviteFriendActivity = new Intent(this, com.acalendar.acal.Friend.InviteFriendsActivity.class);
-            startActivityForResult(InviteFriendActivity, 2);
+            Intent FriendRequestActivity = new Intent(this, com.acalendar.acal.Notification.FriendRequestActivity.class);
+            startActivityForResult(FriendRequestActivity, 2);
         } else if (id == R.id.nav_settings) {
             toolbar.setTitle("Settings");
             SettingFragment fragment = new SettingFragment();
@@ -173,51 +171,14 @@ public class MainActivity extends AppCompatActivity
                 TextView emailView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.AccountInfo);
                 emailView.setText(LoginedAccount.getEmail());
 
-
-
+                Log.v("MainActivity.java", "onCreate(): LoginedAccount.getEventsManager " + LoginedAccount.getEventsManager());
+                Log.v("MainActivity.java", "onCreate(): LoginedAccount.isLoggedIn " + LoginedAccount.isLogedIn());
+                EventPoolFragment fragment = new EventPoolFragment();
+                android.support.v4.app.FragmentTransaction fragmentTransaction =
+                        getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, fragment);
+                fragmentTransaction.commit();
             }
         }
-
-        CaldroidFragment caldroidFragment = new CaldroidFragment();
-        Bundle args = new Bundle();
-        Calendar cal = Calendar.getInstance();
-        args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
-        args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
-        args.putBoolean(CaldroidFragment.ENABLE_SWIPE, true);
-        args.putBoolean(CaldroidFragment.SIX_WEEKS_IN_CALENDAR, true);
-        caldroidFragment.setArguments(args);
-        android.support.v4.app.FragmentTransaction t = MainActivity.this.getSupportFragmentManager().beginTransaction();
-        t.replace(R.id.event_pool_calendarView, caldroidFragment);
-        t.commit();
-
-        Log.v("MainActivity.java", "onActivityResult(): LoginedAccount.getEventsManager " + LoginedAccount.getEventsManager());
-        Log.v("MainActivity.java", "onActivityResult(): LoginedAccount.isLoggedIn " + LoginedAccount.isLogedIn());
-
-        // TODO:
-        // for every date that contains event, change its background as done above
-        List<Date> datesToMark = LoginedAccount.getEventsManager().getAllDates();
-        System.out.println("DatesToMark SIZE " + datesToMark.size());
-        for (Date date : datesToMark) {
-            Log.v("Mark date on calendar", "Date to mark is " + date);
-
-            ColorDrawable blue = new ColorDrawable();
-            blue.setColor(0xdd1565C0);
-            caldroidFragment.setBackgroundDrawableForDate(blue, date);
-        }
-
-        final CaldroidListener listener = new CaldroidListener() {
-
-            @Override
-            public void onSelectDate(Date date, View view) {
-                // on select start a new activity that displays all events on that day
-                Intent intentToViewAll = new Intent(MainActivity.this,
-                        AllEventsInSingleDayActivity.class);
-                intentToViewAll.putExtra("dateSelected", EventsManager.dateToString(date));
-                startActivity(intentToViewAll);
-            }
-
-        };
-
-        caldroidFragment.setCaldroidListener(listener);
     }
 }

@@ -1,6 +1,10 @@
 package com.acalendar.acal.Events;
 
-import com.acalendar.acal.Login.Account;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.acalendar.acal.Friend.Friend;
+import com.acalendar.acal.Login.LoginedAccount;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,7 +13,7 @@ import java.util.List;
 /**
  * Front end Event Model for storing event data.
  */
-public class Event {
+public class Event implements Parcelable {
 
     /**
      * Fields that are not editable after first set.
@@ -26,9 +30,12 @@ public class Event {
     private Location location;
     private String description;
     private Boolean isPublic;
-    private List<Account> listOfParticipantUsers;
+    private List<Friend> listOfParticipantUsers;
 
 
+    /**
+     * Constructor used to when data is parsed from database and a know eventId is provided.
+     */
     public Event(String eid, String ownerId, Date createTime,
                  String eventTitle, Date startTime, Date endTime,
                  String address, String description, Boolean isPublic) {
@@ -44,9 +51,12 @@ public class Event {
         listOfParticipantUsers = new ArrayList<>();
     }
 
+    /**
+     * Constructor used when the event is newly created and eventId is unknown.
+     */
     public Event(String eventTitle, Date startTime, Date endTime,
                  String address, String description, Boolean isPublic) {
-        this(null, null, null, eventTitle, startTime, endTime, address, description, isPublic);
+        this(null, LoginedAccount.getUserId(), null, eventTitle, startTime, endTime, address, description, isPublic);
     }
 
     public String getEventId() {
@@ -54,38 +64,37 @@ public class Event {
     }
 
     public void setEventId(String eid) {
-        if (this.eid != null) {
+        if (this.eid == null) {
             this.eid = eid;
         }
     }
 
-    public void setOwnerId(String userId) {
-        if (this.ownerId != null) {
-            this.ownerId = userId;
-        }
-    }
-
     public void setCreateTime(Date time) {
-        if (this.createTime != null) {
+        if (this.createTime == null) {
             this.createTime = time;
         }
     }
 
-    public void addParticipant(Account friend) {
+    public void addParticipant(Friend friend) {
         listOfParticipantUsers.add(friend);
     }
 
-    public void setListOfParticipantsUids(List<String> listOfUserids) {
-        //this.listOfParticipantUsers = new ArrayList<>(listOfUserids);
+    public void setListOfParticipants(List<Friend> listOfFriend) {
+        this.listOfParticipantUsers = listOfFriend;
     }
 
-    public List<String> getListOfParticipantsUids() {
-        List<String> listOfUserids = new ArrayList<>();
-        for (Account u : listOfParticipantUsers) {
-            listOfUserids.add(u.getUserId());
-        }
-        return listOfUserids;
+    public List<Friend> getListOfParticipantingFriends() {
+        return this.listOfParticipantUsers;
     }
+
+    public List<String> getListOfParticipantingFriendsUserIds() {
+        List<String> uids = new ArrayList<>();
+        for (Friend f : listOfParticipantUsers) {
+            uids.add(f.getUserId());
+        }
+        return uids;
+    }
+
 
     public String getEventTitle() {
         return eventTitle;
@@ -169,10 +178,69 @@ public class Event {
         isPublic = aPublic;
     }
 
+    /**
+     * Below is the code to make Event object Parcelable. Event need to be Parcelable to be
+     * put into a Bundle object(saved in an Intent) and pass in to an Activity.
+     * The Parcelable Event should not be used (passed around) when any of the fields is null.
+     */
 
 
-//    @Override
-//    public int compareTo(Event rhs) {
-//        return 0;
-//    }
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.eid);
+        dest.writeString(this.ownerId);
+        dest.writeLong(this.createTime != null ? this.createTime.getTime() : -1);
+        dest.writeString(this.eventTitle);
+        dest.writeLong(this.startTime != null ? this.startTime.getTime() : -1);
+        dest.writeLong(this.endTime != null ? this.endTime.getTime() : -1);
+        dest.writeSerializable(this.location);
+        dest.writeString(this.description);
+        dest.writeValue(this.isPublic);
+        dest.writeList(this.listOfParticipantUsers);
+    }
+
+    protected Event(Parcel in) {
+        this.eid = in.readString();
+        this.ownerId = in.readString();
+        long tmpCreateTime = in.readLong();
+        this.createTime = tmpCreateTime == -1 ? null : new Date(tmpCreateTime);
+        this.eventTitle = in.readString();
+        long tmpStartTime = in.readLong();
+        this.startTime = tmpStartTime == -1 ? null : new Date(tmpStartTime);
+        long tmpEndTime = in.readLong();
+        this.endTime = tmpEndTime == -1 ? null : new Date(tmpEndTime);
+        this.location = (Location) in.readSerializable();
+        this.description = in.readString();
+        this.isPublic = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.listOfParticipantUsers = new ArrayList<>();
+        in.readList(this.listOfParticipantUsers, Friend.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
+        @Override
+        public Event createFromParcel(Parcel source) {
+            return new Event(source);
+        }
+
+        @Override
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
+
+    @Override
+    public boolean equals(Object o) {
+        Event e = (Event)o;
+        return this.eid.equals(e.eid);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.eid.hashCode();
+    }
 }
