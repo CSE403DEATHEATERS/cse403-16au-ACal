@@ -70,7 +70,7 @@ public class EventHandler {
      * @param input event updated fieilds as keys in a Map<String, Object>
      * @return a Map stores event info if the event is updated, or empty map
      */
-    public Map<String, Object> editEvent(Map<String,  Object> input, Context context) {
+    public Map<String, Object> editEvent(Map<String, Object> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
         }
