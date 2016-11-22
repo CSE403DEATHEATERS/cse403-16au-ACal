@@ -65,12 +65,15 @@ public class EventInfoDisplayPageActivity extends Activity {
                 public void onClick(View v) {
                     // TODO: call back end to delete event id from local and aws DATABASE
                     // TODO: notify status of deletion: success/failed.
+                    String idToBeDeleted = event.getEventId();
                     boolean deleteStatus =
-                            LoginedAccount.getEventsManager().deleteEvent(event.getEventId());
+                            LoginedAccount.getEventsManager().deleteEvent(idToBeDeleted);
                     // TODO: if false, alert.
                     // return to the previous activity to removed event.
                     Intent intentGoBackToAllEvents = new Intent();
-                    intentGoBackToAllEvents.putExtra("eventIdDeleted", event.getEventId());
+                    intentGoBackToAllEvents.putExtra("eventIdDeleted", idToBeDeleted);
+                    Log.v("InfoDisplay", "delete was pressed, following event will be deleted "
+                    + idToBeDeleted);
                     setResult(RESULT_OK, intentGoBackToAllEvents);
                     finish();
                 }
