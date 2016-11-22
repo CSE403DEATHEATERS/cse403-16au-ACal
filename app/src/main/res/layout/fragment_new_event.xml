@@ -2,16 +2,63 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.acalendar.acal.NewEventFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
-        android:text="new events will draw out"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar1"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="204dp"
-        android:id="@+id/textView9"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/scrollView2"
+        android:layout_below="@+id/event_invitation_title"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"></ScrollView>
+
+    <TextView
+        android:text="@string/event_invitations"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/event_invitation_title"
+        android:textSize="28sp"
+        android:layout_marginTop="95dp"
+        android:layout_below="@+id/toolbar1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/invitation_list_view"
+        tools:ignore="NestedScrolling"
+        android:layout_below="@+id/scrollView2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+    </ListView>
+
+    <Button
+        android:id="@+id/join_event_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Join"
+        android:layout_below="@+id/toolbar1"
+        android:layout_toRightOf="@+id/scrollView2"
+        android:layout_toEndOf="@+id/scrollView2" />
+
+    <Button
+        android:id="@+id/decline_event_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Decline"
+        android:layout_below="@+id/join_event_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.acalendar.acal.ApiResource;
 import com.acalendar.acal.Events.EventsManager;
+import com.acalendar.acal.Notification.NotificationManager;
 import com.acalendar.acal.Friend.FriendManager;
 
 import java.util.HashMap;
@@ -14,6 +15,7 @@ public class LoginedAccount {
     private static Account user;
     private static EventsManager eventsManager;
     private static FriendManager friendManager;
+    private static NotificationManager notificationManager;
 
     public static Account getCurrentUser() {
         if (user == null) {
@@ -37,6 +39,7 @@ public class LoginedAccount {
             //eventsManager = new EventsManager((List<Map<String, Object>>) map.get("event"));
             friendManager = new FriendManager(); // must preceds eventManager
             eventsManager = new EventsManager((Map<String, List<Map<String, Object>>>) map.get("event"));
+            notificationManager = new NotificationManager();
         }
     }
 
@@ -79,6 +82,9 @@ public class LoginedAccount {
         return eventsManager;
     }
 
+    public static NotificationManager getNotificationManager() {
+        return notificationManager;
+    }
     public static FriendManager getFriendManager() {
         return friendManager;
     }

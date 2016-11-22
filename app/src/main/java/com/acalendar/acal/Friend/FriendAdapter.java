@@ -22,12 +22,12 @@ public class FriendAdapter extends ArrayAdapter<Friend> {
                          int textViewResourceId ,ArrayList<Friend> friendList) {
         super(context,textViewResourceLayout, textViewResourceId, friendList);
         this.friendList = friendList;
-        //new ArrayList<Friend>();
+                //new ArrayList<Friend>();
         //this.FriendList.addAll(FriendList);
     }
 
     public ArrayList<Friend> getFriendList() {
-        return new ArrayList<Friend>(friendList);
+        return friendList;
     }
 
     private class ViewHolder {

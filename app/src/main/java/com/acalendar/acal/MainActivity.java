@@ -16,8 +16,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.acalendar.acal.Events.AllEventsInSingleDayActivity;
-import com.acalendar.acal.Events.EventsManager;
+import com.acalendar.acal.Friend.Friend;
 import com.acalendar.acal.Login.LoginedAccount;
+import com.acalendar.acal.Notification.FriendRequestActivity;
+import com.acalendar.acal.Notification.NewEventActivity;
 import com.acalendar.acal.amazonaws.mobile.AWSMobileClient;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
@@ -115,7 +117,6 @@ public class MainActivity extends AppCompatActivity
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
             fragmentTransaction.commit();
-
         }
         else if (id == R.id.nav_edit_profile) {
             toolbar.setTitle("Edit Profile");
@@ -126,22 +127,19 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.commit();
         } else if (id == R.id.nav_new_event) {
             toolbar.setTitle("New Events");
-            NewEventFragment fragment = new NewEventFragment();
-            android.support.v4.app.FragmentTransaction fragmentTransaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
-            fragmentTransaction.commit();
+            Intent NewEventActivity = new Intent(this, com.acalendar.acal.Notification.NewEventActivity.class);
+            startActivityForResult(NewEventActivity, 2);
         } else if (id == R.id.nav_notification) {
-            toolbar.setTitle("Notifications");
-            NotifiFragment fragment = new NotifiFragment();
-            android.support.v4.app.FragmentTransaction fragmentTransaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
-            fragmentTransaction.commit();
+//            toolbar.setTitle("Notifications");
+//            NotifiFragment fragment = new NotifiFragment();
+//            android.support.v4.app.FragmentTransaction fragmentTransaction =
+//                    getSupportFragmentManager().beginTransaction();
+//            fragmentTransaction.replace(R.id.fragment_container, fragment);
+//            fragmentTransaction.commit();
         } else if (id == R.id.nav_invite_friend) {
             toolbar.setTitle("New CalPals");
-            Intent InviteFriendActivity = new Intent(this, com.acalendar.acal.Friend.InviteFriendsActivity.class);
-            startActivityForResult(InviteFriendActivity, 2);
+            Intent FriendRequestActivity = new Intent(this, com.acalendar.acal.Notification.FriendRequestActivity.class);
+            startActivityForResult(FriendRequestActivity, 2);
         } else if (id == R.id.nav_settings) {
             toolbar.setTitle("Settings");
             SettingFragment fragment = new SettingFragment();
