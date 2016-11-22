@@ -1,8 +1,11 @@
 package com.acalendar.acal.Login;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
-public class Account implements Serializable {
+public class Account implements Parcelable {
     protected String userId;
     protected String username;
     protected String email;
@@ -65,5 +68,54 @@ public class Account implements Serializable {
 
     public void setFirstname(String firstname) {
         this.firstname = firstname;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.userId);
+        dest.writeString(this.username);
+        dest.writeString(this.email);
+        dest.writeString(this.lastname);
+        dest.writeString(this.firstname);
+    }
+
+    protected Account(Parcel in) {
+        this.userId = in.readString();
+        this.username = in.readString();
+        this.email = in.readString();
+        this.lastname = in.readString();
+        this.firstname = in.readString();
+    }
+
+    public static final Creator<Account> CREATOR = new Creator<Account>() {
+        @Override
+        public Account createFromParcel(Parcel source) {
+            return new Account(source);
+        }
+
+        @Override
+        public Account[] newArray(int size) {
+            return new Account[size];
+        }
+    };
+
+    @Override
+    public String toString() {
+        return userId + username + email + lastname + firstname;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.userId.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return ((Account)o).userId.equals(this.userId);
     }
 }

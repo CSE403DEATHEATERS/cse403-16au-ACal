@@ -1,9 +1,12 @@
 package com.acalendar.acal.Friend;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.acalendar.acal.Login.Account;
 
-public class Friend extends Account {
+public class Friend extends Account implements Parcelable {
 
     private boolean selected = false;
 
@@ -30,4 +33,31 @@ public class Friend extends Account {
         return getName();
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeByte(this.selected ? (byte) 1 : (byte) 0);
+    }
+
+    protected Friend(Parcel in) {
+        super(in);
+        this.selected = in.readByte() != 0;
+    }
+
+    public static final Creator<Friend> CREATOR = new Creator<Friend>() {
+        @Override
+        public Friend createFromParcel(Parcel source) {
+            return new Friend(source);
+        }
+
+        @Override
+        public Friend[] newArray(int size) {
+            return new Friend[size];
+        }
+    };
 }

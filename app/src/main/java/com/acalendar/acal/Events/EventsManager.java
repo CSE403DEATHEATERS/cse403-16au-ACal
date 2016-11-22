@@ -3,6 +3,7 @@ package com.acalendar.acal.Events;
 import android.util.Log;
 
 import com.acalendar.acal.ApiResource;
+import com.acalendar.acal.Friend.Friend;
 import com.acalendar.acal.Login.Account;
 import com.acalendar.acal.Login.LoginedAccount;
 
@@ -20,15 +21,14 @@ import java.util.Map;
  */
 public class EventsManager {
     private final String userId;
-    Map<String, List<Event>> eventMap;
-    Map<String, Event> idToEventMap;
+    private Map<String, List<Event>> eventMap;
+    private Map<String, Event> idToEventMap;
 
     public EventsManager(Map<String, List<Map<String, Object>>> mapOfListofEventMaps) {
         userId = LoginedAccount.getCurrentUser().getUserId();
         eventMap = new HashMap<>();
         idToEventMap = new HashMap<>();
         parseAllEvents(mapOfListofEventMaps.get("ACCEPT"));
-        //parseEventsWithId(mapOfListofEventMaps.get("ACCEPT")); included to parseAllEvents
     }
 
     /*
@@ -39,6 +39,9 @@ public class EventsManager {
         for (Map<String, Object> event : listOfEventMaps) {
             if (event.size() == 0) {
                 Log.v("Test", "this object map is empty.");
+                continue;
+            }
+            if (event.isEmpty()) {
                 continue;
             }
             Event entry = parseEventFromMap(event);
@@ -72,11 +75,9 @@ public class EventsManager {
                 eventTitle, startTime, endTime, null, description, isPublic);
         // set parsed locations
         entry.setLocation(location);
-        // TODO: set list of participants uids
         List<String> listOfParticipantsUids = (List<String>) event.get("attendees");
         for (String uid : listOfParticipantsUids) {
-            // TODO: find
-            entry.addParticipant(new Account(uid, null,null,null,null));
+            entry.addParticipant(LoginedAccount.getFriendManager().getFriendbyUserId(uid));
         }
         return entry;
     }
@@ -95,9 +96,10 @@ public class EventsManager {
             queryData.put("description", e.getDescription());
         }
         queryData.put("isPublic", e.isPublic());
-        // TODO: remove editing participants from edit right after yaozi finished corresponding server code
-        if (e.getListOfParticipantsUids() != null && e.getListOfParticipantsUids().size() != 0) {
-            queryData.put("attendees", e.getListOfParticipantsUids());
+
+        if (e.getListOfParticipantingFriendsUserIds() != null &&
+                e.getListOfParticipantingFriendsUserIds().size() != 0) {
+            queryData.put("attendees", e.getListOfParticipantingFriendsUserIds());
         }
         if (e.getLocation() != null) {
             queryData.put("location", e.getLocation().getInfo()); // Location
@@ -118,7 +120,8 @@ public class EventsManager {
         e.setEventId(eid);
         e.setCreateTime(createTime);
         String key = dateToString(e.getStartTime());
-        Log.v("Adding event", "*** this event entry will be added to key " + key);
+        Log.v("Adding event", "*** this event entry will be added to key " +
+                key + " event id is " + e.getEventId());
         if (!eventMap.containsKey(key)) {
             eventMap.put(key, new ArrayList<Event>());
         }
@@ -131,31 +134,43 @@ public class EventsManager {
 
     public boolean editEvent(Event originalEvent, Event newEvent) {
         // TODO: diff 2 events, if different add the corresponding attribute to queryData
-        Map<String, String> queryData = new HashMap<>();
+        Map<String, Object> queryData = new HashMap<>();
+        queryData.put("eventId", originalEvent.getEventId());
         if (!originalEvent.getEventTitle().equals(newEvent.getEventTitle())) {
             queryData.put("title", newEvent.getEventTitle());
         }
         if (!originalEvent.getStartTime().equals(newEvent.getStartTime())) {
-
+            queryData.put("startTime", newEvent.getStartTime().getTime());
         }
         if (!originalEvent.getEndTime().equals(newEvent.getEndTime())) {
-
+            queryData.put("endTime", newEvent.getEndTime().getTime());
         }
         if (!originalEvent.getLocation().getAddress().equals(newEvent.getLocation().getAddress())) {
-
+            // TODO: diff location
+            Map<String, Object> location = newEvent.getLocation().getInfo();
+            queryData.put("location", location);
         }
         if (!originalEvent.getDescription().equals(newEvent.getDescription())) {
-
+            queryData.put("description", newEvent.getEndTime().getTime());
         }
-        Map<String, Object> responceMap = ApiResource.submitRequest(queryData, null,
-                ApiResource.GET_REQUEST,
-                ApiResource.REQUEST_DELETE_EVENT);
+        JSONObject jsonObject= new JSONObject(queryData);
+        Map<String, Object> responceMap = ApiResource.submitRequest(
+                new HashMap<String, String>(),
+                jsonObject.toString(),
+                ApiResource.POST_REQUEST,
+                ApiResource.REQUEST_EDIT_EVENT);
 
         boolean success = (boolean)responceMap.get("result");
         if (!success) {
             return false;
         }
-        return false;
+        newEvent.setEventId(originalEvent.getEventId());
+        Log.v("EditEvent", "new eventid is set to be old event" + newEvent.getEventId());
+        List<Event> list = this.eventMap.get(dateToString(newEvent.getStartTime()));
+        list.remove(originalEvent);
+        list.add(newEvent);
+        this.idToEventMap.put(newEvent.getEventId(), newEvent);
+        return true;
     }
 
     public boolean deleteEvent(String eventId) {
@@ -177,6 +192,13 @@ public class EventsManager {
         this.idToEventMap.remove(eventId);
         this.eventMap.get(dateToString(eventToDelete.getStartTime())).remove(eventToDelete);
         return true;
+    }
+
+    public boolean editParticipants(ArrayList<Friend> addList, ArrayList<Friend> deleteList) {
+        // take evenid, userid, listOfUserIdAdded, listOfUserIdDeleted(empty for now).
+        // remove temporarily not available in front end but work in backend.
+
+        return false;
     }
 
     public List<Event> getEventsInDate(String key) {

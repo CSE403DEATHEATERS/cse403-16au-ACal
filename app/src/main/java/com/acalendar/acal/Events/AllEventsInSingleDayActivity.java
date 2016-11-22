@@ -41,7 +41,11 @@ public class AllEventsInSingleDayActivity extends Activity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
         title.setText("Events on " + dateFormat.format(dateObjectSelected));
         for (Event e : list) {
+
             final String eid = e.getEventId();
+            if (eid == null) {
+                continue;
+            }
             String eventTitle = e.getEventTitle();
             Button eventDisplay = (Button)getLayoutInflater().inflate(R.layout.event_button, null);
             eventDisplay.setId(eid.hashCode());
@@ -63,7 +67,7 @@ public class AllEventsInSingleDayActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 999) {
+        if (requestCode == 79) {
             if (resultCode == RESULT_OK) {
                 int eventIdDeletedHashcode = data.getStringExtra("eventIdDeleted").hashCode();
                 Button eventView = (Button) findViewById(eventIdDeletedHashcode);

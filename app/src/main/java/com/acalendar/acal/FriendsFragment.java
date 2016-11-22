@@ -53,16 +53,11 @@ public class FriendsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         view = inflater.inflate(R.layout.fragment_friends, container, false);
-        getFriendListFromServer(LoginedAccount.getUserId());
-
-        adapter = new ArrayAdapter<Friend>(getActivity(), R.layout.da_item, friends);
-
+        friends = (ArrayList<Friend>) LoginedAccount.getFriendManager().getListOfFriend();
+        adapter = new ArrayAdapter<>(getActivity(), R.layout.da_item, friends);
         friendListView();
         addNewFriend();
-
         return view;
     }
 
@@ -84,10 +79,9 @@ public class FriendsFragment extends Fragment {
     }
 
     private void addNewFriend() {
-        Button add = (Button) view.findViewById(R.id.friends_add);
+        final Button add = (Button) view.findViewById(R.id.friends_add);
         final TextView userinputtext = (TextView) view.findViewById(R.id.friends_add_input);
 //        EditText dialogInputView = (EditText) view.findViewById(R.id.dialog_friend_add_input);
-
 
 
         add.setOnClickListener(new View.OnClickListener() {
