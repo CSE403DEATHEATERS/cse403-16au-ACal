@@ -20,9 +20,14 @@ public class EventSharingHandler {
      *              "invited" => List<String>: list of userIds to be invited into this event
      *              "removed" => List<String>: list of userIds to be reomved from this event
      * @param context
-     * @return map containing one KVPair: "attendees" => list of userIds within in this event after editing, both pending and accepted
+     * @return map containing two KVPair:
+     * "success" => boolean request succeed or not
+     * if success:
+     *  "attendees" => list of userIds within in this event after editing, both pending and accepted
+     * if not success:
+     *  "errMsg" => String error message
      */
-    public Map<String, List<String>> editAttendees(Map<String, Object> input, Context context) {
+    public Map<String, Object> editAttendees(Map<String, Object> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
         }
@@ -31,8 +36,14 @@ public class EventSharingHandler {
         List<String> removed = (List<String>) input.get("removed");
         List<String> invited = (List<String>) input.get("invited");
 
-        Map<String, List<String>> res = new HashMap<>();
-        res.put("attendees", EventSharingService.editEventAttendees(eventId, userId, invited, removed));
+        Map<String, Object> res = new HashMap<>();
+        try {
+            res.put("attendees", EventSharingService.editEventAttendees(eventId, userId, invited, removed));
+            res.put("success", true);
+        } catch (IllegalArgumentException e) {
+            res.put("success", false);
+            res.put("errMsg", e.getMessage());
+        }
         return res;
     }
 
@@ -41,17 +52,22 @@ public class EventSharingHandler {
      * @param input "userId" => String: id of user accepting invitation
      *              "eventId" => String: id of event under concern
      * @param context
-     * @return map containing one KVPair: "res" => true if this action succeed, false otherwise
+     * @return map containing one KVPair: "success" => true if this action succeed, false otherwise
      */
-    public Map<String, Boolean> acceptEventInvitation(Map<String, String> input, Context context) {
+    public Map<String, Object> acceptEventInvitation(Map<String, String> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
         }
         String userId = input.get("userId");
         String eventId = input.get("eventId");
 
-        Map<String, Boolean> result = new HashMap<>();
-        result.put("res", EventSharingService.handleEventInvitation(userId, eventId, true));
+        Map<String, Object> result = new HashMap<>();
+        try {
+            result.put("success", EventSharingService.handleEventInvitation(userId, eventId, true));
+        } catch (IllegalArgumentException e) {
+            result.put("success", false);
+            result.put("errMsg", e.getMessage());
+        }
         return result;
     }
 
@@ -62,15 +78,20 @@ public class EventSharingHandler {
      * @param context
      * @return map containing one KVPair: "res" => true if this action succeed, false otherwise
      */
-    public Map<String, Boolean> declineEventInvitation(Map<String, String> input, Context context) {
+    public Map<String, Object> declineEventInvitation(Map<String, String> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
         }
         String userId = input.get("userId");
         String eventId = input.get("eventId");
 
-        Map<String, Boolean> result = new HashMap<>();
-        result.put("res", EventSharingService.handleEventInvitation(userId, eventId, false));
+        Map<String, Object> result = new HashMap<>();
+        try {
+            result.put("success", EventSharingService.handleEventInvitation(userId, eventId, false));
+        } catch (IllegalArgumentException e) {
+            result.put("success", false);
+            result.put("errMsg", e.getMessage());
+        }
         return result;
     }
 
