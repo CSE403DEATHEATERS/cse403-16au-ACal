@@ -7,10 +7,13 @@ import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.spec.UpdateItemSpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.sun.org.apache.bcel.internal.classfile.ExceptionTable;
 
+import javax.mail.internet.InternetAddress;
 import java.util.*;
 
 import static dbManager.DynamoDBManager.dynamoDB;
+import static model.Account.getInfoByUserId;
 
 public class FriendManager {
     public static final String TABLE_NAME = "acalendar-mobilehub-1275254137-relationship";
@@ -75,6 +78,23 @@ public class FriendManager {
             item = new Item().withPrimaryKey(new PrimaryKey("userId_1", userId_2, "userId_2", userId_1))
                         .withString("requestStatus", "PENDING");
             TABLE.putItem(item);
+
+            try {
+                Map<String, Object> account_1 = Account.getInfoByUserId(userId_1);
+                Map<String, Object> account_2 = Account.getInfoByUserId(userId_2);
+                javax.mail.Address senderEmail = new InternetAddress("acal.techteam@gmail.com");
+                javax.mail.Address[] recipientEmails = new InternetAddress[1];
+                recipientEmails[0] = new InternetAddress((String)account_2.get("email"));
+                String emailContent = "Yo! Dear " + account_2.get("firstname") + ",<br><br>" +
+                        "You have a new CalPal request from " + account_1.get("username") +
+                        "<br><br>Best Wishes<br>" +
+                        "ACalendar Tech Team";
+                Email confirmationEmail = new Email("Sign Up Confirmation", "Welcome to ACalendar!", emailContent, senderEmail, recipientEmails);
+                EmailManager emailManager = new EmailManager();
+                emailManager.send(confirmationEmail);
+            } catch (Exception e) {
+                System.out.println("email not sent.");
+            }
             return true;
         } else {
             return false;

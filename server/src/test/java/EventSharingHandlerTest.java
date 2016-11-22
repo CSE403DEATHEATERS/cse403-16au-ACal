@@ -1,4 +1,3 @@
-import org.hibernate.cfg.NotYetImplementedException;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -10,12 +9,10 @@ public class EventSharingHandlerTest {
     @Ignore("not ready yet")
     @Test
     public void TestEditEventAttendees() {
-        throw new NotYetImplementedException();
     }
 
     @Ignore("not ready yet")
     @Test
     public void testHandleEventInvitation() {
-        throw new NotYetImplementedException();
     }
 }

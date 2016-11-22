@@ -1,5 +1,4 @@
 import model.EventSharingService;
-import org.hibernate.cfg.NotYetImplementedException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;

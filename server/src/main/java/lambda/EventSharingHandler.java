@@ -80,14 +80,11 @@ public class EventSharingHandler {
      * @param context
      * @return Map containing one KVPair: "events" => list of all matching events, each event's information is stored in a map
      */
-    public Map<String, List<Map<String, Object>>> getPendingEventsByUserId(Map<String, String> input, Context context) {
+    public Map<String, Object> getPendingEventsByUserId(Map<String, String> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
         }
         String userId = input.get("userId");
-        List<Map<String, Object>> events = Event.getEventsByUserId(userId, "PENDING");
-        Map<String, List<Map<String, Object>>> res = new HashMap<>();
-        res.put("events", events);
-        return res;
+        return Event.getEventsByUserId(userId, "PENDING");
     }
 }
