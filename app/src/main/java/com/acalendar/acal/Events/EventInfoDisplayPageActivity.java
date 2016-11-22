@@ -86,7 +86,7 @@ public class EventInfoDisplayPageActivity extends Activity {
                             EventInfoDisplayPageActivity.this, EditEventParticipantsActivity.class);
                     intentToFriendCheckBoxPage.putParcelableArrayListExtra(
                             "originalParticipantsList",
-                            (ArrayList<? extends Parcelable>) event.getListOfParticipantingFriends());
+                            (ArrayList<Friend>)event.getListOfParticipantingFriends());
                     startActivityForResult(intentToFriendCheckBoxPage, 998);
                 }
             }
