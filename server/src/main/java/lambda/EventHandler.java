@@ -14,8 +14,8 @@ import java.util.Map;
 public class EventHandler {
 
     public static void main(String[] args) {
-        Map<String, String> input = new HashMap<>();
-        input.put("eventId", "3cd8d3ce-73db-4997-9caf-b1f3b30f5e05");
+        Map<String, Object> input = new HashMap<>();
+        input.put("eventId", "7e541db9-0690-4638-9881-99e60ec2978f");
         //input.put("isPublic", new Boolean(true));
         input.put("title", "test");
         List<String> list = new ArrayList<String>();
@@ -27,14 +27,14 @@ public class EventHandler {
         location.put("state", "WA");
         location.put("streetName", "-901");
         location.put("streetNumber", -901);
-        //input.put("location", location);
+        input.put("location", location);
         //list.add("abc");
         //list.add("hahah");
         //new EventHandler().createEvent(input, null);
         Map<String, String> input2 = new HashMap<>();
         input2.put("eventId", "3f19c206-357c-4856-a193-056c70f8aeee");
         input2.put("userId", "7d9943f4-4326-44a6-9f39-50f890140b26");
-        System.out.println(new EventHandler().deleteEvent(input, null));
+        System.out.println(new EventHandler().editEvent(input, null));
         // System.out.println(new EventHandler().getAttendingEvents(input2, null));
     }
 
@@ -84,11 +84,15 @@ public class EventHandler {
         Map<String, Object> location = (Map<String, Object>)input.get("location");
         List<String> attendees = (List<String>)input.get("attendees");
         List<String> delete = (List<String>)input.get("delete");
+        Map<String, Object> result = new HashMap<>();
         if (eventId == null || eventId.isEmpty()) {
-            return new HashMap<String, Object>();
+            result.put("result", false);
+            return result;
         }
         System.out.println("(editEvent) " + eventId);
-        return Event.updateEvent(eventId, ownerId, title, startTime, endTime, description, isPublic, location, attendees, delete);
+        Event.updateEvent(eventId, ownerId, title, startTime, endTime, description, isPublic, location, attendees, delete);
+        result.put("result", true);
+        return result;
     }
 
     /**

@@ -22,7 +22,7 @@ public class EventSharingHandler {
      * @param context
      * @return map containing one KVPair: "attendees" => list of userIds within in this event after editing, both pending and accepted
      */
-    public Map<String, List<String>> editAttendees(Map<String, Object> input, Context context) {
+    public Map<String, Object> editAttendees(Map<String, Object> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
         }
@@ -31,7 +31,7 @@ public class EventSharingHandler {
         List<String> removed = (List<String>) input.get("removed");
         List<String> invited = (List<String>) input.get("invited");
 
-        Map<String, List<String>> res = new HashMap<>();
+        Map<String, Object> res = new HashMap<>();
         res.put("attendees", EventSharingService.editEventAttendees(eventId, userId, invited, removed));
         return res;
     }
@@ -43,14 +43,14 @@ public class EventSharingHandler {
      * @param context
      * @return map containing one KVPair: "res" => true if this action succeed, false otherwise
      */
-    public Map<String, Boolean> acceptEventInvitation(Map<String, String> input, Context context) {
+    public Map<String, Object> acceptEventInvitation(Map<String, String> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
         }
         String userId = input.get("userId");
         String eventId = input.get("eventId");
 
-        Map<String, Boolean> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
         result.put("res", EventSharingService.handleEventInvitation(userId, eventId, true));
         return result;
     }
@@ -62,14 +62,14 @@ public class EventSharingHandler {
      * @param context
      * @return map containing one KVPair: "res" => true if this action succeed, false otherwise
      */
-    public Map<String, Boolean> declineEventInvitation(Map<String, String> input, Context context) {
+    public Map<String, Object> declineEventInvitation(Map<String, String> input, Context context) {
         if (input == null) {
             throw new IllegalArgumentException();
         }
         String userId = input.get("userId");
         String eventId = input.get("eventId");
 
-        Map<String, Boolean> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
         result.put("res", EventSharingService.handleEventInvitation(userId, eventId, false));
         return result;
     }

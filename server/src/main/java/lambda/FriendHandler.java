@@ -12,8 +12,8 @@ public class FriendHandler {
 
     public static void main(String[] args) {
         Map<String, String> input = new HashMap<String, String>();
-        input.put("userId_2", "6b16c70c-9111-434b-b1a2-163f783163f3");
-        input.put("userId_1", "7d9943f4-4326-44a6-9f39-50f890140b26");
+        input.put("userId_1", "b6e7b094-4c5a-47d2-8d22-348f24d8a4c4");
+        input.put("userId_2", "7d9943f4-4326-44a6-9f39-50f890140b26");
         input.put("requestStatus", "PENDING");
 
         //List<Map<String, String>> res = new FriendHandler().getFriend(input, null);
@@ -24,7 +24,7 @@ public class FriendHandler {
 
         //System.out.println(res.size());
 
-        System.out.println(new FriendHandler().addFriend(input, null));
+        System.out.println(new FriendHandler().acceptFriend(input, null));
     }
 
     /**

@@ -184,6 +184,7 @@ public class Event {
         }
         info.put("eventId", this.eventId);
         info.put("ownerId", this.ownerId);
+        info.put("ownerName", Account.getInfoByUserId(this.ownerId).get("username"));
         info.put("isPublic", this.isPublic);
         info.put("createTime", this.createTime.getTime());
         info.put("startTime", this.startTime.getTime());

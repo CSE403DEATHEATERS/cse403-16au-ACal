@@ -17,7 +17,7 @@ import static model.Account.getInfoByUserId;
 
 public class FriendManager {
     public static final String TABLE_NAME = "acalendar-mobilehub-1275254137-relationship";
-    public static final Table TABLE = dynamoDB.getTable(TABLE_NAME);
+    public static Table TABLE = dynamoDB.getTable(TABLE_NAME);
 
     /**
      * Get friend list of a user by userId
@@ -65,7 +65,7 @@ public class FriendManager {
         if (userId_2 == null || userId_2.isEmpty()) {
             userId_2 = Account.getUserIdByUsernameOrEmail(username, email);
         }
-        if (userId_2.isEmpty()) {
+        if (userId_2.isEmpty() || userId_1.equals(userId_2)) {
             return false;
         }
         GetItemSpec getItem = new GetItemSpec().withPrimaryKey(new PrimaryKey("userId_1", userId_1, "userId_2", userId_2));
