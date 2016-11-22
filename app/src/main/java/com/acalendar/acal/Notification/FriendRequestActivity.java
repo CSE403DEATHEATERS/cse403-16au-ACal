@@ -160,24 +160,6 @@ public class FriendRequestActivity extends Activity {
                     }
                 }
 
-                // TODO: acturally call API for this and uncomment these lines
-//                for(int i=0;i<friendList.size();i++){
-//                    Friend friend = friendList.get(i);
-//                    if(friend.isSelected()) {
-//                        responseText.append(friend.getName() + "\n");
-//                        Map<String, String> addFriendQuery = new HashMap<String, String>();
-//                        addFriendQuery.put("userId_1", LoginedAccount.getUserId());
-//                        addFriendQuery.put("username", friend.getUsername());
-//                        Map<String, Object> apiResponse = ApiResource.submitRequest(addFriendQuery, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_DECLINE_FRIEND);
-//                        if (apiResponse.get("result") != null && apiResponse.get("result").equals("true")) {
-//                            Log.v("Test", "accepted friend" + friend.getName());
-//                            //TODO: remove friend from list
-//                        }
-//                        LoginedAccount.getNotificationManager().pendingFriends.remove(i);
-//                    }
-//                }
-//                LoginedAccount.getNotificationManager().refreshPendingFriends();
-
                 Toast.makeText(getApplicationContext(),
                         responseText, Toast.LENGTH_LONG).show();
                 adapter.notifyDataSetChanged();
