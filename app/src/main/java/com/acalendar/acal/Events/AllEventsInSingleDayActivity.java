@@ -17,7 +17,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-// TODO: may be combined with main activity -> fragment
 public class AllEventsInSingleDayActivity extends Activity {
 
     @Override
@@ -61,7 +60,7 @@ public class AllEventsInSingleDayActivity extends Activity {
             });
             eventsViewContainer.addView(eventDisplay);
         }
-        // TODO: add button -> goes to edit page
+        // TODO: can add an add button -> goes to edit page.
     }
 
     @Override

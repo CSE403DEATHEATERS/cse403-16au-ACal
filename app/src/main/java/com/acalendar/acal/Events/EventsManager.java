@@ -133,7 +133,6 @@ public class EventsManager {
     }
 
     public boolean editEvent(Event originalEvent, Event newEvent) {
-        // TODO: diff 2 events, if different add the corresponding attribute to queryData
         Map<String, Object> queryData = new HashMap<>();
         queryData.put("eventId", originalEvent.getEventId());
         if (!originalEvent.getEventTitle().equals(newEvent.getEventTitle())) {
@@ -174,7 +173,6 @@ public class EventsManager {
     }
 
     public boolean deleteEvent(String eventId) {
-        // TODO: fix bug
         if (eventId == null) {
             Log.v("EventManager", "eventId passed in to delete is null.");
             return false;
@@ -225,7 +223,6 @@ public class EventsManager {
                 + startTime.getMonth() + " " + startTime.getDate();
     }
 
-    // TODO: remove if not needed
     public void refreshAllEvents() {
         Map<String, String> query = new HashMap<>();
         query.put("userId", this.userId);
@@ -235,7 +232,6 @@ public class EventsManager {
         List<Map<String, String>> pendingEvents = (List)apiResponse.get("PENDING");
     }
 
-    // TODO: remove if not needed
     public void refreshAllAcceptedEvents() {
         Map<String, String> query = new HashMap<>();
         query.put("userId", this.userId);

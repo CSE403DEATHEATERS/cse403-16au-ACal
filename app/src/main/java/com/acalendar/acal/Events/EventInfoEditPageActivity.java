@@ -199,21 +199,18 @@ public class EventInfoEditPageActivity  extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        // TODO: save the data entered: all textEdits, Times.
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // TODO: this should be called when user is returned from manage participants page.
-        Log.v("Test", "onActivityResult is called; result is returned");
         if (requestCode == 995) {
+            // when user is returned from manage participants page.
             if (resultCode == RESULT_OK) {
                 // TODO: after getting the lst of friends selected back, maybe for display use.
                 ArrayList<Friend> newAddList = data.getParcelableArrayListExtra("listOfNewlyAddedFriends");
                 ArrayList<Friend> deleteList = data.getParcelableArrayListExtra("listOfDeletedFriends");
                 currentlySelectedParticipants.addAll(newAddList);
                 currentlySelectedParticipants.removeAll(deleteList);
-
                 Log.v("InfoEdit", "after modification, the event now has "
                         + currentlySelectedParticipants.size() + " participants");
             }

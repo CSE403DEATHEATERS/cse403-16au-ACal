@@ -143,7 +143,7 @@ public class EventInfoDisplayPageActivity extends Activity {
                 ArrayList<Friend> deleteList = data.getParcelableArrayListExtra("listOfDeletedFriends");
                 boolean result =
                         LoginedAccount.getEventsManager().editParticipants(newAddList, deleteList);
-                // TODO: display current List
+                // TODO: display/update current List
 //                currentlySelectedParticipants.addAll(newAddList);
 //                currentlySelectedParticipants.removeAll(deleteList);
                 Log.v("InfoDisplay", "a list of " + newAddList.size() + " is newly add to the event");

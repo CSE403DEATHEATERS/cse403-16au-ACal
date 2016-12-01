@@ -35,7 +35,7 @@ public class FriendManager {
                 ApiResource.GET_REQUEST,
                 ApiResource.REQUEST_GET_FRIENDS);
         List<Map<String, String>> friendsResponse =
-                (List) apiResponse.get("ACCEPT");
+                (List<Map<String, String>>) apiResponse.get("ACCEPT");
 
         if (friendsResponse != null && !friendsResponse.isEmpty()) {
             for (Map<String, String> friend : friendsResponse) {
@@ -76,9 +76,7 @@ public class FriendManager {
                 ApiResource.POST_REQUEST, ApiResource.REQUEST_ADD_FRIEND);
         if (apiResponse.get("result") != null) {
             if (apiResponse.get("result").equals("true")) {
-                //TODO: give feedback message
-            } else {
-                //TODO: ask for input again
+                return true;
             }
         }
         return false;
