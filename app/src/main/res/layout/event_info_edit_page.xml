@@ -57,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/startTimePickerLabel"
                 android:textSize="18sp" />
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -89,12 +90,43 @@
                 android:textSize="18sp"/>
 
             <EditText
-                android:layout_width="match_parent"
+                android:layout_width="341dp"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:ems="10"
                 android:id="@+id/locationEditText" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="City"/>
+            <EditText
+                android:layout_width="341dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_city"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="State"/>
 
+            <Spinner
+                android:layout_width="160dp"
+                android:layout_alignParentLeft="true"
+                android:layout_height="50dp"
+                android:entries="@array/stateItems"
+                android:id="@+id/edit_state"
+                android:spinnerMode="dropdown">
+            </Spinner>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Zip Code"/>
+            <EditText
+                android:layout_width="341dp"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/zipEditText" />
             <TextView
                 android:text="@string/descriptionText"
                 android:layout_width="match_parent"

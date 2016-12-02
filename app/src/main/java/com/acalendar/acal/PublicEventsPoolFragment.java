@@ -45,7 +45,7 @@ public class PublicEventsPoolFragment extends Fragment implements OnMapReadyCall
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
         eventTypeFilterDropdown.setAdapter(adapter);
 
-        Spinner startTimeFilterDropdown = (Spinner)view.findViewById(R.id. publicEventsPoolLocationFilterSpinner);
+        Spinner startTimeFilterDropdown = (Spinner)view.findViewById(R.id. publicEventsPoolCitySpinner);
         String[] items2 = new String[]{"Seattle", "Bellevue", "Lake City"};
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items2);
         startTimeFilterDropdown.setAdapter(adapter2);
