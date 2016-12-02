@@ -26,6 +26,12 @@ public class CreateMessageRequest {
      * The content of the message
      */
     private String messageContent;
+    
+    public CreateMessageRequest (String eventId, String userId, String messageContent) {
+    	this.eventId = eventId;
+    	this.messageContent = messageContent;
+    	this.userId = userId;
+    }
 
     /////////////////////////////////////////////////////////////////////
     //////                  Getters and setters                     /////
@@ -41,15 +47,6 @@ public class CreateMessageRequest {
     }
 
     /**
-     * Set the message category of this CreateMessageRequest
-     *
-     * @param messageCategory
-     * */
-    public void setMessageCategory(MessageCategory messageCategory) {
-        this.messageCategory = messageCategory;
-    }
-
-    /**
      * Get the event id
      *
      * @return event id
@@ -58,29 +55,13 @@ public class CreateMessageRequest {
         return this.eventId;
     }
 
-    /**
-     * Set the event id
-     *
-     * @param eventId
-     * */
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
-    }
 
     public String getUserId() {
         return this.userId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public String getMessageContent() {
         return this.messageContent;
-    }
-
-    public void setMessageContent(String messageContent) {
-        this.messageContent = messageContent;
     }
 
 }

@@ -25,6 +25,9 @@ public class ApiResource {
     public static final String REQUEST_DELETE_EVENT = "/deleteEvent";
     public static final String REQUEST_JOIN_EVENT = "/acceptEventInvitation";
     public static final String REQUEST_DECLINE_EVENT = "/declineEventInvitation";
+    public static final String REQUEST_GET_MESSAGE_EVENT = "/getMessage";
+    public static final String REQUEST_POST_MESSAGE_EVENT = "/postMessage";
+
 
     public static final String GET_REQUEST = "GET";
     public static final String POST_REQUEST = "POST";
