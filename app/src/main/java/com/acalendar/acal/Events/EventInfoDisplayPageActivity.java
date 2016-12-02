@@ -3,7 +3,6 @@ package com.acalendar.acal.Events;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -36,7 +35,7 @@ public class EventInfoDisplayPageActivity extends Activity {
         setContentView(R.layout.event_info_display_page);
         // extract everything from Bundle and display
         final Intent intentRecieved = getIntent();
-        String eid = intentRecieved.getStringExtra("eventId");
+        final String eid = intentRecieved.getStringExtra("eventId");
         this.event = LoginedAccount.getEventsManager().getEventById(eid);
         UpdateTextViews(this.event);
 
@@ -102,6 +101,7 @@ public class EventInfoDisplayPageActivity extends Activity {
                 public void onClick(View v) {
                     // TODO: go to eventCommentPage where user can view and add comments
                     Intent posts = new Intent(EventInfoDisplayPageActivity.this, PostsActivity.class);
+                    posts.putExtra("eventId", eid);
                     EventInfoDisplayPageActivity.this.startActivity(posts);
                 }
             }

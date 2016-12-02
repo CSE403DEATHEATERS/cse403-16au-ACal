@@ -12,42 +12,16 @@ public class GetMessagesRequest {
      * */
     private String eventId;
 
-    /**
-     * Offset in the db; used to facilitate pagination
-     * */
-    private int offset;
-
-    /**
-     * How many messages to retrieve
-     * */
-    private int howMany;
 
     /////////////////////////////////////////////////////////////////
     /////                getters and setters                   //////
     /////////////////////////////////////////////////////////////////
+    
+    public GetMessagesRequest(String eventId) {
+    	this.eventId = eventId;
+    }
 
     public String getEventId() {
         return this.eventId;
     }
-
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
-    }
-
-    public int getOffset() {
-        return this.offset;
-    }
-
-    public void setOffset(int offset) {
-        this.offset = offset;
-    }
-
-    public int getHowMany() {
-        return this.howMany;
-    }
-
-    public void setHowMany(int howMany) {
-        this.howMany = howMany;
-    }
-
 }
