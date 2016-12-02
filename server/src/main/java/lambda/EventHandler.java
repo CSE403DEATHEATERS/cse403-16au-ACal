@@ -34,7 +34,7 @@ public class EventHandler {
         Map<String, String> input2 = new HashMap<>();
         input2.put("eventId", "3f19c206-357c-4856-a193-056c70f8aeee");
         input2.put("userId", "7d9943f4-4326-44a6-9f39-50f890140b26");
-        System.out.println(new EventHandler().editEvent(input, null));
+        System.out.println(new EventHandler().getPublicEventPool(new HashMap<>(), null));
         // System.out.println(new EventHandler().getAttendingEvents(input2, null));
     }
 
@@ -147,5 +147,15 @@ public class EventHandler {
         }
         System.out.println("(getEvents)" + userId);
         return Event.getEventsByUserId(userId, status);
+    }
+
+    public Map<String, Object> getPublicEventPool(Map<String, String> input, Context context) {
+        if (input == null) {
+            throw new IllegalArgumentException();
+        }
+        System.out.println("(getPublicEventPool)");
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("result", Event.getPublicEvents());
+        return result;
     }
 }
