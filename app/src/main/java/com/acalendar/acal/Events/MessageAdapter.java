@@ -21,9 +21,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Recycler
         userName = LoginedAccount.getUserName();
     }
 
-    public void add (String mes) {
-        user.add(LoginedAccount.getUserName().toString());
-        message.add(mes);
+    public void add (String user, String mes) {
+        this.user.add(user);
+        this.message.add(mes);
+    }
+
+    public void clear() {
+        user.clear();
+        message.clear();
     }
 
     @Override
