@@ -1,20 +1,14 @@
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
-import com.amazonaws.services.dynamodbv2.document.Table;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import lambda.MessageHandler;
-import model.MessageDBHelper;
-
-import static junit.framework.TestCase.assertTrue;
-import static org.mockito.Mockito.mock;
 
 /**
  * Test class for MessageHandler.
