@@ -45,7 +45,7 @@ public class MessageDBHelperTest {
     private final MessageCategory MESSAGE_CATEGORY = MessageCategory.ACTUAL_MESSAGE;
     private final String USER_ID = UUID.randomUUID().toString();
     private final String DYNAMODB_ENDPOINT = "https://dynamodb.us-west-2.amazonaws.com";
-    private final String MESSAGES_TABLE = "acalendar-mobilehub-1275254137-messages";
+    private final String MESSAGES_TABLE = "acalendar-mobilehub-1275254137-message";
     private final String MESSAGE_ATTRIBUTES_TABLE = "acalendar-mobilehub-1275254137-message_attributes";
 
     @Before
@@ -64,40 +64,19 @@ public class MessageDBHelperTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void createMessageTest_nullEventId() {
-        CreateMessageRequest request = new CreateMessageRequest();
-        request.setMessageContent(MESSAGE_CONTENT);
-        request.setMessageCategory(MESSAGE_CATEGORY);
-        request.setUserId(USER_ID);
+        CreateMessageRequest request = new CreateMessageRequest(null, "userId", "content");
         this.messageDBHelper.createMessage(request);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void createMessageTest_nullMessageContent() {
-        CreateMessageRequest request = new CreateMessageRequest();
-        request.setEventId(EVENT_ID);
-        request.setMessageContent(null);
-        request.setMessageCategory(MESSAGE_CATEGORY);
-        request.setUserId(USER_ID);
-        this.messageDBHelper.createMessage(request);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void createMessageTest_nullMessageCategory() {
-        CreateMessageRequest request = new CreateMessageRequest();
-        request.setEventId(EVENT_ID);
-        request.setMessageContent(MESSAGE_CONTENT);
-        request.setMessageCategory(null);
-        request.setUserId(USER_ID);
+        CreateMessageRequest request = new CreateMessageRequest("eventId", "userId", null);
         this.messageDBHelper.createMessage(request);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void createMessageTest_nullUserId() {
-        CreateMessageRequest request = new CreateMessageRequest();
-        request.setEventId(EVENT_ID);
-        request.setMessageContent(MESSAGE_CONTENT);
-        request.setMessageCategory(MESSAGE_CATEGORY);
-        request.setUserId(null);
+        CreateMessageRequest request = new CreateMessageRequest("eventId", null, "content");
         this.messageDBHelper.createMessage(request);
     }
 
@@ -112,10 +91,7 @@ public class MessageDBHelperTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void getMessagesTest_nullEventId() {
-        GetMessagesRequest request = new GetMessagesRequest();
-        request.setHowMany(10);
-        request.setOffset(0);
-        request.setEventId(null);
+        GetMessagesRequest request = new GetMessagesRequest(null);
         this.messageDBHelper.getMessages(request);
     }
 

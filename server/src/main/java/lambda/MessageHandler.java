@@ -1,5 +1,6 @@
 package lambda;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,12 +45,12 @@ public class MessageHandler {
         Map<String, Object> messages = handler.getMessages(get, null);
         
         for (int i = 0; i < messages.size(); i++) {
-            String value = (String) messages.get("" + i);
-            String[] token = value.split("\\s+");
-            Long createAt = Long.parseLong(token[0]);
-            String createBy = token[1];
-            String content = token[2];
-            System.out.println(createAt + " " + createBy + " " + content); 
+            @SuppressWarnings("unchecked")
+			Map<String, Object> message = (Map<String, Object>) messages.get("" + i);
+            String content = (String) message.get("content");
+            Long createAt = (Long) message.get("createAt");
+            String createBy = (String) message.get("userId");      
+            System.out.println(new Date(createAt) + " " + createBy + " " + content); 
         }
     }
 
