@@ -53,7 +53,7 @@ public class EventInfoDisplayPageActivity extends Activity {
                     Intent intentToEdit = new Intent(EventInfoDisplayPageActivity.this,
                                             EventInfoEditPageActivity.class);
                     intentToEdit.putExtra("eventObjectToEdit", event);
-                    startActivity(intentToEdit);
+                    startActivityForResult(intentToEdit, 991);
                 }
             }
         );
@@ -136,8 +136,9 @@ public class EventInfoDisplayPageActivity extends Activity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.v("Test", "onActivityResult is called; result is returned");
+
         if (requestCode == 998) {
+            Log.v("EventInfoDisplay", "came back from manage participants");
             if (resultCode == RESULT_OK) {
                 ArrayList<Friend> newAddList = data.getParcelableArrayListExtra("listOfNewlyAddedFriends");
                 ArrayList<Friend> deleteList = data.getParcelableArrayListExtra("listOfDeletedFriends");
@@ -148,6 +149,15 @@ public class EventInfoDisplayPageActivity extends Activity {
 //                currentlySelectedParticipants.removeAll(deleteList);
                 Log.v("InfoDisplay", "a list of " + newAddList.size() + " is newly add to the event");
                 Log.v("InfoDisplay", "a list of " + deleteList.size() + " is removed from the event");
+            }
+        } else if (requestCode == 991) {
+            Log.v("EventInfoDisplay", "came back from edit info, should now refresh all info");
+            if (resultCode == RESULT_OK) {
+                Event eventAfterEdit = data.getParcelableExtra("eventAfterEdit");
+                this.event = eventAfterEdit;
+                // got the edited version, need to refresh now.
+                UpdateTextViews(this.event);
+                Log.v("EventInfoDisplay", "displaying the new event");
             }
         }
     }
