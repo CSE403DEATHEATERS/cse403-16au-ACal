@@ -1,12 +1,18 @@
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.amazonaws.services.dynamodbv2.document.Table;
+
 import lambda.MessageHandler;
+import model.FriendManager;
+import model.MessageDBHelper;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
 import static junit.framework.TestCase.assertTrue;
+import static org.mockito.Mockito.mock;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +26,7 @@ public class MessageHandlerTest {
 
     @Mock
     MessageHandler mockMessageHandler;
-    
+
 
     private final String MESSAGE_CONTENT = "This is a message content.";
     private final String EVENT_ID = "This is an event id.";
@@ -81,29 +87,32 @@ public class MessageHandlerTest {
         request.put("eventId", null);
         this.messageHandler.getMessages(request, null);
     }
-    
+
     @Test
     public void readWrite () {
+
+        Table table = mock(Table.class);
+        MessageDBHelper.MESSAGE_TABLE = table;
         HashMap<String, Object> sentRequest = new HashMap<String, Object>();
         sentRequest.put("eventId", EVENT_ID);
         sentRequest.put("userId", USER_ID);
         sentRequest.put("content", MESSAGE_CONTENT);
         this.messageHandler.createMessage(sentRequest, null);
-        
-        HashMap<String, Object> getRequest = new HashMap<String, Object>();  
+
+        HashMap<String, Object> getRequest = new HashMap<String, Object>();
         getRequest.put("eventId", EVENT_ID);
         Map<String, Object> messages = this.messageHandler.getMessages(getRequest, null);
-        
+
         @SuppressWarnings("unchecked")
-		Map<String, Object> lastMessage = (Map<String, Object>) messages.get("" + (messages.size() - 1));
-        
+        Map<String, Object> lastMessage = (Map<String, Object>) messages.get("" + (messages.size() - 1));
+
         String content = (String) lastMessage.get("content");
         String id = (String) lastMessage.get("eventId");
         String createBy = (String) lastMessage.get("userId");
 
         assertTrue(content.equals(MESSAGE_CONTENT));
         assertTrue(createBy.equals(USER_ID));
-        assertTrue(id.equals(EVENT_ID));	
+        assertTrue(id.equals(EVENT_ID));
     }
 
 }

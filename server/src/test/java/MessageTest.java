@@ -1,8 +1,8 @@
-import model.Message;
-import model.MessageCategory;
 import org.junit.Test;
 
 import java.util.Date;
+
+import model.Message;
 
 import static junit.framework.TestCase.assertTrue;
 

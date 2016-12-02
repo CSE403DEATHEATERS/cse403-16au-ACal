@@ -4,10 +4,9 @@ import com.amazonaws.services.dynamodbv2.document.*;
 import com.amazonaws.services.dynamodbv2.document.spec.PutItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 
-import static dbManager.DynamoDBManager.dynamoDB;
-
 import java.math.BigDecimal;
-import java.util.*;
+
+import static dbManager.DynamoDBManager.dynamoDB;
 
 /**
  * Helper class for storing and retrieving Message's from db.
@@ -16,7 +15,7 @@ public class MessageDBHelper {
 
 
     private final static String MESSAGES_TABLE = "acalendar-mobilehub-1275254137-message";
-    public static final Table MESSAGE_TABLE = dynamoDB.getTable(MESSAGES_TABLE);
+    public static Table MESSAGE_TABLE = dynamoDB.getTable(MESSAGES_TABLE);
 
 
     /**
