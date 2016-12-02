@@ -8,18 +8,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.acalendar.acal.ApiResource;
+import com.acalendar.acal.Login.LoginedAccount;
 import com.acalendar.acal.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PostsActivity extends Activity {
 
-    private Button mSendButton;
     private EditText mMessageEdit;
-
-    private RecyclerView mMessages;
-    private RecyclerView.LayoutManager mManager;
-    private MessageAdapter madapter;
+    private String eventId;
+    private MessageAdapter mAdapter;
 
 
     @Override
@@ -27,38 +28,65 @@ public class PostsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.posts);
 
-        // TODO: 11/21/2016 replace related user and message with db message
-        ArrayList<String> user = new ArrayList<String>();
-        user.add("momo");
-        user.add("lisa");
-        user.add("yaozi");
-        user.add("yaozi");
-        ArrayList<String> message= new ArrayList<String>();
-        message.add("created this event");
-        message.add("join event");
-        message.add("join event");
-        message.add("leave event");
+        Bundle bundle = getIntent().getExtras();
+        eventId = bundle.getString("eventId");
+        mAdapter = new MessageAdapter(new ArrayList<String>(), new ArrayList<String>());
 
-        mSendButton = (Button) findViewById(R.id.sendButton);
+        RecyclerView mMessages = (RecyclerView) findViewById(R.id.messagesList);
+
+
+        LinearLayoutManager mManager = new LinearLayoutManager(this);
+        mMessages.setHasFixedSize(false);
+        mMessages.setLayoutManager(mManager);
+        mMessages.setAdapter(mAdapter);
+
+        populateMessage();
+
+        sentMessage();
+
+
+    }
+
+    private void populateMessage() {
+        Map<String, String> getRequest = new HashMap<>();
+        getRequest.put("eventId", eventId);
+        // TODO: 12/1/2016 call api
+        Map<String, Object> messages = ApiResource.submitRequest(getRequest, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_GET_MESSAGE_EVENT);
+ //       Log.v("testApi", "response: " + messages);
+        if (!messages.isEmpty()) {
+            for (int i = 0; i < messages.size(); i++) {
+                String value = (String) messages.get("" + i);
+                String[] token = value.split("\\s+");
+                Long createAt = Long.parseLong(token[0]);
+                String createBy = token[1];
+                String content = token[2];
+                mAdapter.add(createBy, content);
+            }
+        }
+    }
+
+    private void sentMessage() {
+
+        Button mSendButton = (Button) findViewById(R.id.sendButton);
         mMessageEdit = (EditText) findViewById(R.id.messageEdit);
 
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 11/21/2016 request post a message, need to check certificate
-                madapter.add(mMessageEdit.getText().toString());
-
+                Map<String, String> sentRequest = new HashMap<>();
+                sentRequest.put("eventId", eventId);
+                sentRequest.put("userId", LoginedAccount.getUserFullName());
+                sentRequest.put("content", mMessageEdit.getText().toString());
                 mMessageEdit.setText("");
+
+                // TODO: 12/1/2016  call api
+                Map<String, Object> res = ApiResource.submitRequest(sentRequest, null, ApiResource.POST_REQUEST, ApiResource.REQUEST_POST_MESSAGE_EVENT);
+
+                if ((boolean)res.get("result")) {
+                    mAdapter.clear();
+                    populateMessage();
+                }
             }
         });
-
-        mMessages = (RecyclerView) findViewById(R.id.messagesList);
-        madapter = new MessageAdapter( user, message);
-
-        mManager = new LinearLayoutManager(this);
-
-        mMessages.setHasFixedSize(false);
-        mMessages.setLayoutManager(mManager);
-        mMessages.setAdapter(madapter);
     }
 }

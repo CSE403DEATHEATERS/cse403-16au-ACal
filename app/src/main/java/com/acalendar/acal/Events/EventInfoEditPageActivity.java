@@ -181,6 +181,10 @@ public class EventInfoEditPageActivity  extends Activity {
                     LoginedAccount.getEventsManager().editEvent(eventObjectToEdit, newEvent);
                 }
                 saveButton.setClickable(false);
+                Intent goBackToDisplayInfo = new Intent();
+                // sent newEvent back to infoDisplay page for display purpose.
+                goBackToDisplayInfo.putExtra("eventAfterEdit", newEvent);
+                setResult(Activity.RESULT_OK, goBackToDisplayInfo);
                 finish();
             }
         });

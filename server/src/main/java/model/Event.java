@@ -287,6 +287,18 @@ public class Event {
         return result;
     }
 
+    public static List<Map<String, Object>> getPublicEvents() {
+        List<Map<String, Object>> pool = new ArrayList<Map<String, Object>>();
+        ScanSpec scan = new ScanSpec().withFilterExpression("isPublic=:v_isPublic")
+                            .withValueMap(new ValueMap().withBoolean(":v_isPublic", true));
+        Iterator<Item> items = EVENT_TABLE.scan(scan).iterator();
+        while (items.hasNext()) {
+            Item tuple = items.next();
+            pool.add(tuple.asMap());
+        }
+        return pool;
+    }
+
     public static class Location {
         double lat;
         double lng;
