@@ -171,6 +171,7 @@ public class EventInfoEditPageActivity  extends Activity {
                 boolean isPublic = !(privateCheckBox.isChecked());
                 Event newEvent = new Event(eventTitle, startCalendar.getTime(), endCalendar.getTime(),
                         location, description, isPublic);
+
                 newEvent.setListOfParticipants(currentlySelectedParticipants);
                 if (eventObjectToEdit == null) {
                     // create new
@@ -178,9 +179,18 @@ public class EventInfoEditPageActivity  extends Activity {
                     LoginedAccount.getEventsManager().addEvent(newEvent);
                 } else {
                     // edit
+                    newEvent.setEventId(eventObjectToEdit.getEventId());
+                    Log.v("EventInfoEdit", "old event and new Event having the same id: " +
+                            eventObjectToEdit.getEventId().equals(newEvent.getEventId()));
+                    newEvent.setCreateTime(eventObjectToEdit.getCreateTime());
+
                     LoginedAccount.getEventsManager().editEvent(eventObjectToEdit, newEvent);
                 }
                 saveButton.setClickable(false);
+                Intent goBackToDisplayInfo = new Intent();
+                // sent newEvent back to infoDisplay page for display purpose.
+                goBackToDisplayInfo.putExtra("eventAfterEdit", newEvent);
+                setResult(Activity.RESULT_OK, goBackToDisplayInfo);
                 finish();
             }
         });
@@ -199,21 +209,18 @@ public class EventInfoEditPageActivity  extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        // TODO: save the data entered: all textEdits, Times.
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // TODO: this should be called when user is returned from manage participants page.
-        Log.v("Test", "onActivityResult is called; result is returned");
         if (requestCode == 995) {
+            // when user is returned from manage participants page.
             if (resultCode == RESULT_OK) {
                 // TODO: after getting the lst of friends selected back, maybe for display use.
                 ArrayList<Friend> newAddList = data.getParcelableArrayListExtra("listOfNewlyAddedFriends");
                 ArrayList<Friend> deleteList = data.getParcelableArrayListExtra("listOfDeletedFriends");
                 currentlySelectedParticipants.addAll(newAddList);
                 currentlySelectedParticipants.removeAll(deleteList);
-
                 Log.v("InfoEdit", "after modification, the event now has "
                         + currentlySelectedParticipants.size() + " participants");
             }
