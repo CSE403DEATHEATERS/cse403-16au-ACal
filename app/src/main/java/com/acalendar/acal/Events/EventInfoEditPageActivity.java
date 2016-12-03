@@ -243,3 +243,5 @@ public class EventInfoEditPageActivity  extends Activity {
         }
     }
 }
+
+            // when user is returned from manage participants page.
