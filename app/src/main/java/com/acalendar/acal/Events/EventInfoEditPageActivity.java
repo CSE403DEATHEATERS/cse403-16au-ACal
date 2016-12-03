@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.acalendar.acal.Friend.Friend;
 import com.acalendar.acal.Login.LoginedAccount;
@@ -169,19 +170,33 @@ public class EventInfoEditPageActivity  extends Activity {
                 String location = locationView.getText().toString();
                 String description = descriptionView.getText().toString();
                 boolean isPublic = !(privateCheckBox.isChecked());
-                Event newEvent = new Event(eventTitle, startCalendar.getTime(), endCalendar.getTime(),
-                        location, description, isPublic);
-                newEvent.setListOfParticipants(currentlySelectedParticipants);
-                if (eventObjectToEdit == null) {
-                    // create new
-                    // TODO: also get all participants that were selected.
-                    LoginedAccount.getEventsManager().addEvent(newEvent);
+                if (eventTitle.length() == 0) {
+                    Toast missmatch = Toast.makeText(EventInfoEditPageActivity.this, "Event Title cannot be empty", Toast.LENGTH_SHORT);
+                    missmatch.show();
+                    saveButton.setClickable(true);
+                } else if (location.length() == 0) {
+                    Toast missmatch = Toast.makeText(EventInfoEditPageActivity.this, "Location cannot be empty", Toast.LENGTH_SHORT);
+                    missmatch.show();
+                    saveButton.setClickable(true);
+                } else if (description.length() == 0) {
+                    Toast missmatch = Toast.makeText(EventInfoEditPageActivity.this, "Description cannot be empty", Toast.LENGTH_SHORT);
+                    missmatch.show();
+                    saveButton.setClickable(true);
                 } else {
-                    // edit
-                    LoginedAccount.getEventsManager().editEvent(eventObjectToEdit, newEvent);
+                    Event newEvent = new Event(eventTitle, startCalendar.getTime(), endCalendar.getTime(),
+                            location, description, isPublic);
+                    newEvent.setListOfParticipants(currentlySelectedParticipants);
+                    if (eventObjectToEdit == null) {
+                        // create new
+                        // TODO: also get all participants that were selected.
+                        LoginedAccount.getEventsManager().addEvent(newEvent);
+                    } else {
+                        // edit
+                        LoginedAccount.getEventsManager().editEvent(eventObjectToEdit, newEvent);
+                    }
+                    saveButton.setClickable(false);
+                    finish();
                 }
-                saveButton.setClickable(false);
-                finish();
             }
         });
     }
