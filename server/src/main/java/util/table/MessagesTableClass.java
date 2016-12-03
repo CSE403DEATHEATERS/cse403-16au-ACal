@@ -2,7 +2,6 @@ package util.table;
 
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import model.MessageCategory;
 
 /**
  * Each instance of this class represents a row in the messages table
@@ -46,10 +45,6 @@ public class MessagesTableClass {
 
     public String getMessageCategory() {
         return messageCategory;
-    }
-
-    public void setMessageCategory(MessageCategory messageCategory) {
-        this.messageCategory = messageCategory.toString();
     }
 
     public String getMessageId() {

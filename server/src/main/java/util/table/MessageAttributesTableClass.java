@@ -1,7 +1,6 @@
 package util.table;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import model.MessageAttributeType;
 
 /**
  * Each instance of this class represents a row in the message_attributes table
@@ -48,9 +47,4 @@ public class MessageAttributesTableClass {
     public String getAttributeType() {
         return attributeType;
     }
-
-    public void setAttributeType(MessageAttributeType attributeType) {
-        this.attributeType = attributeType.toString();
-    }
-
 }

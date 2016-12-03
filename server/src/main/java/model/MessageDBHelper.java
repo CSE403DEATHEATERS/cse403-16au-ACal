@@ -4,10 +4,10 @@ import com.amazonaws.services.dynamodbv2.document.*;
 import com.amazonaws.services.dynamodbv2.document.spec.PutItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 
-import static dbManager.DynamoDBManager.dynamoDB;
-
 import java.math.BigDecimal;
 import java.util.*;
+
+import static dbManager.DynamoDBManager.dynamoDB;
 
 /**
  * Helper class for storing and retrieving Message's from db.
@@ -16,7 +16,7 @@ public class MessageDBHelper {
 
 
     private final static String MESSAGES_TABLE = "acalendar-mobilehub-1275254137-message";
-    public static final Table MESSAGE_TABLE = dynamoDB.getTable(MESSAGES_TABLE);
+    public static Table MESSAGE_TABLE = dynamoDB.getTable(MESSAGES_TABLE);
 
 
     /**
@@ -27,7 +27,7 @@ public class MessageDBHelper {
      * containing the id of the record in the db
      */
     public Map<String, Object> createMessage(CreateMessageRequest request) {
-
+    	validateCreateMessageRequest(request);
     	try {
 	        PutItemSpec messagesTableputItemSpec = new PutItemSpec();
 	        Item item = new Item();
@@ -57,7 +57,7 @@ public class MessageDBHelper {
      *         specified by the request.
      */
     public Map<String, Object> getMessages(GetMessagesRequest request) {
-
+    	validateGetMessagesRequest(request);
         ArrayList<Message> messages = new ArrayList<Message>();
         
         HashMap<String, String> nameMap = new HashMap<String, String>();
@@ -86,13 +86,26 @@ public class MessageDBHelper {
       
         HashMap<String, Object> res = new HashMap<String, Object>();
         for(int i = 0; i < messages.size(); i++) {
-        	Message m = messages.get(i);
-        	res.put("" + i
-        			,String.valueOf(m.getCreatedAt()) + " "
-        			+ m.getCreatedBy() + " "
-        			+ m.getMessageContent()
-        			);
+        	HashMap<String, Object> message = new HashMap<String, Object>();
+        	message.put("eventId", messages.get(i).getEventId());
+        	message.put("content", messages.get(i).getMessageContent());
+        	message.put("userId", messages.get(i).getCreatedBy());
+        	message.put("createAt", messages.get(i).getCreatedAt());
+        	res.put(i + "", message);
         }   
         return res;
+    }
+    
+    private void validateCreateMessageRequest(CreateMessageRequest request) {
+        if ((request == null) || (request.getEventId() == null)
+                || (request.getMessageContent() == null) || (request.getUserId() == null)) {
+            throw new IllegalArgumentException("Request passed in and its fields should not be null!");
+        }
+    }
+
+    private void validateGetMessagesRequest(GetMessagesRequest request) {
+        if ((request == null) || (request.getEventId() == null)) {
+            throw new IllegalArgumentException("Request passed in and its fields should not be null!");
+        }
     }
 }
