@@ -15,7 +15,6 @@ import java.util.UUID;
 
 import model.CreateMessageRequest;
 import model.GetMessagesRequest;
-import model.MessageCategory;
 import model.MessageDBHelper;
 
 /**
@@ -44,7 +43,6 @@ public class MessageDBHelperTest {
 
     private final String MESSAGE_CONTENT = "This is a message content.";
     private final String EVENT_ID = "This is an event id.";
-    private final MessageCategory MESSAGE_CATEGORY = MessageCategory.ACTUAL_MESSAGE;
     private final String USER_ID = UUID.randomUUID().toString();
     private final String DYNAMODB_ENDPOINT = "https://dynamodb.us-west-2.amazonaws.com";
     private final String MESSAGES_TABLE = "acalendar-mobilehub-1275254137-message";
