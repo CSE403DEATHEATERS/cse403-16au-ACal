@@ -151,6 +151,7 @@ public class EventInfoDisplayPageActivity extends Activity {
         TextView textViewForNoParticipants = new TextView(this);
         textViewForNoParticipants.setText("There is currently 0 participants in this event");
         if (listF != null) {
+            allParticipantsLayout.removeAllViews();
             if (!listF.isEmpty()) {
                 // now display
                 for (Friend f : listF) {
@@ -159,7 +160,6 @@ public class EventInfoDisplayPageActivity extends Activity {
                     allParticipantsLayout.addView(newText);
                 }
             } else {
-                allParticipantsLayout.removeAllViews();
                 allParticipantsLayout.addView(textViewForNoParticipants);
             }
         }
