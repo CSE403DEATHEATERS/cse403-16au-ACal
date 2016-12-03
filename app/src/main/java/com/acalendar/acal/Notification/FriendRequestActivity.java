@@ -144,19 +144,19 @@ public class FriendRequestActivity extends Activity {
                 while (iterator.hasNext()) {
                     Friend friend = iterator.next();
                     if (friend.isSelected()) {
-//                        Map<String, String> addFriendQuery = new HashMap<String, String>();
-//                        addFriendQuery.put("userId_1", LoginedAccount.getUserId());
-//                        addFriendQuery.put("userId_2", friend.getUserId());
-//                        Map<String, Object> apiResponse = ApiResource.submitRequest(addFriendQuery, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_REJECT_FRIEND);
-//                        Log.v("Test", "decline response " + apiResponse);
-//                        if (apiResponse.get("result") != null && (boolean)apiResponse.get("result")) {
-//                            Log.v("Test", "accepted friend" + friend.getName());
-//                            //TODO: remove friend from list
-//                            responseText.append(friend.getName() + "\n");
-//                            iterator.remove();
-//                        }
-                        responseText.append(friend.getName() + "\n");
-                        iterator.remove();
+                        Map<String, String> declineFriendQuery = new HashMap<String, String>();
+                        declineFriendQuery.put("userId_1", LoginedAccount.getUserId());
+                        declineFriendQuery.put("userId_2", friend.getUserId());
+                        Map<String, Object> apiResponse = ApiResource.submitRequest(declineFriendQuery, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_REJECT_FRIEND);
+                        Log.v("Test", "decline response " + apiResponse);
+                        if (apiResponse.get("result") != null && (boolean)apiResponse.get("result")) {
+                            Log.v("Test", "deleted friend" + friend.getName());
+                            //TODO: remove friend from list
+                            responseText.append(friend.getName() + "\n");
+                            iterator.remove();
+                        }
+//                        responseText.append(friend.getName() + "\n");
+//                        iterator.remove();
                     }
                 }
 
