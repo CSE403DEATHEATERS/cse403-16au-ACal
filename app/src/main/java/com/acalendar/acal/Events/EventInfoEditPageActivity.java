@@ -190,7 +190,6 @@ public class EventInfoEditPageActivity  extends Activity {
                     newEvent.setListOfParticipants(currentlySelectedParticipants);
                     if (eventObjectToEdit == null) {
                         // create new
-                        // TODO: also get all participants that were selected.
                         LoginedAccount.getEventsManager().addEvent(newEvent);
                     } else {
                         // edit
@@ -228,7 +227,7 @@ public class EventInfoEditPageActivity  extends Activity {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        //super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 995) {
             // when user is returned from manage participants page.
             if (resultCode == RESULT_OK) {
@@ -243,5 +242,3 @@ public class EventInfoEditPageActivity  extends Activity {
         }
     }
 }
-
-            // when user is returned from manage participants page.

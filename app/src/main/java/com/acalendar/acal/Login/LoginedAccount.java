@@ -36,8 +36,7 @@ public class LoginedAccount {
         if (!map.isEmpty()) {
             Map<String, String> account = (Map<String, String>) map.get("account");
             user = new Account(account.get("userId"), account.get("username"), account.get("email"), account.get("lastname"), account.get("firstname"));
-            //eventsManager = new EventsManager((List<Map<String, Object>>) map.get("event"));
-            friendManager = new FriendManager(); // must preceds eventManager
+            friendManager = new FriendManager(); // must precedes eventManager
             eventsManager = new EventsManager((Map<String, List<Map<String, Object>>>) map.get("event"));
             notificationManager = new NotificationManager();
         }

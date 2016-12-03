@@ -111,6 +111,26 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp" />
 
+            <TextView
+                android:text="All Participants of this event"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:id="@+id/displayAllParticipantsEventLabel"
+                android:textSize="18sp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/allParticipantsLayout"
+                android:paddingBottom="50dp"
+                android:paddingLeft="80dp">
+
+            </LinearLayout>
+
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"

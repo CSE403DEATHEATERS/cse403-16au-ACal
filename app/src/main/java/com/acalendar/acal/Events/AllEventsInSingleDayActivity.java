@@ -13,6 +13,7 @@ import com.acalendar.acal.Login.LoginedAccount;
 import com.acalendar.acal.R;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -23,6 +24,7 @@ public class AllEventsInSingleDayActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.events_in_single_day_page);
+
         LinearLayout eventsViewContainer =
                 (LinearLayout) findViewById(R.id.eventsLinearLayoutScroll);
 
@@ -50,6 +52,7 @@ public class AllEventsInSingleDayActivity extends Activity {
             Button eventDisplay = (Button)getLayoutInflater().inflate(R.layout.event_button, null);
             eventDisplay.setId(eid.hashCode());
             eventDisplay.setText(eventTitle);
+
             eventDisplay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -60,7 +63,7 @@ public class AllEventsInSingleDayActivity extends Activity {
                 }
             });
             eventsViewContainer.addView(eventDisplay);
-            Log.v("DEBUG", "********************buttonID: " + eid.hashCode());
+            Log.v("DEBUG", "********************buttonID: " + eventDisplay.getId());
         }
 
         // TODO: can add an add button -> goes to edit page.
@@ -68,21 +71,21 @@ public class AllEventsInSingleDayActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 79) {
             // came back from single eventInfoDisplay page, which may potentially delete an event
             if (resultCode == RESULT_OK) {
                 int eventIdDeletedHashcode = (data.getStringExtra("eventIdDeleted")).hashCode();
                 Log.v("AllEventsInSingleDay", "came back from display page, and event id " +
                         data.getStringExtra("eventIdDeleted") + " was deleted");
-
-                Button eventView = (Button) findViewById(eventIdDeletedHashcode);
+                Log.v("AllEventsSingleDay", "the button to be deleted is " + eventIdDeletedHashcode);
+                Button eventView = (Button)findViewById(eventIdDeletedHashcode);
                 eventView.setVisibility(View.GONE);
             }
 
             else if (resultCode == EventInfoDisplayPageActivity.EDITED) {
                 int eventIdEditedHashcode = data.getStringExtra("eventIdEdited").hashCode();
-                Button eventView = (Button) findViewById(eventIdEditedHashcode);
+                Button eventView = (Button) findViewById
+                        (eventIdEditedHashcode);
                 String newEventTitle = data.getStringExtra("newEventTitle");
                 eventView.setText(newEventTitle);
                 Log.v("AllEventsInSingleDay", "refreshed event " + newEventTitle);

@@ -76,7 +76,11 @@ public class EventsManager {
         // set parsed locations
         entry.setLocation(location);
         List<String> listOfParticipantsUids = (List<String>) event.get("attendees");
+
         for (String uid : listOfParticipantsUids) {
+            if (uid.equals(LoginedAccount.getUserId())) {
+                continue;
+            }
             entry.addParticipant(LoginedAccount.getFriendManager().getFriendbyUserId(uid));
         }
         return entry;
@@ -132,6 +136,7 @@ public class EventsManager {
         return status;
     }
 
+    // TODO: this does not actually update the database.
     public boolean editEvent(Event originalEvent, Event newEvent) {
         Map<String, Object> queryData = new HashMap<>();
         queryData.put("eventId", originalEvent.getEventId());
@@ -164,7 +169,7 @@ public class EventsManager {
             return false;
         }
 
-        //newEvent.setEventId(originalEvent.getEventId());  // this line of code is redundant
+        newEvent.setEventId(originalEvent.getEventId());  // this line of code is redundant
         Log.v("EditEvent", "new eventid is set to be old event" + newEvent.getEventId());
         List<Event> list = this.eventMap.get(dateToString(newEvent.getStartTime()));
         list.remove(originalEvent);
