@@ -7,11 +7,6 @@ package model;
 public class CreateMessageRequest {
 
     /**
-     * Category of the message.
-     * */
-    private MessageCategory messageCategory;
-
-    /**
      * The id of the event that is associated with this message.
      * (a UUID string)
      * */
@@ -38,15 +33,6 @@ public class CreateMessageRequest {
     /////////////////////////////////////////////////////////////////////
 
     /**
-     * Return the message category of this CreateMessageRequest
-     *
-     * @return the message category of this CreateMessageRequest
-     * */
-    public MessageCategory getMessageCategory() {
-        return this.messageCategory;
-    }
-
-    /**
      * Get the event id
      *
      * @return event id
@@ -54,7 +40,6 @@ public class CreateMessageRequest {
     public String getEventId() {
         return this.eventId;
     }
-
 
     public String getUserId() {
         return this.userId;
