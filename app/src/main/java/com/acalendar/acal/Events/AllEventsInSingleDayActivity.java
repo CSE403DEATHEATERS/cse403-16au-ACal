@@ -45,6 +45,7 @@ public class AllEventsInSingleDayActivity extends Activity {
             if (eid == null) {
                 continue;
             }
+
             String eventTitle = e.getEventTitle();
             Button eventDisplay = (Button)getLayoutInflater().inflate(R.layout.event_button, null);
             eventDisplay.setId(eid.hashCode());
@@ -59,7 +60,9 @@ public class AllEventsInSingleDayActivity extends Activity {
                 }
             });
             eventsViewContainer.addView(eventDisplay);
+            Log.v("DEBUG", "********************buttonID: " + eid.hashCode());
         }
+
         // TODO: can add an add button -> goes to edit page.
     }
 
@@ -67,10 +70,22 @@ public class AllEventsInSingleDayActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 79) {
+            // came back from single eventInfoDisplay page, which may potentially delete an event
             if (resultCode == RESULT_OK) {
-                int eventIdDeletedHashcode = data.getStringExtra("eventIdDeleted").hashCode();
+                int eventIdDeletedHashcode = (data.getStringExtra("eventIdDeleted")).hashCode();
+                Log.v("AllEventsInSingleDay", "came back from display page, and event id " +
+                        data.getStringExtra("eventIdDeleted") + " was deleted");
+
                 Button eventView = (Button) findViewById(eventIdDeletedHashcode);
                 eventView.setVisibility(View.GONE);
+            }
+
+            else if (resultCode == EventInfoDisplayPageActivity.EDITED) {
+                int eventIdEditedHashcode = data.getStringExtra("eventIdEdited").hashCode();
+                Button eventView = (Button) findViewById(eventIdEditedHashcode);
+                String newEventTitle = data.getStringExtra("newEventTitle");
+                eventView.setText(newEventTitle);
+                Log.v("AllEventsInSingleDay", "refreshed event " + newEventTitle);
             }
         }
 

@@ -27,6 +27,8 @@ import java.util.Locale;
 public class EventInfoDisplayPageActivity extends Activity {
 
     private Event event;
+    public static final int EDITED = 1003;
+    private boolean edited = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,7 @@ public class EventInfoDisplayPageActivity extends Activity {
         setContentView(R.layout.event_info_display_page);
         // extract everything from Bundle and display
         final Intent intentRecieved = getIntent();
+        // TODO: get the event from the eventInfoDisplayList
         final String eid = intentRecieved.getStringExtra("eventId");
         this.event = LoginedAccount.getEventsManager().getEventById(eid);
         UpdateTextViews(this.event);
@@ -69,10 +72,11 @@ public class EventInfoDisplayPageActivity extends Activity {
                             LoginedAccount.getEventsManager().deleteEvent(idToBeDeleted);
                     // TODO: if false, alert.
                     // return to the previous activity to removed event.
-                    Intent intentGoBackToAllEvents = new Intent();
-                    intentGoBackToAllEvents.putExtra("eventIdDeleted", idToBeDeleted);
                     Log.v("InfoDisplay", "delete was pressed, following event will be deleted "
                     + idToBeDeleted);
+
+                    Intent intentGoBackToAllEvents = new Intent();
+                    intentGoBackToAllEvents.putExtra("eventIdDeleted", idToBeDeleted);
                     setResult(RESULT_OK, intentGoBackToAllEvents);
                     finish();
                 }
@@ -154,12 +158,29 @@ public class EventInfoDisplayPageActivity extends Activity {
             Log.v("EventInfoDisplay", "came back from edit info, should now refresh all info");
             if (resultCode == RESULT_OK) {
                 Event eventAfterEdit = data.getParcelableExtra("eventAfterEdit");
-                this.event = eventAfterEdit;
+                this.event = eventAfterEdit;  // now this thing should have everything including the id.
+                Log.v("eventInfoDisplay", "eventAfterEdit has eventId" + this.event.getEventId());
                 // got the edited version, need to refresh now.
                 UpdateTextViews(this.event);
                 Log.v("EventInfoDisplay", "displaying the new event");
+                this.edited = true;
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (this.edited && this.event != null) {
+            Log.v("EventInfoDisplay", "going back to AllEventsSingleDay, " +
+                    "while the viewed event being edited, " +
+                    this.event.getEventTitle());
+            Intent intent = new Intent();
+            // send the eventId back, and also the new event title.
+            intent.putExtra("eventIdEdited", this.event.getEventId());
+            intent.putExtra("newEventTitle", this.event.getEventTitle());
+            setResult(EDITED, intent);
+        }
+        super.onBackPressed();
     }
 
     @Override

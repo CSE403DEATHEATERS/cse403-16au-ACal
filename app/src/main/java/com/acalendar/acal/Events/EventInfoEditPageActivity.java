@@ -171,6 +171,7 @@ public class EventInfoEditPageActivity  extends Activity {
                 boolean isPublic = !(privateCheckBox.isChecked());
                 Event newEvent = new Event(eventTitle, startCalendar.getTime(), endCalendar.getTime(),
                         location, description, isPublic);
+
                 newEvent.setListOfParticipants(currentlySelectedParticipants);
                 if (eventObjectToEdit == null) {
                     // create new
@@ -178,6 +179,11 @@ public class EventInfoEditPageActivity  extends Activity {
                     LoginedAccount.getEventsManager().addEvent(newEvent);
                 } else {
                     // edit
+                    newEvent.setEventId(eventObjectToEdit.getEventId());
+                    Log.v("EventInfoEdit", "old event and new Event having the same id: " +
+                            eventObjectToEdit.getEventId().equals(newEvent.getEventId()));
+                    newEvent.setCreateTime(eventObjectToEdit.getCreateTime());
+
                     LoginedAccount.getEventsManager().editEvent(eventObjectToEdit, newEvent);
                 }
                 saveButton.setClickable(false);

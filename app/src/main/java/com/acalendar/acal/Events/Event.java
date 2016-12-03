@@ -75,6 +75,10 @@ public class Event implements Parcelable {
         }
     }
 
+    public Date getCreateTime() {
+        return this.createTime;
+    }
+
     public void addParticipant(Friend friend) {
         listOfParticipantUsers.add(friend);
     }

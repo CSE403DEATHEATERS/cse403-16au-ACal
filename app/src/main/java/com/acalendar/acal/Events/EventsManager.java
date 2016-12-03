@@ -163,7 +163,8 @@ public class EventsManager {
         if (!success) {
             return false;
         }
-        newEvent.setEventId(originalEvent.getEventId());
+
+        //newEvent.setEventId(originalEvent.getEventId());  // this line of code is redundant
         Log.v("EditEvent", "new eventid is set to be old event" + newEvent.getEventId());
         List<Event> list = this.eventMap.get(dateToString(newEvent.getStartTime()));
         list.remove(originalEvent);
