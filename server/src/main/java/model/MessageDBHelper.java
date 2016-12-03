@@ -5,7 +5,6 @@ import com.amazonaws.services.dynamodbv2.document.spec.PutItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 
 import java.math.BigDecimal;
-import java.util.*;
 
 import static dbManager.DynamoDBManager.dynamoDB;
 
@@ -39,7 +38,7 @@ public class MessageDBHelper {
 	        messagesTableputItemSpec.withItem(item);
 	        MESSAGE_TABLE.putItem(messagesTableputItemSpec);
     		Map<String, Object> res = new HashMap<String, Object>();
-    		res.put("result", false);
+    		res.put("result", true);
     		return res;
 
     	} catch (Exception e) {
