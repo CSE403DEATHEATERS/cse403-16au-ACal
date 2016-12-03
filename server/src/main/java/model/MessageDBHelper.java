@@ -39,7 +39,7 @@ public class MessageDBHelper {
 	        messagesTableputItemSpec.withItem(item);
 	        MESSAGE_TABLE.putItem(messagesTableputItemSpec);
     		Map<String, Object> res = new HashMap<String, Object>();
-    		res.put("result", false);
+    		res.put("result", true);
     		return res;
 
     	} catch (Exception e) {
