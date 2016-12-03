@@ -14,6 +14,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class SignUPActivity extends Activity {
@@ -73,13 +75,21 @@ public class SignUPActivity extends Activity {
                 query.put("firstname", firstname);
                 query.put("lastname", lastname);
                 JSONObject jsonObject = new JSONObject(query);
-                boolean succeed = LoginedAccount.signUp(jsonObject.toString());
-                if (succeed) {
-                    finish();
-                } else {
-                    Toast missmatch = Toast.makeText(SignUPActivity.this, "exited username", Toast.LENGTH_SHORT);
+                Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
+                Matcher m = p.matcher(email);
+                if (!m.matches()) {
+                    Toast missmatch = Toast.makeText(SignUPActivity.this, "invalid email", Toast.LENGTH_SHORT);
                     missmatch.show();
+                } else {
+                    boolean succeed = LoginedAccount.signUp(jsonObject.toString());
+                    if (succeed) {
+                        finish();
+                    } else {
+                        Toast missmatch = Toast.makeText(SignUPActivity.this, "exited username", Toast.LENGTH_SHORT);
+                        missmatch.show();
+                    }
                 }
+
             }
         });
     }

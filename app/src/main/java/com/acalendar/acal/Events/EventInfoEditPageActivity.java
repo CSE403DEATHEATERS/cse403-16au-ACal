@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.acalendar.acal.Friend.Friend;
 import com.acalendar.acal.Login.LoginedAccount;
@@ -169,29 +170,44 @@ public class EventInfoEditPageActivity  extends Activity {
                 String location = locationView.getText().toString();
                 String description = descriptionView.getText().toString();
                 boolean isPublic = !(privateCheckBox.isChecked());
-                Event newEvent = new Event(eventTitle, startCalendar.getTime(), endCalendar.getTime(),
-                        location, description, isPublic);
 
-                newEvent.setListOfParticipants(currentlySelectedParticipants);
+                if (eventTitle.length() == 0) {
+                    Toast missmatch = Toast.makeText(EventInfoEditPageActivity.this, "Event Title cannot be empty", Toast.LENGTH_SHORT);
+                    missmatch.show();
+                    saveButton.setClickable(true);
+                } else if (location.length() == 0) {
+                    Toast missmatch = Toast.makeText(EventInfoEditPageActivity.this, "Location cannot be empty", Toast.LENGTH_SHORT);
+                    missmatch.show();
+                    saveButton.setClickable(true);
+                } else if (description.length() == 0) {
+                    Toast missmatch = Toast.makeText(EventInfoEditPageActivity.this, "Description cannot be empty", Toast.LENGTH_SHORT);
+                    missmatch.show();
+                    saveButton.setClickable(true);
+                } else {
+                    Event newEvent = new Event(eventTitle, startCalendar.getTime(), endCalendar.getTime(),
+                            location, description, isPublic);
+
+                    newEvent.setListOfParticipants(currentlySelectedParticipants);
                     if (eventObjectToEdit == null) {
                         // create new
-                    // TODO: also get all participants that were selected.
-                    LoginedAccount.getEventsManager().addEvent(newEvent);
-                } else {
-                    // edit
-                    newEvent.setEventId(eventObjectToEdit.getEventId());
-                    Log.v("EventInfoEdit", "old event and new Event having the same id: " +
-                            eventObjectToEdit.getEventId().equals(newEvent.getEventId()));
-                    newEvent.setCreateTime(eventObjectToEdit.getCreateTime());
+                        // TODO: also get all participants that were selected.
+                        LoginedAccount.getEventsManager().addEvent(newEvent);
+                    } else {
+                        // edit
+                        newEvent.setEventId(eventObjectToEdit.getEventId());
+                        Log.v("EventInfoEdit", "old event and new Event having the same id: " +
+                                eventObjectToEdit.getEventId().equals(newEvent.getEventId()));
+                        newEvent.setCreateTime(eventObjectToEdit.getCreateTime());
 
-                    LoginedAccount.getEventsManager().editEvent(eventObjectToEdit, newEvent);
+                        LoginedAccount.getEventsManager().editEvent(eventObjectToEdit, newEvent);
+                    }
+                    saveButton.setClickable(false);
+                    Intent goBackToDisplayInfo = new Intent();
+                    // sent newEvent back to infoDisplay page for display purpose.
+                    goBackToDisplayInfo.putExtra("eventAfterEdit", newEvent);
+                    setResult(Activity.RESULT_OK, goBackToDisplayInfo);
+                    finish();
                 }
-                saveButton.setClickable(false);
-                Intent goBackToDisplayInfo = new Intent();
-                // sent newEvent back to infoDisplay page for display purpose.
-                goBackToDisplayInfo.putExtra("eventAfterEdit", newEvent);
-                setResult(Activity.RESULT_OK, goBackToDisplayInfo);
-                finish();
             }
         });
     }
@@ -227,3 +243,5 @@ public class EventInfoEditPageActivity  extends Activity {
         }
     }
 }
+
+            // when user is returned from manage participants page.
