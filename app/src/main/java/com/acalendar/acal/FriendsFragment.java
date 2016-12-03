@@ -167,13 +167,7 @@ public class FriendsFragment extends Fragment {
                 adapter.notifyDataSetChanged();
                 return true;
             case R.id.friend_invite_event:
-
                 // call event activity
-
-
-
-
-
 
                 return true;
             default: return super.onContextItemSelected(item);

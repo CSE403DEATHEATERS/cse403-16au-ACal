@@ -32,6 +32,9 @@ public class Message {
     private String messageContent;
     
     public Message(String eventId, String createBy, String messageContent, Long createdAt){
+    	if (eventId == null || createBy == null|| messageContent == null||createdAt == null ) {
+    		 throw new IllegalArgumentException("Request passed in and its fields should not be null!");
+    	}
     	this.eventId = eventId;
     	this.createdAt = createdAt;
     	this.createdBy = createBy;

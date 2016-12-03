@@ -20,7 +20,6 @@ public class EditEventParticipantsActivity extends Activity {
 
     private View view;
 
-    // TODO: Replace this local friends list to the db friends list
     private Button inviteButton;
     private FriendAdapter friendAdapter;
     private ArrayList<Friend> friendsList;

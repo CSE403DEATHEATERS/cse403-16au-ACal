@@ -55,11 +55,11 @@ public class PostsActivity extends Activity {
  //       Log.v("testApi", "response: " + messages);
         if (!messages.isEmpty()) {
             for (int i = 0; i < messages.size(); i++) {
-                String value = (String) messages.get("" + i);
-                String[] token = value.split("\\s+");
-                Long createAt = Long.parseLong(token[0]);
-                String createBy = token[1];
-                String content = token[2];
+                Map<String, Object> message = (Map<String, Object>) messages.get("" + i);
+
+                String content = (String) message.get("content");
+                Long createAt = (Long) message.get("createAt");
+                String createBy = (String) message.get("userId");
                 mAdapter.add(createBy, content);
             }
         }
