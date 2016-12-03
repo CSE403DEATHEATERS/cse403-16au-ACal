@@ -1,7 +1,6 @@
 package com.acalendar.acal;
 
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,21 +11,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
-import com.acalendar.acal.Events.AllEventsInSingleDayActivity;
-import com.acalendar.acal.Friend.Friend;
 import com.acalendar.acal.Login.LoginedAccount;
-import com.acalendar.acal.Notification.FriendRequestActivity;
-import com.acalendar.acal.Notification.NewEventActivity;
 import com.acalendar.acal.amazonaws.mobile.AWSMobileClient;
-import com.roomorama.caldroid.CaldroidFragment;
-import com.roomorama.caldroid.CaldroidListener;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -173,12 +161,13 @@ public class MainActivity extends AppCompatActivity
 
                 Log.v("MainActivity.java", "onCreate(): LoginedAccount.getEventsManager " + LoginedAccount.getEventsManager());
                 Log.v("MainActivity.java", "onCreate(): LoginedAccount.isLoggedIn " + LoginedAccount.isLogedIn());
-                EventPoolFragment fragment = new EventPoolFragment();
-                android.support.v4.app.FragmentTransaction fragmentTransaction =
-                        getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, fragment);
-                fragmentTransaction.commit();
             }
         }
+
+        EventPoolFragment fragment = new EventPoolFragment();
+        android.support.v4.app.FragmentTransaction fragmentTransaction =
+                getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.commit();
     }
 }
