@@ -173,8 +173,8 @@ public class EventInfoEditPageActivity  extends Activity {
                         location, description, isPublic);
 
                 newEvent.setListOfParticipants(currentlySelectedParticipants);
-                if (eventObjectToEdit == null) {
-                    // create new
+                    if (eventObjectToEdit == null) {
+                        // create new
                     // TODO: also get all participants that were selected.
                     LoginedAccount.getEventsManager().addEvent(newEvent);
                 } else {

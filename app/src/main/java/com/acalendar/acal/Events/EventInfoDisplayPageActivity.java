@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.acalendar.acal.Friend.Friend;
@@ -16,6 +17,7 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -29,6 +31,7 @@ public class EventInfoDisplayPageActivity extends Activity {
     private Event event;
     public static final int EDITED = 1003;
     private boolean edited = false;
+    private List<Friend> currentlySelectedParticipants;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,13 @@ public class EventInfoDisplayPageActivity extends Activity {
         // TODO: get the event from the eventInfoDisplayList
         final String eid = intentRecieved.getStringExtra("eventId");
         this.event = LoginedAccount.getEventsManager().getEventById(eid);
+        this.currentlySelectedParticipants = this.event.getListOfParticipantingFriends();
+
+        Log.v("EventInfoDisplay", "how many friends are in this event?? " +
+            this.currentlySelectedParticipants.size());
+
         UpdateTextViews(this.event);
+        updateParticipantsListView(this.currentlySelectedParticipants);
 
 
         // 2. buttons:
@@ -110,7 +119,6 @@ public class EventInfoDisplayPageActivity extends Activity {
                 }
             }
         );
-        // TODO: display all participants in some way.
     }
 
     private void UpdateTextViews(Event eventObject) {
@@ -137,6 +145,26 @@ public class EventInfoDisplayPageActivity extends Activity {
         endView.setText(format.format(endTime));
     }
 
+    private void updateParticipantsListView(List<Friend> listF) {
+        // TODO: display all participants in some way.
+        LinearLayout allParticipantsLayout = (LinearLayout)findViewById(R.id.allParticipantsLayout);
+        TextView textViewForNoParticipants = new TextView(this);
+        textViewForNoParticipants.setText("There is currently 0 participants in this event");
+        if (listF != null) {
+            if (!listF.isEmpty()) {
+                // now display
+                for (Friend f : listF) {
+                    TextView newText = new TextView(this);
+                    newText.setText(f.getName());
+                    allParticipantsLayout.addView(newText);
+                }
+            } else {
+                allParticipantsLayout.removeAllViews();
+                allParticipantsLayout.addView(textViewForNoParticipants);
+            }
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -149,10 +177,12 @@ public class EventInfoDisplayPageActivity extends Activity {
                 boolean result =
                         LoginedAccount.getEventsManager().editParticipants(newAddList, deleteList);
                 // TODO: display/update current List
-//                currentlySelectedParticipants.addAll(newAddList);
-//                currentlySelectedParticipants.removeAll(deleteList);
-                Log.v("InfoDisplay", "a list of " + newAddList.size() + " is newly add to the event");
-                Log.v("InfoDisplay", "a list of " + deleteList.size() + " is removed from the event");
+                currentlySelectedParticipants.addAll(newAddList);
+                currentlySelectedParticipants.removeAll(deleteList);
+
+                Log.v("InfoDisplay", "Current participants: "
+                        + this.currentlySelectedParticipants.size());
+                updateParticipantsListView(this.currentlySelectedParticipants);
             }
         } else if (requestCode == 991) {
             Log.v("EventInfoDisplay", "came back from edit info, should now refresh all info");

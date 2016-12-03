@@ -76,7 +76,11 @@ public class EventsManager {
         // set parsed locations
         entry.setLocation(location);
         List<String> listOfParticipantsUids = (List<String>) event.get("attendees");
+
         for (String uid : listOfParticipantsUids) {
+            if (uid.equals(LoginedAccount.getUserId())) {
+                continue;
+            }
             entry.addParticipant(LoginedAccount.getFriendManager().getFriendbyUserId(uid));
         }
         return entry;
