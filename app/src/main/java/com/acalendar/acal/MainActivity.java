@@ -12,7 +12,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.acalendar.acal.Events.EventInfoEditPageActivity;
 import com.acalendar.acal.Login.LoginedAccount;
 import com.acalendar.acal.amazonaws.mobile.AWSMobileClient;
 
@@ -142,6 +144,13 @@ public class MainActivity extends AppCompatActivity
                     getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container, fragment);
             fragmentTransaction.commit();
+        } else if (id == R.id.nav_sign_out) {
+            LoginedAccount.logOut();
+            Toast missmatch = Toast.makeText(MainActivity.this, "You Are Logged Out!", Toast.LENGTH_SHORT);
+            missmatch.show();
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
