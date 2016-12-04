@@ -40,7 +40,6 @@ public class EventInfoDisplayPageActivity extends Activity {
         setContentView(R.layout.event_info_display_page);
         // extract everything from Bundle and display
         final Intent intentRecieved = getIntent();
-        // TODO: get the event from the eventInfoDisplayList
         final String eid = intentRecieved.getStringExtra("eventId");
         this.event = LoginedAccount.getEventsManager().getEventById(eid);
         this.currentlySelectedParticipants = this.event.getListOfParticipantingFriends();
@@ -110,7 +109,6 @@ public class EventInfoDisplayPageActivity extends Activity {
 
                 @Override
                 public void onClick(View v) {
-                    // TODO: go to eventCommentPage where user can view and add comments
                     Intent posts = new Intent(EventInfoDisplayPageActivity.this, PostsActivity.class);
                     posts.putExtra("eventId", eid);
                     EventInfoDisplayPageActivity.this.startActivity(posts);
@@ -144,7 +142,6 @@ public class EventInfoDisplayPageActivity extends Activity {
     }
 
     private void updateParticipantsListView(List<Friend> listF) {
-        // TODO: display all participants in some way.
         LinearLayout allParticipantsLayout = (LinearLayout)findViewById(R.id.allParticipantsLayout);
         TextView textViewForNoParticipants = new TextView(this);
         textViewForNoParticipants.setText("There is currently 0 participants in this event");
@@ -174,12 +171,12 @@ public class EventInfoDisplayPageActivity extends Activity {
                 ArrayList<Friend> deleteList = data.getParcelableArrayListExtra("listOfDeletedFriends");
                 boolean result =
                         LoginedAccount.getEventsManager().editParticipants(newAddList, deleteList);
-                // TODO: display/update current List
+
                 currentlySelectedParticipants.addAll(newAddList);
                 currentlySelectedParticipants.removeAll(deleteList);
-
                 Log.v("InfoDisplay", "Current participants: "
                         + this.currentlySelectedParticipants.size());
+                // display/update current List
                 updateParticipantsListView(this.currentlySelectedParticipants);
             }
         } else if (requestCode == 991) {

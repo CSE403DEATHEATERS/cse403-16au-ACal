@@ -83,8 +83,7 @@ public class EventInfoEditPageActivity  extends Activity {
         Intent intentRecieved = getIntent();
         boolean addNew = intentRecieved.getExtras().getBoolean("AddNew");
         Log.v("EventEditActivity", "is adding new event? :" + addNew);
-        if (!addNew) {
-            // editing old events -> display old values
+        if (!addNew) {  // editing old events -> display old values
             eventObjectToEdit = intentRecieved.getParcelableExtra("eventObjectToEdit");
             Log.v("EventEditActivity", "eventObjectToEdit is" + eventObjectToEdit);
             displayOldValues(this.eventObjectToEdit);
@@ -107,6 +106,7 @@ public class EventInfoEditPageActivity  extends Activity {
             }
         }, startCalendar.get(Calendar.YEAR),
                 startCalendar.get(Calendar.MONTH), startCalendar.get(Calendar.DAY_OF_MONTH));
+
         datePickerViewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,7 +130,8 @@ public class EventInfoEditPageActivity  extends Activity {
                 stpDialog.show();
             }
         });
-        endCalendar = (Calendar) startCalendar.clone();
+        // the following line turned out to cause the bug.
+        // endCalendar = (Calendar) startCalendar.clone();
 
         // set up end time picker dialogs
         etpDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
@@ -165,12 +166,11 @@ public class EventInfoEditPageActivity  extends Activity {
             @Override
             public void onClick(View v) {
                 saveButton.setClickable(false);
-                // TODO: alert any invalid inputs
                 String eventTitle = titleView.getText().toString();
                 String location = locationView.getText().toString();
                 String description = descriptionView.getText().toString();
                 boolean isPublic = !(privateCheckBox.isChecked());
-
+                // alert any invalid inputs
                 if (eventTitle.length() == 0) {
                     Toast missmatch = Toast.makeText(EventInfoEditPageActivity.this, "Event Title cannot be empty", Toast.LENGTH_SHORT);
                     missmatch.show();
@@ -186,7 +186,10 @@ public class EventInfoEditPageActivity  extends Activity {
                 } else {
                     Event newEvent = new Event(eventTitle, startCalendar.getTime(), endCalendar.getTime(),
                             location, description, isPublic);
-
+                    Log.v("EventInfoEdit", "event Before edit has times: " +
+                            eventObjectToEdit.getStartTime() + " and " + eventObjectToEdit.getEndTime());
+                    Log.v("EventInfoEdit", "event After edit has times: " +
+                            startCalendar.getTime()+ " and " + endCalendar.getTime());
                     newEvent.setListOfParticipants(currentlySelectedParticipants);
                     if (eventObjectToEdit == null) {
                         // create new
@@ -215,7 +218,9 @@ public class EventInfoEditPageActivity  extends Activity {
         titleView.setText(event.getEventTitle());
         datePickerViewButton.setText(dateFormat.format(event.getStartTime()));
         startTimeViewButton.setText(timeFormat.format(event.getStartTime()));
+        startCalendar.setTime(event.getStartTime()); // bug fix
         endTimeViewButton.setText(timeFormat.format(event.getEndTime()));
+        endCalendar.setTime(event.getEndTime());
         locationView.setText(event.getLocation().getAddress());
         descriptionView.setText(event.getDescription());
         privateCheckBox.setChecked(!event.isPublic());
@@ -231,11 +236,12 @@ public class EventInfoEditPageActivity  extends Activity {
         if (requestCode == 995) {
             // when user is returned from manage participants page.
             if (resultCode == RESULT_OK) {
-                // TODO: after getting the lst of friends selected back, maybe for display use.
+                // update the currentParticipants fields that will be used in editing.
                 ArrayList<Friend> newAddList = data.getParcelableArrayListExtra("listOfNewlyAddedFriends");
                 ArrayList<Friend> deleteList = data.getParcelableArrayListExtra("listOfDeletedFriends");
                 currentlySelectedParticipants.addAll(newAddList);
                 currentlySelectedParticipants.removeAll(deleteList);
+                // for debug purpose
                 Log.v("InfoEdit", "after modification, the event now has "
                         + currentlySelectedParticipants.size() + " participants");
             }

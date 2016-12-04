@@ -50,7 +50,6 @@ public class EditEventParticipantsActivity extends Activity {
         inviteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: send the selected friends back to previous page.
                 Intent intent = new Intent();
                 ArrayList<Friend> friendList = friendAdapter.getFriendList();
                 ArrayList<Friend> newAddList = new ArrayList<>();
