@@ -136,7 +136,7 @@ public class EventsManager {
         return status;
     }
 
-    // TODO: this does not actually update the database.
+    // TODO: bug -> this does not actually update the database.
     public boolean editEvent(Event originalEvent, Event newEvent) {
         Map<String, Object> queryData = new HashMap<>();
         queryData.put("eventId", originalEvent.getEventId());
@@ -204,7 +204,7 @@ public class EventsManager {
     public boolean editParticipants(ArrayList<Friend> addList, ArrayList<Friend> deleteList) {
         // take evenid, userid, listOfUserIdAdded, listOfUserIdDeleted(empty for now).
         // remove temporarily not available in front end but work in backend.
-
+        // TODO: noy yet implemented
         return true;
     }
 
