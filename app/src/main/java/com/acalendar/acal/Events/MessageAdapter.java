@@ -6,29 +6,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.acalendar.acal.Login.LoginedAccount;
 import com.acalendar.acal.R;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.RecyclerViewHoler>{
     private ArrayList<String> user, message;
-    private String userName;
+    private ArrayList<Date> time;
 
-    public MessageAdapter(ArrayList<String> user, ArrayList<String> userMessage){
+    public MessageAdapter(ArrayList<String> user, ArrayList<String> userMessages, ArrayList<Date> time){
         this.user = user;
-        message = userMessage;
-        userName = LoginedAccount.getUserName();
+        this.message = userMessages;
+        this.time = time;
     }
 
-    public void add (String user, String mes) {
+    public void add (String user, String mes, Date time) {
         this.user.add(user);
         this.message.add(mes);
+        this.time.add(time);
     }
 
     public void clear() {
         user.clear();
         message.clear();
+        time.clear();
     }
 
     @Override
@@ -40,8 +42,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Recycler
 
     @Override
     public void onBindViewHolder(RecyclerViewHoler holder, int position) {
-        holder.userView.setText(user.get(position));
+        holder.userView.setText(user.get(position) + ":");
         holder.messageView.setText(message.get(position));
+        holder.timeView.setText(time.get(position).toString());
     }
 
     @Override
@@ -51,9 +54,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Recycler
 
     public static class RecyclerViewHoler extends RecyclerView.ViewHolder {
 
-        TextView userView, messageView;
+        TextView userView, messageView, timeView;
         public RecyclerViewHoler(View itemView) {
             super(itemView);
+            timeView = (TextView) itemView.findViewById(R.id.posts_time);
             userView = (TextView) itemView.findViewById(R.id.posts_user);
             messageView = (TextView) itemView.findViewById(R.id.posts_message);
 
