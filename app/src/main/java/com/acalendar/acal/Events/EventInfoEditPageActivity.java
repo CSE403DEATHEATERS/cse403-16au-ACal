@@ -186,10 +186,7 @@ public class EventInfoEditPageActivity  extends Activity {
                 } else {
                     Event newEvent = new Event(eventTitle, startCalendar.getTime(), endCalendar.getTime(),
                             location, description, isPublic);
-                    Log.v("EventInfoEdit", "event Before edit has times: " +
-                            eventObjectToEdit.getStartTime() + " and " + eventObjectToEdit.getEndTime());
-                    Log.v("EventInfoEdit", "event After edit has times: " +
-                            startCalendar.getTime()+ " and " + endCalendar.getTime());
+
                     newEvent.setListOfParticipants(currentlySelectedParticipants);
                     if (eventObjectToEdit == null) {
                         // create new
