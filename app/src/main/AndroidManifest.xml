@@ -49,7 +49,6 @@
         </activity>
         android:label="Login" />
         <activity android:name=".Login.FrontPageActivity" />
-        <activity android:name=".Events.PostsActivity" />
         <activity
             android:name=".Login.SignUPActivity"
             android:label="Sign Up" />
@@ -76,6 +75,7 @@
         <activity android:name=".Events.AllEventsInSingleDayActivity" />
         <activity android:name=".Notification.NewEventActivity" />
         <activity android:name=".Notification.FriendRequestActivity"></activity>
+        <activity android:name=".Events.EventMessagePageActivity"></activity>
     </application>
 
 </manifest>

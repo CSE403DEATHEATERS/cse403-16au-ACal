@@ -109,7 +109,7 @@ public class EventInfoDisplayPageActivity extends Activity {
 
                 @Override
                 public void onClick(View v) {
-                    Intent posts = new Intent(EventInfoDisplayPageActivity.this, PostsActivity.class);
+                    Intent posts = new Intent(EventInfoDisplayPageActivity.this, EventMessagePageActivity.class);
                     posts.putExtra("eventId", eid);
                     EventInfoDisplayPageActivity.this.startActivity(posts);
                 }

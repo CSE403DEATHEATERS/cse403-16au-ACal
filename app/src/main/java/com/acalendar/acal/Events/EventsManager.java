@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.acalendar.acal.ApiResource;
 import com.acalendar.acal.Friend.Friend;
-import com.acalendar.acal.Login.Account;
 import com.acalendar.acal.Login.LoginedAccount;
 
 import org.json.JSONObject;
@@ -248,6 +247,28 @@ public class EventsManager {
         eventMap.clear();
         idToEventMap.clear();
         parseAllEvents(acceptedEvents);
+    }
+
+    public boolean createEventMessage (String eventId, String username, String mMessageEdit) {
+        Map<String, String> sentRequest = new HashMap<>();
+        sentRequest.put("eventId", eventId);
+        sentRequest.put("userId", username);
+        sentRequest.put("content", mMessageEdit);
+        Map<String, Object> res = ApiResource.submitRequest(sentRequest, null, ApiResource.POST_REQUEST, ApiResource.REQUEST_POST_MESSAGE_EVENT);
+
+        // TODO: remove "try catch" when the return value "res" is no longer null;
+        try {
+            return (boolean) res.get("result");
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+    public Map<String, Object> refreshSingleEventMessages(String eventId) {
+        Map<String, String> getRequest = new HashMap<>();
+        getRequest.put("eventId", eventId);
+        Map<String, Object> messages = ApiResource.submitRequest(getRequest, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_GET_MESSAGE_EVENT);
+        return messages;
     }
 
     /***
