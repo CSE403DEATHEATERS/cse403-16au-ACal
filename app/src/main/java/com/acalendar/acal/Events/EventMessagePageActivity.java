@@ -21,6 +21,7 @@ public class EventMessagePageActivity extends Activity {
 
     private String eventId;
     private MessageAdapter mAdapter;
+    private  EditText mMessageEdit;
 
 
     @Override
@@ -84,8 +85,7 @@ public class EventMessagePageActivity extends Activity {
     private void sentMessage() {
 
         Button mSendButton = (Button) findViewById(R.id.sendButton);
-        final EditText mMessageEdit = (EditText) findViewById(R.id.messageEdit);
-        final String mes = mMessageEdit.getText().toString();
+        mMessageEdit = (EditText) findViewById(R.id.messageEdit);
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,7 +94,7 @@ public class EventMessagePageActivity extends Activity {
                     empty.show();
                     return;
                 }
-                if (LoginedAccount.getEventsManager().createEventMessage(eventId, LoginedAccount.getUserFullName(),mes )) {
+                if (LoginedAccount.getEventsManager().createEventMessage(eventId, LoginedAccount.getUserFullName(),mMessageEdit.getText().toString() )) {
                     populateMessage();
                 } else {
                     Toast fail = Toast.makeText(EventMessagePageActivity.this, "Message not sent", Toast.LENGTH_SHORT);

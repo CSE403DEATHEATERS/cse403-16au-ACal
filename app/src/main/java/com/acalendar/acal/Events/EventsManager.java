@@ -254,14 +254,12 @@ public class EventsManager {
         sentRequest.put("eventId", eventId);
         sentRequest.put("userId", username);
         sentRequest.put("content", mMessageEdit);
-        Map<String, Object> res = ApiResource.submitRequest(sentRequest, null, ApiResource.POST_REQUEST, ApiResource.REQUEST_POST_MESSAGE_EVENT);
+        JSONObject jsonObject = new JSONObject(sentRequest);
+        String body = jsonObject.toString();
+        Map<String, String> query = new HashMap<>();
+        Map<String, Object> res = ApiResource.submitRequest(query, body, ApiResource.POST_REQUEST, ApiResource.REQUEST_POST_MESSAGE_EVENT);
+        return (boolean) res.get("result");
 
-        // TODO: remove "try catch" when the return value "res" is no longer null;
-        try {
-            return (boolean) res.get("result");
-        } catch (Exception e){
-            return false;
-        }
     }
 
     public Map<String, Object> refreshSingleEventMessages(String eventId) {
