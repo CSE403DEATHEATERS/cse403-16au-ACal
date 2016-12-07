@@ -51,7 +51,7 @@ public class NewEventActivity extends Activity {
         ArrayList<Invitation> invitationsList = new ArrayList<>();
         invitationsList.addAll(LoginedAccount.getNotificationManager().pendingEvents);
 
-        invitationsList.add(new Invitation("Doctor Strange", "Tong Shen", "10/10/2016", "Northgate", "", false));
+//        invitationsList.add(new Invitation("Doctor Strange", "Tong Shen", "10/10/2016", "Northgate", "", false));
 
         adapter = new InvitationAdapter(this, R.layout.invitation_item, R.id.invitation, invitationsList);
         ListView listView = (ListView) findViewById(R.id.invitation_list_view);
@@ -83,6 +83,7 @@ public class NewEventActivity extends Activity {
                 }
 
                 Iterator<Invitation> iterator = invitationList.iterator();
+
                 while (iterator.hasNext()) {
                     Invitation invitation = iterator.next();
                     if (invitation.isSelected()) {
@@ -97,9 +98,9 @@ public class NewEventActivity extends Activity {
                             iterator.remove();
                         }
                     }
-
                 }
-                LoginedAccount.getNotificationManager().refreshPendingFriends();
+                LoginedAccount.getNotificationManager().refreshPendingEvents();
+                LoginedAccount.getEventsManager().refreshAllAcceptedEvents();
 
                 Toast.makeText(getApplicationContext(),
                         responseText, Toast.LENGTH_LONG).show();
@@ -141,6 +142,8 @@ public class NewEventActivity extends Activity {
                     }
 
                 }
+                LoginedAccount.getNotificationManager().refreshPendingEvents();
+                LoginedAccount.getEventsManager().refreshAllAcceptedEvents();
 
 
                 Toast.makeText(getApplicationContext(),

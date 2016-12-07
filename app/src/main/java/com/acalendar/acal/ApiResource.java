@@ -28,7 +28,7 @@ public class ApiResource {
     public static final String REQUEST_GET_MESSAGE_EVENT = "/getMessage";
     public static final String REQUEST_POST_MESSAGE_EVENT = "/postMessage";
     public static final String REQUEST_PUBLIC_EVENT_POOL = "/getPublicEventPool";
-
+    public static final String REQUEST_GET_PENDING_EVENTS = "/getPendingEventsByUserId"; // userId
 
     public static final String GET_REQUEST = "GET";
     public static final String POST_REQUEST = "POST";
