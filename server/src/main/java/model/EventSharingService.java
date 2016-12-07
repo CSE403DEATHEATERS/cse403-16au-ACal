@@ -19,6 +19,9 @@ public class EventSharingService {
     public static final Table EVENT_TABLE = dynamoDB.getTable(EVENT_TABLE_NAME);
     public static final Table EVENT_SHARING_TABLE = dynamoDB.getTable(EVENT_SHARING_TABLE_NAME);
 
+    public static final String SHARING_STATUS_ACCEPT = "ACCEPT";
+    public static final String SHARING_STATUS_PENDING = "PENDING";
+
     /**
      * Edit attendees of a particular event.
      * @param eventId
@@ -47,7 +50,7 @@ public class EventSharingService {
         if (invited != null) {
             for (String attendee : invited) {
                 attendeeList.addItemToPut(new Item().withPrimaryKey("eventId", eventId, "recipientId", attendee)
-                        .withString("inviteStatus", "PENDING")
+                        .withString("inviteStatus", SHARING_STATUS_PENDING)
                         .withNumber("sentTime", new Date().getTime()));
             }
         }
@@ -78,12 +81,14 @@ public class EventSharingService {
         if (item == null || item.getString("inviteStatus") == null) {
             return false;
         }
-        if (!item.getString("inviteStatus").equals("PENDING")) {
+        if (!item.getString("inviteStatus").equals(SHARING_STATUS_PENDING)) {
             return false;
         }
 
         if (accept) {
-            item = new Item().withPrimaryKey(new PrimaryKey("eventId", eventId, "recipientId", userId));
+            item = new Item().withPrimaryKey(new PrimaryKey("eventId", eventId, "recipientId", userId))
+                    .withString("inviteStatus", SHARING_STATUS_ACCEPT)
+                    .withNumber("sentTime", new Date().getTime());
             EVENT_SHARING_TABLE.putItem(item);
         } else {
             EVENT_SHARING_TABLE.deleteItem(new PrimaryKey("eventId", eventId, "recipientId", userId));
