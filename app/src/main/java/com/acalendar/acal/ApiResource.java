@@ -26,7 +26,7 @@ public class ApiResource {
     public static final String REQUEST_JOIN_EVENT = "/acceptEventInvitation";
     public static final String REQUEST_DECLINE_EVENT = "/declineEventInvitation";
     public static final String REQUEST_GET_MESSAGE_EVENT = "/getMessage";
-    public static final String REQUEST_POST_MESSAGE_EVENT = "/postMessage";
+    public static final String REQUEST_POST_MESSAGE_EVENT = "/createMessage";
     public static final String REQUEST_PUBLIC_EVENT_POOL = "/getPublicEventPool";
     public static final String REQUEST_GET_PENDING_EVENTS = "/getPendingEventsByUserId"; // userId
 
