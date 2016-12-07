@@ -96,11 +96,19 @@ public class EventPoolFragment extends Fragment {
                 Intent intentToViewAll = new Intent(getActivity(),
                         AllEventsInSingleDayActivity.class);
                 intentToViewAll.putExtra("dateLongSelected", date.getTime());
-                startActivity(intentToViewAll);
+                startActivityForResult(intentToViewAll, 807);
             }
 
         };
 
         caldroidFragment.setCaldroidListener(listener);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 807) {
+            getEvent();
+        }
     }
 }
