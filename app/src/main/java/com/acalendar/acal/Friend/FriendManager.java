@@ -28,6 +28,15 @@ public class FriendManager {
         listOfFriend = new ArrayList<>();
         uidToFriend = new HashMap<>();
         // call get all friends list, parse responce map
+        refreshFriendList();
+        // accept. pending(to be accepted), sent(to others)
+    }
+
+    public List<Friend> getListOfFriend() {
+        return new ArrayList<>(listOfFriend);
+    }
+
+    public void refreshFriendList() {
         Map<String, String> query = new HashMap<>();
         query.put("userId", LoginedAccount.getUserId());
         Map<String, Object> apiResponse = ApiResource.submitRequest(
@@ -38,6 +47,7 @@ public class FriendManager {
                 (List<Map<String, String>>) apiResponse.get("ACCEPT");
 
         if (friendsResponse != null && !friendsResponse.isEmpty()) {
+            listOfFriend.clear();
             for (Map<String, String> friend : friendsResponse) {
                 Friend thisFriend = new Friend(
                         friend.get("lastname"),
@@ -49,11 +59,6 @@ public class FriendManager {
                 uidToFriend.put(friend.get("userId"), thisFriend);
             }
         }
-        // accept. pending(to be accepted), sent(to others)
-    }
-
-    public List<Friend> getListOfFriend() {
-        return new ArrayList<>(listOfFriend);
     }
 
     public Friend getFriendbyUserId(String uid) {
