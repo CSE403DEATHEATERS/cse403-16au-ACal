@@ -88,11 +88,15 @@ public class AllEventsInSingleDayActivity extends Activity {
 
             else if (resultCode == EventInfoDisplayPageActivity.EDITED) {
                 int eventIdEditedHashcode = data.getStringExtra("eventIdEdited").hashCode();
-                Button eventView = (Button) findViewById
-                        (eventIdEditedHashcode);
-                String newEventTitle = data.getStringExtra("newEventTitle");
-                eventView.setText(newEventTitle);
-                Log.v("AllEventsInSingleDay", "refreshed event " + newEventTitle);
+                try {
+                    Button eventView = (Button) findViewById
+                            (eventIdEditedHashcode);
+                    String newEventTitle = data.getStringExtra("newEventTitle");
+                    eventView.setText(newEventTitle);
+                    Log.v("AllEventsInSingleDay", "refreshed event " + newEventTitle);
+                } catch (Exception e) {
+
+                }
             }
         }
 

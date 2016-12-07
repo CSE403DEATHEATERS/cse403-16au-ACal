@@ -114,6 +114,7 @@ public class FriendRequestActivity extends Activity {
                     }
                 }
                 LoginedAccount.getNotificationManager().refreshPendingFriends();
+                LoginedAccount.getFriendManager().refreshFriendList();
 
                 Toast.makeText(getApplicationContext(),
                         responseText, Toast.LENGTH_LONG).show();

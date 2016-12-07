@@ -144,7 +144,7 @@ public class EventInfoDisplayPageActivity extends Activity {
     private void updateParticipantsListView(List<Friend> listF) {
         LinearLayout allParticipantsLayout = (LinearLayout)findViewById(R.id.allParticipantsLayout);
         TextView textViewForNoParticipants = new TextView(this);
-        textViewForNoParticipants.setText("There is currently 0 participants in this event");
+        textViewForNoParticipants.setText("There is currently 0 friend invited to this event");
         if (listF != null) {
             allParticipantsLayout.removeAllViews();
             if (!listF.isEmpty()) {

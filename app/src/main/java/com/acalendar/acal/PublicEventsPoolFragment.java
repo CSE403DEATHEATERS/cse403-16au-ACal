@@ -3,13 +3,17 @@ package com.acalendar.acal;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.acalendar.acal.Friend.Friend;
 import com.acalendar.acal.Login.LoginedAccount;
 import com.acalendar.acal.Notification.Invitation;
 import com.acalendar.acal.Notification.InvitationAdapter;
@@ -25,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -83,8 +88,34 @@ public class PublicEventsPoolFragment extends Fragment {
 
         listView.setAdapter(invitationAdapter);
 
+        Button join = (Button) view.findViewById(R.id.publicEventsPoolSearchButton);
+
+        join.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<Invitation> invitationsList = invitationAdapter.getInvitationList();
+
+                StringBuffer responseText = new StringBuffer();
+                responseText.append("You joined: \n");
+
+                Iterator<Invitation> iterator = invitationsList.iterator();
+                while (iterator.hasNext()) {
+                    Invitation inv = iterator.next();
+                    if (inv.isSelected()) {
+                        responseText.append(inv.getTitle() + "\n");
+                        iterator.remove();
+                    }
+                }
+                Toast.makeText(getContext(),
+                        responseText, Toast.LENGTH_LONG).show();
+                invitationAdapter.notifyDataSetChanged();
+            }
+        });
         return view;
     }
+
+    private void joinEvent(Button join) {
+
 
 //    @Override
 //    public void onMapReady(GoogleMap googleMap) {
@@ -95,6 +126,7 @@ public class PublicEventsPoolFragment extends Fragment {
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 //    }
+    }
 
     private ArrayList<Invitation> parseInvitation(List<Map<String, Object>> mapList) {
         ArrayList<Invitation> invitationList = new ArrayList<>();
