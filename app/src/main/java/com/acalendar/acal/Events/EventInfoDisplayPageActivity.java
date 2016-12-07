@@ -150,6 +150,10 @@ public class EventInfoDisplayPageActivity extends Activity {
             if (!listF.isEmpty()) {
                 // now display
                 for (Friend f : listF) {
+                    if (f == null) {
+                        Log.v("EventInfoDisplay", "friend is null");
+                        continue;
+                    }
                     TextView newText = new TextView(this);
                     newText.setText(f.getName());
                     allParticipantsLayout.addView(newText);
