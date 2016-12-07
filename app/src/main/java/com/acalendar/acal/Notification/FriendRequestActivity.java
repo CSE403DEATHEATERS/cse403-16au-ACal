@@ -163,6 +163,7 @@ public class FriendRequestActivity extends Activity {
                 Toast.makeText(getApplicationContext(),
                         responseText, Toast.LENGTH_LONG).show();
                 adapter.notifyDataSetChanged();
+                LoginedAccount.getFriendManager().refreshFriendList();
             }
         });
     }
