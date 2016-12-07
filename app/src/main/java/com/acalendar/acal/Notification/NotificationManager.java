@@ -29,7 +29,7 @@ public class NotificationManager {
         Map<String, String> query = new HashMap<>();
         query.put("userId", LoginedAccount.getUserId());
         query.put("status", "PENDING");
-        Map<String, Object> apiResponse = ApiResource.submitRequest(query, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_GET_EVENTS);
+        Map<String, Object> apiResponse = ApiResource.submitRequest(query, null, ApiResource.GET_REQUEST, ApiResource.REQUEST_GET_PENDING_EVENTS);
         if (apiResponse.get("PENDING") != null)
             this.pendingEvents = parseInvitation((List)apiResponse.get("PENDING"));
         else
