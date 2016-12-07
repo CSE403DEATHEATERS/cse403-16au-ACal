@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.acalendar.acal.ApiResource;
 import com.acalendar.acal.Friend.Friend;
+import com.acalendar.acal.Friend.FriendManager;
 import com.acalendar.acal.Login.LoginedAccount;
 
 import org.json.JSONObject;
@@ -95,7 +96,7 @@ public class EventsManager {
         queryData.put("startTime", e.getStartTime().getTime());
         Log.v("Adding event", "start of this event is " + e.getStartTime().toString());
         queryData.put("endTime", e.getEndTime().getTime());
-        if (e.getDescription() != null && !e.getDescription().isEmpty()) {
+        if (e.getDescription() != null && !e.getDescription().isEmpty()) { // should not happen
             queryData.put("description", e.getDescription());
         }
         queryData.put("isPublic", e.isPublic());
@@ -135,7 +136,6 @@ public class EventsManager {
         return status;
     }
 
-    // TODO: bug -> this does not actually update the database.
     public boolean editEvent(Event originalEvent, Event newEvent) {
         Map<String, Object> queryData = new HashMap<>();
         queryData.put("eventId", originalEvent.getEventId());
@@ -200,10 +200,35 @@ public class EventsManager {
         return true;
     }
 
-    public boolean editParticipants(ArrayList<Friend> addList, ArrayList<Friend> deleteList) {
-        // take evenid, userid, listOfUserIdAdded, listOfUserIdDeleted(empty for now).
-        // remove temporarily not available in front end but work in backend.
-        // TODO: noy yet implemented
+    public boolean editParticipants(String eid, List<Friend> addList, List<Friend> deleteList) {
+        Map<String, Object> queryData = new HashMap<>();
+        List<String> addUidList = FriendManager.getUserIdListFromFriendList(addList);
+        List<String> deleteUidList = FriendManager.getUserIdListFromFriendList(deleteList);
+        queryData.put("eventId", eid);
+        queryData.put("userId", LoginedAccount.getUserId());
+        queryData.put("invited", addUidList);
+        queryData.put("removed", deleteUidList);
+
+        JSONObject jsonObject= new JSONObject(queryData);
+        Map<String, Object> responceMap = ApiResource.submitRequest(
+                new HashMap<String, String>(),
+                jsonObject.toString(),
+                ApiResource.POST_REQUEST,
+                ApiResource.REQUEST_EDIT_EVENT_PARTICIPANTS);
+
+        boolean success = (boolean)responceMap.get("result");
+        if (!success) {
+            return false;
+        }
+
+        // add/remove friends from the event locally,
+        // but will not sync to the same as database without refreshing
+        Event eventToBeEditParticipants = idToEventMap.get(eid);
+        if (eventToBeEditParticipants == null) {
+            return false;  // for error prune purpose
+        }
+        eventToBeEditParticipants.addListOfParticipants(addList);
+        eventToBeEditParticipants.deleteListOfParticipants(deleteList);
         return true;
     }
 

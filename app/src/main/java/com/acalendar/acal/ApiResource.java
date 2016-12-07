@@ -15,14 +15,18 @@ public class ApiResource {
 
     public static final String REQUEST_LOGIN = "/login";
     public static final String REQUEST_SIGNUP = "/signup";
+
     public static final String REQUEST_CREATE_EVENT = "/createEvent";
     public static final String REQUEST_EDIT_EVENT = "/editEvent";  // eventId required, no create time
     public static final String REQUEST_GET_EVENTS = "/getEvents";  // userId, status
-    public static final String REQUEST_GET_FRIENDS = "getFriends";
+    public static final String REQUEST_EDIT_EVENT_PARTICIPANTS = "/editAttendees";
+    public static final String REQUEST_DELETE_EVENT = "/deleteEvent";
+
+    public static final String REQUEST_GET_FRIENDS = "/getFriends";
     public static final String REQUEST_ADD_FRIEND = "/addFriend";
     public static final String REQUEST_REJECT_FRIEND = "/rejectFriend";
     public static final String REQUEST_ACEEPT_FRIEND = "/acceptFriend";
-    public static final String REQUEST_DELETE_EVENT = "/deleteEvent";
+
     public static final String REQUEST_JOIN_EVENT = "/acceptEventInvitation";
     public static final String REQUEST_DECLINE_EVENT = "/declineEventInvitation";
     public static final String REQUEST_GET_MESSAGE_EVENT = "/getMessage";
@@ -32,7 +36,6 @@ public class ApiResource {
 
     public static final String GET_REQUEST = "GET";
     public static final String POST_REQUEST = "POST";
-
     /**
      * This method send the given request to server side.
      *

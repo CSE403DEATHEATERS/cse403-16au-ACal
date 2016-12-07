@@ -106,4 +106,23 @@ public class FriendManager {
         return false;
     }
 
+    /**
+     * get a list of friend uids from a list of friend Object.
+     * @param listF list of friend object
+     * @return a list of user id strings
+     */
+    public static List<String> getUserIdListFromFriendList(List<Friend> listF) {
+        // TODO: Stylistically, this should be moved to some Util class.
+        if (listF.isEmpty()) {
+            return new ArrayList<>();
+        }
+        List<String> list = new ArrayList<>();
+        for (Friend f : listF) {
+            if (f != null) {  // just for error/crash prune
+                list.add(f.getUserId());
+            }
+        }
+        return list;
+    }
+
 }

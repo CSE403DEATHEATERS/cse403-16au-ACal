@@ -162,23 +162,25 @@ public class EventInfoDisplayPageActivity extends Activity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
+        //super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 998) {
             Log.v("EventInfoDisplay", "came back from manage participants");
             if (resultCode == RESULT_OK) {
                 ArrayList<Friend> newAddList = data.getParcelableArrayListExtra("listOfNewlyAddedFriends");
                 ArrayList<Friend> deleteList = data.getParcelableArrayListExtra("listOfDeletedFriends");
                 boolean result =
-                        LoginedAccount.getEventsManager().editParticipants(newAddList, deleteList);
-
-                currentlySelectedParticipants.addAll(newAddList);
-                currentlySelectedParticipants.removeAll(deleteList);
-                Log.v("InfoDisplay", "Current participants: "
-                        + this.currentlySelectedParticipants.size());
-                // display/update current List
-                updateParticipantsListView(this.currentlySelectedParticipants);
+                        LoginedAccount.getEventsManager().editParticipants(
+                                this.event.getEventId(), newAddList, deleteList);
+                if (result) {  // alert some message if failed
+                    currentlySelectedParticipants.addAll(newAddList);
+                    currentlySelectedParticipants.removeAll(deleteList);
+                    Log.v("InfoDisplay", "Current participants: "
+                            + this.currentlySelectedParticipants.size());
+                    // display/update current List
+                    updateParticipantsListView(this.currentlySelectedParticipants);
+                }
             }
+
         } else if (requestCode == 991) {
             Log.v("EventInfoDisplay", "came back from edit info, should now refresh all info");
             if (resultCode == RESULT_OK) {
@@ -206,15 +208,5 @@ public class EventInfoDisplayPageActivity extends Activity {
             setResult(EDITED, intent);
         }
         super.onBackPressed();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 }

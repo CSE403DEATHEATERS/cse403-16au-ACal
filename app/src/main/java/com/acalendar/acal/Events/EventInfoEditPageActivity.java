@@ -190,7 +190,7 @@ public class EventInfoEditPageActivity  extends Activity {
                     newEvent.setListOfParticipants(currentlySelectedParticipants);
                     if (eventObjectToEdit == null) {
                         // create new
-                        LoginedAccount.getEventsManager().addEvent(newEvent);
+                        LoginedAccount.getEventsManager().addEvent(newEvent); // including sharing events
                     } else {
                         // edit
                         newEvent.setEventId(eventObjectToEdit.getEventId());

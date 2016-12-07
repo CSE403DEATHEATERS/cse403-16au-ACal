@@ -13,7 +13,6 @@ import com.acalendar.acal.Login.LoginedAccount;
 import com.acalendar.acal.R;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -71,6 +70,8 @@ public class AllEventsInSingleDayActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        setContentView(R.layout.events_in_single_day_page);
+        // super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 79) {
             // came back from single eventInfoDisplay page, which may potentially delete an event
             if (resultCode == RESULT_OK) {
@@ -79,7 +80,11 @@ public class AllEventsInSingleDayActivity extends Activity {
                         data.getStringExtra("eventIdDeleted") + " was deleted");
                 Log.v("AllEventsSingleDay", "the button to be deleted is " + eventIdDeletedHashcode);
                 Button eventView = (Button)findViewById(eventIdDeletedHashcode);
-                eventView.setVisibility(View.GONE);
+                try {
+                    eventView.setVisibility(View.GONE);
+                } catch (Exception e) {
+                    // ideally this should not happen
+                }
             }
 
             else if (resultCode == EventInfoDisplayPageActivity.EDITED) {

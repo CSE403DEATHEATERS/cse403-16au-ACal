@@ -83,6 +83,15 @@ public class Event implements Parcelable {
         listOfParticipantUsers.add(friend);
     }
 
+    public void addListOfParticipants(List<Friend> listF) {
+        this.listOfParticipantUsers.addAll(listF);
+    }
+
+    public void deleteListOfParticipants(List<Friend> listF) {
+        this.listOfParticipantUsers.removeAll(listF);
+    }
+
+
     public void setListOfParticipants(List<Friend> listOfFriend) {
         this.listOfParticipantUsers = listOfFriend;
     }
