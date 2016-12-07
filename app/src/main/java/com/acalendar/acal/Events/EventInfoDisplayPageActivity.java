@@ -151,7 +151,7 @@ public class EventInfoDisplayPageActivity extends Activity {
                 // now display
                 for (Friend f : listF) {
                     if (f == null) {
-                        Log.v("EventInfoDisplay", "friend is null");
+                        Log.v("EventInfoDisplay", "friend is null");  // ideally should not happen
                         continue;
                     }
                     TextView newText = new TextView(this);

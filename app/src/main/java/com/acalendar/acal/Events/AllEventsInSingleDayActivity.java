@@ -78,8 +78,12 @@ public class AllEventsInSingleDayActivity extends Activity {
                 Log.v("AllEventsInSingleDay", "came back from display page, and event id " +
                         data.getStringExtra("eventIdDeleted") + " was deleted");
                 Log.v("AllEventsSingleDay", "the button to be deleted is " + eventIdDeletedHashcode);
-                Button eventView = (Button)findViewById(eventIdDeletedHashcode);
-                eventView.setVisibility(View.GONE);
+                try {
+                    Button eventView = (Button)findViewById(eventIdDeletedHashcode);
+                    eventView.setVisibility(View.GONE);
+                } catch (Exception e) {
+
+                }
             }
 
             else if (resultCode == EventInfoDisplayPageActivity.EDITED) {
